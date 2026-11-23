@@ -401,6 +401,138 @@ function StatsSection() {
   );
 }
 
+function PainScene({ index, side }) {
+  const old = side === 'old';
+  if (index === 0) {
+    return old ? (
+      <div className="ps ps--old">
+        <div className="ps__bar">
+          <span className="ps__file"><FileSpreadsheet size={13} /><span className="ps__name">график_смен_ФИНАЛ(2).xlsx</span></span>
+          <span className="ps__chip ps__chip--bad">перезаписан</span>
+        </div>
+        <div className="ps-grid">
+          <div className="ps-grid__row ps-grid__row--head"><span>Пост</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+          <div className="ps-grid__row"><span>Пост 1</span><span>Иванов</span><span>Петров</span><span className="ps-q">?</span></div>
+          <div className="ps-grid__row"><span>Пост 2</span><span>Сидоров</span><span className="ps-q">?</span><span>Кузнецов</span></div>
+        </div>
+        <div className="ps__note ps__note--bad">кто в субботу на втором посту?</div>
+      </div>
+    ) : (
+      <div className="ps ps--new">
+        <div className="ps__bar">
+          <span className="ps__file"><CalendarRange size={13} /><span className="ps__name">Ноябрь · График смен</span></span>
+          <span className="ps__chip ps__chip--good">автосборка</span>
+        </div>
+        <div className="ps-week">
+          {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((d, i) => (
+            <span key={d} className={`ps-day ${i === 5 ? 'is-sat' : ''} ${i < 4 ? 'is-done' : i === 4 ? 'is-live' : ''}`}><i />{d}</span>
+          ))}
+        </div>
+        <div className="ps-shift">
+          <div><b>Сб · Пост 2 · Иванов А.</b><span>08:00–20:00 · сутки/трое</span></div>
+          <span className="ps__chip ps__chip--good">Подтверждена</span>
+        </div>
+        <div className="ps__note ps__note--good">12 смен создано по шаблону</div>
+      </div>
+    );
+  }
+  if (index === 1) {
+    return old ? (
+      <div className="ps ps--old">
+        <div className="ps__bar">
+          <span className="ps__file"><ReceiptText size={13} /><span className="ps__name">Расчёт за ноябрь — вручную</span></span>
+          <span className="ps__chip ps__chip--bad">пт, 21:40</span>
+        </div>
+        <div className="ps-calc">
+          <div className="ps-calc__row"><span>Оклад</span><b>45 000</b></div>
+          <div className="ps-calc__row"><span>Ночные</span><b className="ps-q">???</b></div>
+          <div className="ps-calc__row"><span>Праздничные</span><b className="ps-q">???</b></div>
+        </div>
+        <div className="ps-total ps-total--bad"><span>Итого</span><b className="ps-strike">52 300 ₽</b></div>
+        <div className="ps__note ps__note--bad">ошибка в табеле → пересчитать всё</div>
+      </div>
+    ) : (
+      <div className="ps ps--new">
+        <div className="ps__bar">
+          <span className="ps__file"><Wallet size={13} /><span className="ps__name">Ноябрь · Иванов А.</span></span>
+          <span className="ps__chip ps__chip--good">из табеля</span>
+        </div>
+        <div className="ps-calc">
+          <div className="ps-calc__row"><span>Оклад</span><b>45 000</b></div>
+          <div className="ps-calc__row"><span>Ночные</span><b className="ps-plus">+6 200</b></div>
+          <div className="ps-calc__row"><span>Праздничные</span><b className="ps-plus">+3 100</b></div>
+          <div className="ps-calc__row"><span>Сверхурочные</span><b className="ps-plus">+2 400</b></div>
+          <div className="ps-calc__row"><span>Премия / удержание</span><b>+5 000 / −1 500</b></div>
+        </div>
+        <div className="ps-total ps-total--good"><span>Итого</span><b>60 200 ₽</b><span className="ps__chip ps__chip--good">1 клик</span></div>
+      </div>
+    );
+  }
+  if (index === 2) {
+    return old ? (
+      <div className="ps ps--old">
+        <div className="ps__bar">
+          <span className="ps__file"><span className="ps__name">Чат «Ночная смена»</span></span>
+          <span className="ps__chip ps__chip--bad">пт, 23:41</span>
+        </div>
+        <div className="ps-chat">
+          <div className="ps-bubble">📷 фото с поста</div>
+          <div className="ps-bubble ps-bubble--voice">🎤 голосовое · 0:42</div>
+          <div className="ps-bubble">разберёмся в понедельник</div>
+        </div>
+        <div className="ps__note ps__note--bad">прочитано · никто не ответил</div>
+      </div>
+    ) : (
+      <div className="ps ps--new">
+        <div className="ps__bar">
+          <span className="ps__file"><Siren size={13} /><span className="ps__name">Инцидент №142 · Кража</span></span>
+          <span className="ps__chip ps__chip--warn">Высокая</span>
+        </div>
+        <div className="ps-fields">
+          <div className="ps-field"><span>Ущерб</span><b>18 500 ₽</b></div>
+          <div className="ps-field"><span>Ответственный</span><b>Петров И.</b></div>
+          <div className="ps-field"><span>Причина</span><b>Слепая зона камеры №4</b></div>
+          <div className="ps-field"><span>План</span><b>Перенести камеру</b></div>
+        </div>
+        <div className="ps__note ps__note--good"><span className="ps__chip ps__chip--good">В работе</span> причина и ущерб зафиксированы</div>
+      </div>
+    );
+  }
+  return old ? (
+    <div className="ps ps--old">
+      <div className="ps__bar">
+        <span className="ps__file"><ScrollText size={13} /><span className="ps__name">Сводка за октябрь</span></span>
+        <span className="ps__chip ps__chip--bad">собрана 20 ноября</span>
+      </div>
+      <div className="ps-paper">
+        <div className="ps-paper__big">Прибыль: <b className="ps-q">???</b></div>
+        <div className="ps-paper__line">бюджет и факт встретились на бумаге</div>
+      </div>
+      <div className="ps__note ps__note--bad">менять уже поздно</div>
+    </div>
+  ) : (
+    <div className="ps ps--new">
+      <div className="ps__bar">
+        <span className="ps__file"><ChartNoAxesCombined size={13} /><span className="ps__name">Ноябрь · План / Факт</span></span>
+        <span className="ps__chip ps__chip--good">обновляется</span>
+      </div>
+      <div className="ps-bars">
+        {[
+          { label: 'Доходы', fact: '1 080 000', pct: 90 },
+          { label: 'ФОТ', fact: '462 000', pct: 96 },
+          { label: 'Налоги', fact: '181 000', pct: 95 },
+        ].map((r) => (
+          <div className="ps-bar" key={r.label}>
+            <div className="ps-bar__top"><span>{r.label}</span><b>{r.fact} ₽</b></div>
+            <div className="ps-bar__track"><i style={{ width: `${r.pct}%` }} /></div>
+          </div>
+        ))}
+      </div>
+      <div className="ps__note ps__note--good"><span className="ps__chip ps__chip--warn">−4,2%</span> отклонение видно до конца месяца</div>
+    </div>
+  );
+}
+
 function Problems() {
   const [active, setActive] = useState(0);
   const pain = PAINS[active];
@@ -416,72 +548,50 @@ function Problems() {
           note="И в каждом — своя версия правды. Пока данные расходятся по таблицам и чатам, управление превращается в пересказ."
         />
         <div className="compare-carousel">
-          <div className="compare-selector">
-            <div className="compare-selector__terms" role="tablist" aria-label="Примеры проблем">
-              {PAINS.map((item, i) => (
-                <button
-                  key={item.short}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === active}
-                  className={`compare-selector__term ${i === active ? 'is-active' : ''}`}
-                  onClick={() => setActive(i)}
-                >
-                  <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-                  <b>{item.short}</b>
-                </button>
-              ))}
-            </div>
-            <div className="compare-dial" style={{ '--dial-rotate': `${270 - active * 90}deg` }}>
-              <div className="compare-dial__ring" aria-hidden="true" />
-              <div className="compare-dial__rotor">
-                {PAINS.map((item, i) => (
-                  <button
-                    key={item.short}
-                    type="button"
-                    className={`compare-dial__node ${i === active ? 'is-active' : ''}`}
-                    style={{ '--a': `${i * 90}deg` }}
-                    onClick={() => setActive(i)}
-                    aria-label={`Пример ${i + 1}: ${item.short}`}
-                    aria-pressed={i === active}
-                  >
-                    <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="compare-dial__center">
-                <span className="mono">{String(active + 1).padStart(2, '0')} / 04</span>
-                <b>{pain.short}</b>
-              </div>
-              <span className="compare-dial__marker" aria-hidden="true" />
-            </div>
+          <div className="compare-files" role="tablist" aria-label="Примеры проблем">
+            {PAINS.map((item, i) => (
+              <button
+                key={item.short}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                className={`compare-file ${i === active ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
+              >
+                <FileSpreadsheet size={15} />
+                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                <b>{item.short}</b>
+              </button>
+            ))}
           </div>
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              className="compare-slide"
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -24 }}
+              className="compare-board"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
-              <div className="compare-side compare-side--old">
-                <div className="compare-side__head">
+              <div className="compare-pane compare-pane--old">
+                <div className="compare-pane__head">
                   <span className="compare-mark"><X size={15} /></span>
-                  <span className="compare-side__label mono">КАК ОБЫЧНО</span>
+                  <span className="compare-pane__label mono">КАК ОБЫЧНО</span>
                 </div>
+                <PainScene index={active} side="old" />
                 <h3>{pain.old}</h3>
                 <p>{pain.oldText}</p>
               </div>
-              <div className="compare-mid" aria-hidden="true"><ArrowRight size={20} /></div>
-              <div className="compare-side compare-side--new">
-                <div className="compare-side__head">
+              <div className="compare-pane compare-pane--new">
+                <div className="compare-pane__head">
                   <span className="compare-mark"><Check size={15} /></span>
-                  <span className="compare-side__label mono">КАК В WORKDO</span>
+                  <span className="compare-pane__label mono">КАК В WORKDO</span>
                 </div>
+                <PainScene index={active} side="new" />
                 <h3>{pain.now}</h3>
                 <p>{pain.nowText}</p>
               </div>
+              <span className="compare-board__arrow" aria-hidden="true"><ArrowRight size={18} /></span>
             </motion.div>
           </AnimatePresence>
           <div className="compare-nav">
