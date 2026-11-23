@@ -5,6 +5,7 @@ import {
   ChevronLeft, CircleCheck, Clock3, Database, FileSpreadsheet, KeyRound, LayoutDashboard, Laptop,
   LockKeyhole, MapPinned, Menu, Plus, ReceiptText, ScrollText, ShieldCheck,
   Siren, Sparkles, UsersRound, X, Download, Play, ChevronRight, Minus, Search,
+  Building2, Users, Wallet,
 } from 'lucide-react';
 import {
   NAV, STATS, PAINS, MODULES, STEPS, WEEKS, ROLES, VERTICALS,
@@ -15,7 +16,7 @@ import {
 const ICONS = {
   LayoutDashboard, CalendarRange, ChartNoAxesCombined, Database, FileSpreadsheet,
   KeyRound, MapPinned, ReceiptText, ScrollText, ShieldCheck, Siren, UsersRound,
-  Clock3, Sparkles, LockKeyhole,
+  Clock3, Sparkles, LockKeyhole, Building2, Users, Wallet,
 };
 
 /* Moves the gradient focus point to the cursor, exactly like workdo.ru. */
@@ -202,36 +203,63 @@ function MiniDashboard() {
       </div>
       <div className="window-body">
         <aside className="window-side">
-          {DEMO_NAV.slice(0, 6).map((n, i) => (
-            <span key={n.id} className={i === 0 ? 'active' : ''}><Icon name={n.icon} size={15} />{n.label}</span>
-          ))}
+          <div className="win-brand"><b>WorkDo</b><small>ЧОП «Редут»</small></div>
+          <div className="win-nav-group"><span>Главная</span></div>
+          <div className="win-nav-group"><small>Персонал</small><span><Icon name="UsersRound" size={14} /> Сотрудники</span><span><Icon name="Users" size={14} /> Бригады</span></div>
+          <div className="win-nav-group"><small>Клиенты и объекты</small><span><Icon name="Building2" size={14} /> Клиенты</span><span><Icon name="MapPinned" size={14} /> Объекты</span><span><Icon name="ShieldCheck" size={14} /> Посты</span></div>
+          <div className="win-nav-group"><small>Планирование</small><span><Icon name="CalendarRange" size={14} /> Смены</span></div>
+          <div className="win-nav-group"><small>Контроль и исполнение</small><span><Icon name="Clock3" size={14} /> Учёт времени</span><span><Icon name="Siren" size={14} /> Инциденты</span></div>
+          <div className="win-nav-group"><small>Финансы</small><span><Icon name="Wallet" size={14} /> Зарплата</span><span><Icon name="ChartNoAxesCombined" size={14} /> Финансы</span></div>
+          <div className="win-side-foot">owner@redut.ru</div>
         </aside>
         <div className="window-main">
-          <div className="window-kpis">
-            <div><small>На смене</small><b>18 <em>из 31</em></b></div>
-            <div><small>Постов</small><b>18</b></div>
-            <div><small>Инцидентов</small><b>3 <em>1 высокий</em></b></div>
+          <div className="win-page-head">
+            <div><h4>Панель управления охранным предприятием</h4><small>ЧОП «Редут» · 17 ноября 2026</small></div>
+            <div className="win-head-actions"><span>Добавить сотрудника</span><span>Смены</span></div>
+          </div>
+          <div className="window-kpis window-kpis--4">
+            <div><small>Всего сотрудников</small><b>31</b><em>в базе компании</em></div>
+            <div><small>Активных смен</small><b>18</b><em>Сейчас на посту</em></div>
+            <div><small>Постов</small><b>18</b><em>Объекты охраны</em></div>
+            <div><small>Инцидентов</small><b>3</b><em>Всего зарегистрировано</em></div>
+          </div>
+          <div className="win-mid">
+            <div className="window-card win-stat-card">
+              <div className="window-card-head"><span>Статистика инцидентов</span><small>Обзор по статусам и серьёзности</small></div>
+              <div className="win-stat-cols">
+                <div><b>По статусу</b><span><i className="dot dot--blue" />Открыты <em>2</em></span><span><i className="dot dot--amber" />В расследовании <em>1</em></span><span><i className="dot dot--gray" />Закрыты <em>12</em></span></div>
+                <div><b>По серьёзности</b><span><i className="dot dot--blue" />Низкий <em>6</em></span><span><i className="dot dot--amber" />Средний <em>5</em></span><span><i className="dot dot--red" />Высокий <em>3</em></span></div>
+                <div><b>По приоритету</b><span><i className="dot dot--gray" />Низкий <em>7</em></span><span><i className="dot dot--blue" />Средний <em>4</em></span><span><i className="dot dot--red" />Срочный <em>1</em></span></div>
+              </div>
+            </div>
+            <div className="win-payroll">
+              <div><small>Ближайшая выплата зарплаты</small><b>25 ноября, осталось 8 дн.</b><span>2 480 000 ₽ · 31 сотрудник</span></div>
+              <span className="win-payroll-btn">Зарплаты</span>
+            </div>
           </div>
           <div className="window-columns">
             <div className="window-card">
-              <div className="window-card-head"><span>Смены на 10 дней</span><small>сегодня · 18</small></div>
-              <div className="mini-bars">
-                {[52, 74, 40, 88, 62, 95, 45, 70, 84, 58].map((h, i) => (
-                  <span key={i} style={{ height: `${h}%` }} className={i === 3 || i === 5 ? 'is-night' : ''} />
-                ))}
-              </div>
-              <div className="mini-legend"><span>Дневная</span><span>Ночная</span><span>Сутки</span></div>
+              <div className="window-card-head"><span>Активные смены</span><small>Сотрудники на посту прямо сейчас</small></div>
+              {DEMO_SHIFTS.slice(0, 3).map((p) => (
+                <div className="win-shift" key={p.name}><span className="win-avatar">{p.initials}</span><span><b>{p.name}</b><small>{p.post}</small></span><em>08:00 - 20:00</em></div>
+              ))}
             </div>
             <div className="window-card">
-              <div className="window-card-head"><span>Последние инциденты</span><small>3 открыто</small></div>
-              {DEMO_INCIDENTS.slice(0, 2).map((inc) => (
-                <div className="mini-incident" key={inc.id}>
-                  <span className={`sev sev--${inc.severity === 'высокая' ? 'high' : 'mid'}`} />
-                  <span><b>{inc.title}</b><small>{inc.place} · {inc.time.slice(0, 10)}</small></span>
-                </div>
-              ))}
-              <div className="mini-tag">БЦ «Север» · смена 08:00 <em>в работе</em></div>
+              <div className="window-card-head"><span>Быстрые действия</span><small>Часто используемые функции</small></div>
+              <div className="win-actions">
+                {['Добавить сотрудника', 'Создать смену', 'Создать пост', 'Зарегистрировать инцидент', 'Отчёт по сменам'].map((a) => <span key={a}><i />{a}</span>)}
+              </div>
             </div>
+          </div>
+          <div className="window-card win-incidents">
+            <div className="window-card-head"><span>Последние инциденты</span><small>Журнал происшествий · 3 открыто</small></div>
+            {DEMO_INCIDENTS.slice(0, 2).map((inc) => (
+              <div className="mini-incident" key={inc.id}>
+                <span className={`sev sev--${inc.severity === 'высокая' ? 'high' : 'mid'}`} />
+                <span><b>{inc.title}</b><small>{inc.place} · {inc.time.slice(0, 10)}</small></span>
+                <em className="win-sev">{inc.severity}</em>
+              </div>
+            ))}
           </div>
           <div className="window-flow">
             <div className="window-flow__head"><span>Одна цепочка за день</span><small>смена → табель → зарплата</small></div>
@@ -430,11 +458,29 @@ function DemoTasks({ task, onDone }) {
 function DemoOverview({ onAction }) {
   return (
     <div className="demo-view">
+      <div className="demo-view-title">
+        <div><h3>Панель управления охранным предприятием</h3><p>ЧОП «Редут» · 17 ноября 2026</p></div>
+        <div className="win-head-actions"><span>Добавить сотрудника</span><span>Смены</span></div>
+      </div>
       <div className="demo-kpis">
-        <div className="demo-kpi"><small>На смене</small><b>18 <em>из 31 сотрудника</em></b><span className="kpi-delta">сегодня по графику · 18</span></div>
+        <div className="demo-kpi"><small>Всего сотрудников</small><b>31</b><span>в базе компании</span></div>
+        <div className="demo-kpi"><small>Активных смен</small><b>18</b><span className="kpi-delta">Сейчас на посту</span></div>
         <div className="demo-kpi"><small>Посты</small><b>18</b><span>5 объектов на обслуживании</span></div>
-        <div className="demo-kpi"><small>Инциденты</small><b>3</b><span className="kpi-warn">1 высокого приоритета</span></div>
-        <div className="demo-kpi"><small>ФОТ · ноябрь</small><b>2 480 000 ₽</b><span className="kpi-delta">+3,1% к плану</span></div>
+        <div className="demo-kpi"><small>Инциденты</small><b>3</b><span className="kpi-warn">Всего зарегистрировано</span></div>
+      </div>
+      <div className="win-mid">
+        <div className="window-card win-stat-card">
+          <div className="window-card-head"><span>Статистика инцидентов</span><small>Обзор по статусам и серьёзности</small></div>
+          <div className="win-stat-cols">
+            <div><b>По статусу</b><span><i className="dot dot--blue" />Открыты <em>2</em></span><span><i className="dot dot--amber" />В расследовании <em>1</em></span><span><i className="dot dot--gray" />Закрыты <em>12</em></span></div>
+            <div><b>По серьёзности</b><span><i className="dot dot--blue" />Низкий <em>6</em></span><span><i className="dot dot--amber" />Средний <em>5</em></span><span><i className="dot dot--red" />Высокий <em>3</em></span></div>
+            <div><b>По приоритету</b><span><i className="dot dot--gray" />Низкий <em>7</em></span><span><i className="dot dot--blue" />Средний <em>4</em></span><span><i className="dot dot--red" />Срочный <em>1</em></span></div>
+          </div>
+        </div>
+        <div className="win-payroll">
+          <div><small>Ближайшая выплата зарплаты</small><b>25 ноября, осталось 8 дн.</b><span>2 480 000 ₽ · 31 сотрудник</span></div>
+          <span className="win-payroll-btn">Зарплаты</span>
+        </div>
       </div>
       <div className="demo-panels">
         <div className="demo-panel">
@@ -853,6 +899,7 @@ function Modules() {
     <section className="section modules" id="modules">
       <div className="container">
         <SectionHead
+          center
           label="03 · модули"
           title={<>Всё для управления — <span className="gradient-text">в одном окне</span></>}
           note="Основа нужна каждому бизнесу: кадры, табель, зарплата, финансы. Отраслевые инструменты включаются модулями — без лишних экранов."
@@ -939,6 +986,7 @@ function How() {
     <section className="section section--tint how" id="how">
       <div className="container">
         <SectionHead
+          center
           label="04 · внедрение"
           title={<>От таблиц до рабочей системы <span className="gradient-text">за месяц</span></>}
           note="Без «интеграторов на полгода». Переносим данные, включаем нужные модули, выдаём роли и остаёмся рядом."
@@ -1004,6 +1052,7 @@ function Roles() {
     <section className="section access" id="access">
       <div className="container">
         <SectionHead
+          center
           label="05 · доступ"
           title={<>У каждого — <span className="gradient-text">свой экран</span></>}
           note="Права ограничены на уровне таблиц, а не только меню. Начальник смены не увидит финансы, охранник — чужие объекты."
@@ -1078,6 +1127,7 @@ function Verticals() {
     <section className="section section--tint verticals" id="verticals">
       <div className="container">
         <SectionHead
+          center
           label="06 · отрасли"
           title={<>Одна платформа, <span className="gradient-text">разные процессы</span></>}
           note="Основа общая: люди, смены, деньги. Отраслевые справочники подключаются модулями — без второй системы и второго аккаунта."
@@ -1166,7 +1216,7 @@ function Pricing({ onDemo }) {
       <div className="container">
         <SectionHead
           center label="08 · тарифы"
-          title={<>Прозрачно: <span className="gradient-text">за людей и модули</span></>}
+          title={<>Платите за команду, <span className="gradient-text">не за экраны</span></>}
           note="Цены для охранного предприятия. Для других отраслей — свои тарифы; основа и подход те же."
         >
           <div className="billing-toggle">
@@ -1222,6 +1272,7 @@ function Flows() {
     <section className="section flows" id="flows">
       <div className="container">
         <SectionHead
+          center
           label="09 · как это работает"
           title={<>Три операции, которые <span className="gradient-text">меняют день</span></>}
           note="Не абстрактная «автоматизация», а конкретные цепочки: смена → табель → зарплата, инцидент → причина → отчёт, месяц → план → факт."
@@ -1282,6 +1333,7 @@ function Launch() {
     <section className="section section--tint launch" id="launch">
       <div className="container">
         <SectionHead
+          center
           label="10 · запуск"
           title={<>Четыре недели — <span className="gradient-text">и без Excel</span></>}
           note="Не «внедрение на полгода». Первый месяц — это перенос, настройка и обучение. Дальше система работает вместе с вами."
@@ -1336,6 +1388,7 @@ function Faq() {
     <section className="section faq" id="faq">
       <div className="container faq-grid">
         <SectionHead
+          center
           label="11 · вопросы"
           title={<>Отвечаем на всё, <span className="gradient-text">что спросят</span></>}
           note="Если чего-то не хватает — откройте демо или напишите. Отвечаем по делу, без «запросите коммерческое предложение»."
