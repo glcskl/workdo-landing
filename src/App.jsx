@@ -1117,7 +1117,7 @@ function Roles() {
                     <div className="phone__tabs"><i className="is-active" /><i /><i /><i /></div>
                   </div>
                 </div>
-                <span className="role-phone-caption">iPhone 17 Pro · экран роли</span>
+                <span className="role-phone-caption">iPhone 18 Pro · экран роли</span>
               </div>
             </motion.div>
           </AnimatePresence>
