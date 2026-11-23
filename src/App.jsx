@@ -432,23 +432,28 @@ function Problems() {
                 </button>
               ))}
             </div>
-            <div className="compare-dial" style={{ '--dial-rotate': `${270 - active * 90}deg` }} aria-hidden="true">
-              <div className="compare-dial__ring">
+            <div className="compare-dial" style={{ '--dial-rotate': `${270 - active * 90}deg` }}>
+              <div className="compare-dial__ring" aria-hidden="true" />
+              <div className="compare-dial__rotor">
                 {PAINS.map((item, i) => (
-                  <span
+                  <button
                     key={item.short}
+                    type="button"
                     className={`compare-dial__node ${i === active ? 'is-active' : ''}`}
                     style={{ '--a': `${i * 90}deg` }}
+                    onClick={() => setActive(i)}
+                    aria-label={`Пример ${i + 1}: ${item.short}`}
+                    aria-pressed={i === active}
                   >
                     <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-                  </span>
+                  </button>
                 ))}
               </div>
               <div className="compare-dial__center">
                 <span className="mono">{String(active + 1).padStart(2, '0')} / 04</span>
                 <b>{pain.short}</b>
               </div>
-              <span className="compare-dial__marker" />
+              <span className="compare-dial__marker" aria-hidden="true" />
             </div>
           </div>
           <AnimatePresence mode="wait">
@@ -1220,23 +1225,28 @@ function Verticals() {
               </button>
             ))}
           </div>
-          <div className="vertical-dial" style={{ '--dial-rotate': `${270 - index * 90}deg` }} aria-hidden="true">
-            <div className="vertical-dial__ring">
+          <div className="vertical-dial" style={{ '--dial-rotate': `${270 - index * 90}deg` }}>
+            <div className="vertical-dial__ring" aria-hidden="true" />
+            <div className="vertical-dial__rotor">
               {VERTICALS.map((v, i) => (
-                <span
+                <button
                   key={v.id}
+                  type="button"
                   className={`vertical-dial__node ${i === index ? 'is-active' : ''}`}
                   style={{ '--a': `${i * 90}deg` }}
+                  onClick={() => chooseVertical(v, i)}
+                  aria-label={`Отрасль ${i + 1}: ${v.tag}`}
+                  aria-pressed={i === index}
                 >
                   <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-                </span>
+                </button>
               ))}
             </div>
             <div className="vertical-dial__center">
               <span className="mono">{String(index + 1).padStart(2, '0')} / 04</span>
               <b>{current.tag}</b>
             </div>
-            <span className="vertical-dial__marker" />
+            <span className="vertical-dial__marker" aria-hidden="true" />
           </div>
         </div>
         <AnimatePresence mode="wait">

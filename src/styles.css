@@ -3821,3 +3821,98 @@ ul { margin: 0; padding: 0; list-style: none; }
   .vertical-dial__center b { font-size: 13px; }
   .vertical-dial__node { width: 32px; height: 32px; margin: -16px 0 0 -16px; }
 }
+
+/* ─── 01 · ПРОБЛЕМА: улучшенный кликабельный круг ─ */
+
+.compare-selector { grid-template-columns: minmax(0, 1fr) 320px; gap: 64px; max-width: 1040px; }
+.compare-selector__terms { min-height: 280px; justify-content: center; gap: 4px; }
+.compare-selector__terms::after { right: -64px; width: 64px; }
+.compare-selector__term {
+  grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 12px 14px;
+  border: 0; border-left: 2px solid transparent; border-radius: 0 12px 12px 0;
+  background: transparent; color: #a3a3a3;
+}
+.compare-selector__term span { font-size: 11px; color: #c4c4c4; }
+.compare-selector__term b { font-size: 15px; font-weight: 550; }
+.compare-selector__term:hover { border-left-color: #d4d4d4; background: #fafafa; color: var(--ink); transform: translateX(2px); }
+.compare-selector__term.is-active { border-left-color: #059669; background: transparent; color: var(--ink); }
+.compare-selector__term.is-active span { color: #059669; }
+.compare-selector__term.is-active b { font-weight: 650; }
+
+.compare-dial { --dial-size: 280px; }
+.compare-dial::before { inset: 34px; border-color: #ececec; background: radial-gradient(circle at 50% 42%, #fff 0 62%, #fafafa 100%); }
+.compare-dial__ring { inset: 0; border: 1px solid #e3e3e3; transform: none; transition: none; }
+.compare-dial__ring::before { content: ""; position: absolute; inset: 14px; border: 1px dashed #ececec; border-radius: 50%; }
+.compare-dial__rotor { position: absolute; inset: 0; transform: rotate(var(--dial-rotate)); transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.compare-dial__node {
+  width: 44px; height: 44px; margin: -22px 0 0 -22px; padding: 0;
+  border: 1px solid #dcdcdc; border-radius: 50%; background: #fff; color: #a3a3a3; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.compare-dial__node:hover {
+  border-color: var(--ink); color: var(--ink);
+  transform: rotate(var(--a)) translateY(calc(-1 * var(--dial-radius))) rotate(calc(-1 * var(--a))) scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+.compare-dial__node:focus-visible { outline: 2px solid #059669; outline-offset: 3px; }
+.compare-dial__node.is-active {
+  border-color: var(--ink); background: var(--ink); color: #fff;
+  box-shadow: 0 0 0 7px rgba(5, 150, 105, 0.12), 0 12px 28px rgba(0, 0, 0, 0.16);
+}
+.compare-dial__node.is-active:hover {
+  transform: rotate(var(--a)) translateY(calc(-1 * var(--dial-radius))) rotate(calc(-1 * var(--a))) scale(1.04);
+}
+.compare-dial__center { inset: 74px; gap: 10px; }
+.compare-dial__center span { font-size: 12px; letter-spacing: 0.08em; }
+.compare-dial__center b { font-size: 18px; font-weight: 650; }
+.compare-dial__marker { width: 12px; height: 12px; box-shadow: 0 0 0 5px rgba(5, 150, 105, 0.14); }
+@media (max-width: 900px) {
+  .compare-selector { grid-template-columns: 1fr; gap: 30px; }
+  .compare-selector__terms { min-height: 0; }
+  .compare-selector__terms::after { display: none; }
+  .compare-dial { --dial-size: 220px; }
+  .compare-dial__center { inset: 56px; }
+  .compare-dial__center b { font-size: 15px; }
+}
+@media (max-width: 560px) {
+  .compare-dial { --dial-size: 180px; }
+  .compare-dial__node { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
+  .compare-dial__center { inset: 46px; }
+  .compare-dial__center span { font-size: 10px; }
+  .compare-dial__center b { font-size: 13px; }
+}
+
+.compare-dial__marker, .compare-dial__ring, .compare-dial__center { pointer-events: none; }
+
+/* ─── 06 · ОТРАСЛИ: кликабельный круг ───────── */
+
+.vertical-selector__terms { min-height: 220px; justify-content: center; gap: 4px; }
+.vertical-selector__term {
+  grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 12px 14px;
+  border: 0; border-left: 2px solid transparent; border-radius: 0 12px 12px 0;
+  background: transparent; color: #a3a3a3;
+}
+.vertical-selector__term span { font-size: 11px; color: #c4c4c4; }
+.vertical-selector__term b { font-size: 15px; font-weight: 550; }
+.vertical-selector__term:hover { border-left-color: #d4d4d4; background: #fff; color: var(--ink); transform: translateX(2px); }
+.vertical-selector__term.is-active { border-left-color: #059669; background: transparent; color: var(--ink); }
+.vertical-selector__term.is-active span { color: #059669; }
+.vertical-selector__term.is-active b { font-weight: 650; }
+
+.vertical-dial__ring { transform: none; transition: none; }
+.vertical-dial__rotor { position: absolute; inset: 0; transform: rotate(var(--dial-rotate)); transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.vertical-dial__node { padding: 0; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: transform 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+.vertical-dial__node:hover {
+  border-color: var(--ink); color: var(--ink);
+  transform: rotate(var(--a)) translateY(calc(-1 * var(--dial-radius))) rotate(calc(-1 * var(--a))) scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+.vertical-dial__node:focus-visible { outline: 2px solid #059669; outline-offset: 3px; }
+.vertical-dial__node.is-active:hover {
+  transform: rotate(var(--a)) translateY(calc(-1 * var(--dial-radius))) rotate(calc(-1 * var(--a))) scale(1.04);
+}
+.vertical-dial__marker, .vertical-dial__ring, .vertical-dial__center { pointer-events: none; }
+@media (max-width: 900px) {
+  .vertical-selector__terms { min-height: 0; }
+}
