@@ -286,20 +286,12 @@ function MiniDashboard() {
           </div>
         </div>
       </div>
-      <motion.div
-        className="float-chip float-chip--one"
-        animate={{ y: [0, -9, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-      >
+      <div className="float-chip float-chip--one">
         <CircleCheck size={16} /> Смена закрыта — табель обновился
-      </motion.div>
-      <motion.div
-        className="float-chip float-chip--two"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-      >
+      </div>
+      <div className="float-chip float-chip--two">
         <ArrowRight size={16} /> Инцидент → ущерб в финансах
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -901,7 +893,7 @@ function Modules() {
         <SectionHead
           center
           label="03 · модули"
-          title={<>Всё для управления — <span className="gradient-text">в одном окне</span></>}
+          title={<>Всё для управления <span className="gradient-text">в одном окне</span></>}
           note="Основа нужна каждому бизнесу: кадры, табель, зарплата, финансы. Отраслевые инструменты включаются модулями — без лишних экранов."
         >
           <div className="filter-row">

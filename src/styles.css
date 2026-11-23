@@ -2884,3 +2884,19 @@ ul { margin: 0; padding: 0; list-style: none; }
   .flow-slide { padding: 24px 20px; }
   .flow-node { min-height: 0; padding: 16px; }
 }
+
+/* ─── Плавающие плашки: фиксированный размах ── */
+
+@keyframes chipFloatA {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes chipFloatB {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+.float-chip--one { animation: chipFloatA 5s ease-in-out infinite; }
+.float-chip--two { animation: chipFloatB 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .float-chip { animation: none !important; transform: none !important; }
+}
