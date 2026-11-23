@@ -2274,3 +2274,39 @@ ul { margin: 0; padding: 0; list-style: none; }
 .footer-workdo__bottom a { font-size: 14px; color: #737373; transition: color 0.25s; }
 .footer-workdo__bottom a:hover { color: #0a0a0a; }
 .footer-workdo__bottom i { font-style: normal; color: #d4d4d4; }
+
+/* ─── Stats: аккуратные плитки ────────────── */
+
+.stats-grid { gap: 16px; }
+@media (min-width: 768px) { .stats-grid { gap: 20px; } }
+.stat {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  min-height: 214px; padding: 32px 24px 30px;
+  border: 1px solid #e9e9e9; border-radius: 20px; background: #fff;
+  text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  overflow: hidden; transform: none !important;
+  transition: border-color 0.3s, box-shadow 0.35s var(--ease);
+}
+.stat:hover { border-color: #d4d4d4; background: #fff; box-shadow: 0 22px 48px rgba(0, 0, 0, 0.07); }
+.stat-index { position: absolute; top: 20px; left: 22px; font-size: 10px; letter-spacing: 0.1em; color: #b5b5b5; }
+.stat-value { margin-top: auto; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.065em; }
+.stat-label { margin-top: 16px; font-size: 15px; line-height: 20px; font-weight: 600; color: var(--ink); }
+.stat-note { margin-top: 7px; font-size: 12px; line-height: 18px; color: #a3a3a3; }
+.stat-accent { display: block; width: 40px; height: 3px; margin-top: 22px; border-radius: 999px; background: var(--grad); transition: width 0.35s var(--ease); }
+.stat:hover .stat-accent { width: 76px; }
+@media (max-width: 767px) { .stat { min-height: 190px; padding: 28px 18px 26px; } }
+
+/* ─── Клик по экрану ноутбука открывает демо ─ */
+
+.demo-preview .mac.is-clickable { cursor: pointer; }
+.demo-preview .mac.is-clickable:hover .mac__screen { box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.9), 0 0 30px rgba(16, 185, 129, 0.18); }
+.mac-click-hint {
+  position: absolute; z-index: 5; right: 18px; bottom: 18px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px;
+  background: rgba(10, 10, 10, 0.82); color: #fff; font-size: 10px; font-weight: 500;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  pointer-events: none; transition: transform 0.3s var(--ease);
+}
+.demo-preview .mac.is-clickable:hover .mac-click-hint { transform: translateY(-2px); }
+@media (max-width: 560px) { .mac-click-hint { right: 12px; bottom: 12px; padding: 6px 9px; font-size: 9px; } }

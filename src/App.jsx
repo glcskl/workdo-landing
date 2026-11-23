@@ -318,9 +318,11 @@ function StatsSection() {
         <div className="stats-grid">
           {STATS.map((s, i) => (
             <Reveal key={s.label} className="stat" delay={i * 0.08}>
+              <span className="stat-index mono">0{i + 1}</span>
               <div className="stat-value gradient-text"><span className="stat-num">{s.value}</span></div>
               <div className="stat-label">{s.label}</div>
               <div className="stat-note">{s.note}</div>
+              <span className="stat-accent" />
             </Reveal>
           ))}
         </div>
@@ -824,12 +826,13 @@ function DemoSection({ onDemo }) {
           <div className="demo-badges"><span><Clock3 size={14} /> ≈ 3 минуты · без регистрации</span><span><Play size={13} /> живой интерфейс</span></div>
         </SectionHead>
         <div className="demo-preview">
-          <MacFrame>
+          <MacFrame onClick={onDemo} label="Нажмите на экран ноутбука, чтобы открыть живое демо">
             <MiniDashboard />
+            <span className="mac-click-hint"><Play size={12} /> нажмите на экран</span>
           </MacFrame>
           <button className="btn btn--light demo-preview__btn" onClick={onDemo}>Открыть демо на весь экран <ArrowUpRight size={16} /></button>
         </div>
-        <p className="demo-footnote">кликайте внутри: смены, инциденты, роли, экспорт CSV · демо иллюстрирует интерфейс продукта</p>
+        <p className="demo-footnote">нажмите на экран ноутбука, чтобы открыть демо · внутри: смены, инциденты, роли, экспорт CSV</p>
       </div>
     </section>
   );
