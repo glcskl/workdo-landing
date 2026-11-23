@@ -373,26 +373,68 @@ function Hero() {
   );
 }
 
+function StatCounter({ to, runKey }) {
+  const [value, setValue] = useState(to);
+
+  useEffect(() => {
+    if (!runKey) {
+      setValue(to);
+      return undefined;
+    }
+    let frame;
+    const start = performance.now();
+    const duration = 850;
+    const tick = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      setValue(Math.round(to * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [to, runKey]);
+
+  return <span className="stat-num">{value}</span>;
+}
+
 function StatsSection() {
+  const [active, setActive] = useState(-1);
+  const [runs, setRuns] = useState(() => STATS.map(() => 0));
+
+  const activate = (i) => {
+    setActive(i);
+    setRuns((prev) => prev.map((n, j) => (j === i ? n + 1 : n)));
+  };
+
   return (
     <section className="section section--tint stats-section" id="system">
       <div className="container">
         <SectionHead
           center
-         
+          
           title={<>Не «ещё одна CRM», а <span className="gradient-text">рабочая среда</span></>}
           note="Справочники, операции и деньги связаны между собой. Поэтому цифры ниже — не обещания, а состав продукта."
         />
         <div className="stats-grid">
           {STATS.map((s, i) => (
-            <Reveal key={s.label} className="stat" delay={i * 0.08}>
+            <Reveal
+              as="button"
+              type="button"
+              key={s.label}
+              className={`stat ${active === i ? 'is-active' : ''}`}
+              aria-pressed={active === i}
+              onClick={() => activate(i)}
+              delay={i * 0.08}
+            >
               <span className="stat-index mono">0{i + 1}</span>
-              <span className={`stat-viz stat-viz--${s.viz}`} aria-hidden="true">
-                {Array.from({ length: s.viz === 'posts' ? 6 : s.viz === 'layers' ? 4 : s.viz === 'bars' ? 9 : 19 }, (_, j) => <i key={j} />)}
+              <span key={`viz-${i}-${runs[i]}`} className={`stat-viz stat-viz--${s.viz}`} aria-hidden="true">
+                {Array.from({ length: s.viz === 'posts' ? 6 : s.viz === 'layers' ? 4 : s.viz === 'bars' ? 9 : 19 }, (_, j) => (
+                  <i key={j} style={{ '--d': j }} />
+                ))}
               </span>
-              <div className="stat-value gradient-text"><span className="stat-num">{s.value}</span></div>
+              <div className="stat-value gradient-text"><StatCounter to={s.value} runKey={runs[i]} /></div>
               <div className="stat-label">{s.label}</div>
               <div className="stat-note">{s.note}</div>
+              <span className="stat-accent" aria-hidden="true" />
             </Reveal>
           ))}
         </div>
