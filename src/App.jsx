@@ -132,7 +132,7 @@ function Counter({ to, suffix = '' }) {
 function SectionHead({ label, title, note, center = false, dark = false, children }) {
   return (
     <Reveal className={`section-head ${center ? 'is-center' : ''} ${dark ? 'is-dark' : ''}`}>
-      <div className="eyebrow"><span className="eyebrow-dot" />{label}</div>
+      {label && <div className="eyebrow"><span className="eyebrow-dot" />{label}</div>}
       <h2 className="section-title">{title}</h2>
       {note && <p className="section-note">{note}</p>}
       {children}
@@ -361,7 +361,7 @@ function StatsSection() {
       <div className="container">
         <SectionHead
           center
-          label="система в цифрах"
+         
           title={<>Не «ещё одна CRM», а <span className="gradient-text">рабочая среда</span></>}
           note="Справочники, операции и деньги связаны между собой. Поэтому цифры ниже — не обещания, а состав продукта."
         />
@@ -393,7 +393,7 @@ function Problems() {
       <div className="container">
         <SectionHead
           center
-          label="01 · проблема"
+         
           title={<>Бизнес живёт в <span className="gradient-text">семи файлах</span></>}
           note="И в каждом — своя версия правды. Пока данные расходятся по таблицам и чатам, управление превращается в пересказ."
         />
@@ -892,7 +892,7 @@ function DemoSection({ onDemo }) {
       <div className="demo-glow" aria-hidden="true" />
       <div className="container">
         <SectionHead
-          dark center label="02 · демо"
+          dark center
           title={<>Не скриншот. <span className="gradient-text">Живая система</span></>}
           note="Откройте демо и поработайте как владелец охранного предприятия: проведите смену, закройте инцидент, посмотрите финансы. Данные вымышленные — кнопки настоящие."
         >
@@ -925,7 +925,7 @@ function Modules() {
       <div className="container">
         <SectionHead
           center
-          label="03 · модули"
+         
           title={<>Всё для управления <span className="gradient-text">в одном окне</span></>}
           note="Основа нужна каждому бизнесу: кадры, табель, зарплата, финансы. Отраслевые инструменты включаются модулями — без лишних экранов."
         >
@@ -1012,7 +1012,7 @@ function How() {
       <div className="container">
         <SectionHead
           center
-          label="04 · внедрение"
+         
           title={<>От таблиц до рабочей системы <span className="gradient-text">за месяц</span></>}
           note="Без «интеграторов на полгода». Переносим данные, включаем нужные модули, выдаём роли и остаёмся рядом."
         />
@@ -1078,7 +1078,7 @@ function Roles() {
       <div className="container">
         <SectionHead
           center
-          label="05 · доступ"
+         
           title={<>У каждого — <span className="gradient-text">свой экран</span></>}
           note="Права ограничены на уровне таблиц, а не только меню. Начальник смены не увидит финансы, охранник — чужие объекты."
         />
@@ -1158,7 +1158,7 @@ function Verticals() {
       <div className="container">
         <SectionHead
           center
-          label="06 · отрасли"
+         
           title={<>Одна платформа, <span className="gradient-text">разные процессы</span></>}
           note="Основа общая: люди, смены, деньги. Отраслевые справочники подключаются модулями — без второй системы и второго аккаунта."
         />
@@ -1240,7 +1240,7 @@ function Security() {
     <section className="section section--dark security" id="security">
       <div className="container">
         <SectionHead
-          dark center label="07 · безопасность"
+          dark center
           title={<>Данные компании <span className="gradient-text">остаются компании</span></>}
           note="Изоляция, роли и журнал действий — не настройки на витрине, а архитектура: отдельная схема базы на каждого клиента и проверка прав на уровне данных."
         />
@@ -1336,7 +1336,7 @@ function Pricing({ onDemo }) {
     <section className="section pricing" id="pricing">
       <div className="container">
         <SectionHead
-          center label="08 · тарифы"
+          center
           title={<>Платите за команду, <span className="gradient-text">не за экраны</span></>}
           note="Цены для охранного предприятия. Для других отраслей — свои тарифы; основа и подход те же."
         >
@@ -1396,7 +1396,7 @@ function Flows() {
       <div className="container">
         <SectionHead
           center
-          label="09 · как это работает"
+         
           title={<>Три операции, которые <span className="gradient-text">меняют день</span></>}
           note="Не абстрактная «автоматизация», а конкретные цепочки: смена → табель → зарплата, инцидент → причина → отчёт, месяц → план → факт."
         />
@@ -1484,7 +1484,7 @@ function Launch() {
       <div className="container">
         <SectionHead
           center
-          label="10 · запуск"
+         
           title={<>Четыре недели <span className="gradient-text">и без Excel</span></>}
           note="Не «внедрение на полгода». Первый месяц — это перенос, настройка и обучение. Дальше система работает вместе с вами."
         />
@@ -1570,7 +1570,7 @@ function Faq() {
       <div className="container">
         <SectionHead
           center
-          label="11 · вопросы"
+         
           title={<>Отвечаем на всё, <span className="gradient-text">что спросят</span></>}
           note="Если чего-то не хватает — откройте демо или напишите нам. Отвечаем коротко и по делу."
         />
@@ -1648,7 +1648,6 @@ function FinalCta() {
       <div className="cta-glow cta-glow--two" aria-hidden="true" />
       <div className="container cta-grid">
         <div>
-          <div className="eyebrow"><span className="eyebrow-dot" />12 · дальше</div>
           <h2 className="cta-title">Проверьте на <span className="gradient-text">своём процессе</span></h2>
           <p className="cta-note">Покажем систему на ваших задачах: смены, объекты, зарплата, инциденты. Если что-то не подходит — скажем прямо, а не «доработаем в следующем квартале».</p>
           <div className="cta-points">
