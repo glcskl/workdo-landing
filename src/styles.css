@@ -3127,6 +3127,43 @@ ul { margin: 0; padding: 0; list-style: none; }
   .compare-side { padding: 24px 20px; }
 }
 
+/* ─── 01 · ПРОБЛЕМА: наш дизайн ────────────── */
+
+.compare-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; max-width: none; margin: var(--sp-block) auto 36px; border-bottom: 1px solid var(--line); }
+.compare-tabs .compare-tab { display: flex; align-items: center; gap: 10px; padding: 0 0 14px; margin: 0 20px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: #a3a3a3; text-align: left; transition: color .25s var(--ease), border-color .25s var(--ease); }
+.compare-tabs .compare-tab span { font-size: 11px; color: #b5b5b5; }
+.compare-tabs .compare-tab b { font-size: 14px; font-weight: 550; letter-spacing: 0; }
+.compare-tabs .compare-tab:hover { color: var(--ink); border-color: transparent; transform: none; }
+.compare-tabs .compare-tab.is-active { background: transparent; border-color: var(--ink); color: var(--ink); box-shadow: none; }
+.compare-tabs .compare-tab.is-active span { color: #059669; }
+
+.compare-slide { grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr); gap: 28px; max-width: 1080px; }
+.compare-side { min-height: 0; padding: 26px 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; }
+.compare-side__head { margin-bottom: 0; }
+.compare-mark { width: auto; height: auto; border-radius: 0; background: transparent; }
+.compare-side--old .compare-mark, .compare-side--new .compare-mark { background: transparent; color: #a3a3a3; }
+.compare-side__label { font-size: 10px; letter-spacing: 0.12em; }
+.compare-side--old .compare-side__label { color: #a3a3a3; }
+.compare-side--new .compare-side__label { color: #059669; }
+.compare-side h3 { margin: 22px 0 12px; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.24; letter-spacing: -0.035em; }
+.compare-side--old h3 { color: #737373; }
+.compare-side--new h3 { color: var(--ink); }
+.compare-side p { font-size: 14px; line-height: 1.7; }
+.compare-side--old p { color: #a3a3a3; }
+.compare-side--new p { max-width: none; color: #737373; }
+.compare-mid { align-self: start; padding-top: 30px; color: #c4c4c4; }
+.compare-mid svg { box-sizing: content-box; padding: 0; border: 0; border-radius: 0; background: transparent; }
+@media (max-width: 900px) {
+  .compare-tabs { gap: 6px 16px; }
+  .compare-tabs .compare-tab { margin: 0; }
+  .compare-slide { gap: 18px; }
+  .compare-side { padding: 22px 0 0; }
+}
+@media (max-width: 620px) {
+  .compare-slide { grid-template-columns: 1fr; gap: 8px; }
+  .compare-mid { height: 26px; padding: 0; transform: rotate(90deg); }
+}
+
 /* ─── 06 · ОТРАСЛИ: минимализм ─────────────── */
 
 .vertical-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; max-width: none; margin: var(--sp-block) auto 36px; border-bottom: 1px solid var(--line); }
