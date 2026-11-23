@@ -1159,13 +1159,6 @@ function Verticals() {
             </div>
           </motion.div>
         </AnimatePresence>
-        <div className="vertical-grid">
-          {VERTICALS.map((v, i) => (
-            <Reveal key={v.id} delay={i * 0.06} className={`vertical-mini ${active === v.id ? 'is-active' : ''}`} onClick={() => setActive(v.id)}>
-              <span className="mono">0{i + 1}</span><b>{v.name}</b><small>{v.modules.join(' · ')}</small>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   );
