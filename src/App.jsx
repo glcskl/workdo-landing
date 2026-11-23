@@ -319,10 +319,12 @@ function StatsSection() {
           {STATS.map((s, i) => (
             <Reveal key={s.label} className="stat" delay={i * 0.08}>
               <span className="stat-index mono">0{i + 1}</span>
+              <span className={`stat-viz stat-viz--${s.viz}`} aria-hidden="true">
+                {Array.from({ length: s.viz === 'posts' ? 6 : s.viz === 'layers' ? 4 : s.viz === 'bars' ? 9 : 19 }, (_, j) => <i key={j} />)}
+              </span>
               <div className="stat-value gradient-text"><span className="stat-num">{s.value}</span></div>
               <div className="stat-label">{s.label}</div>
               <div className="stat-note">{s.note}</div>
-              <span className="stat-accent" />
             </Reveal>
           ))}
         </div>

@@ -12,10 +12,10 @@ export const HERO_TAGS = [
 ];
 
 export const STATS = [
-  { value: 19, label: 'разделов системы', note: 'от дашборда до аудит-лога' },
-  { value: 6, label: 'типов постов охраны', note: 'включая патрульные маршруты' },
-  { value: 31, label: 'колонка импорта', note: 'CSV и XLSX, автодетект' },
-  { value: 7, label: 'ролей доступа', note: 'права на уровне таблиц' },
+  { value: 19, label: 'разделов системы', note: 'от дашборда до аудит-лога', viz: 'grid' },
+  { value: 6, label: 'типов постов охраны', note: 'включая патрульные маршруты', viz: 'posts' },
+  { value: 31, label: 'колонка импорта', note: 'CSV и XLSX, автодетект', viz: 'bars' },
+  { value: 7, label: 'ролей доступа', note: 'права на уровне таблиц', viz: 'layers' },
 ];
 
 export const PAINS = [
