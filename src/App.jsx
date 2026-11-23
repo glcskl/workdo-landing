@@ -1162,14 +1162,13 @@ function Verticals() {
         <AnimatePresence mode="wait">
           <motion.div className="vertical-card" key={active} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease: EASE }}>
             <div className="vertical-hero">
-              <span className="vertical-tag mono">{current.tag} · модуль</span>
+              <div className="vertical-hero__top">
+                <span className="vertical-tag mono">{current.tag} · модуль</span>
+                <span className="vertical-hero__count mono">{String(current.modules.length).padStart(2, '0')} <small>модуля подключено</small></span>
+              </div>
               <h3>{current.name}</h3>
               <p>{current.text}</p>
               <a href="#demo" className="vertical-cta">открыть демо <ArrowUpRight size={16} /></a>
-              <div className="vertical-hero__stat">
-                <span className="mono">{String(current.modules.length).padStart(2, '0')}</span>
-                <small>модуля подключено</small>
-              </div>
             </div>
             <div className="vertical-modules-panel">
               <div className="vertical-modules-head"><span>Модули в комплекте</span><span className="mono">{current.tag}</span></div>
@@ -1178,7 +1177,6 @@ function Verticals() {
                   <div className="vertical-module" key={m}>
                     <span className="vertical-module__num mono">0{i + 1}</span>
                     <b>{m}</b>
-                    <Check size={16} />
                   </div>
                 ))}
               </div>
@@ -1201,19 +1199,20 @@ function Security() {
         />
         <div className="trust-grid">
           {TRUST.map((t, i) => (
-            <Reveal className="trust-card" key={t.title} delay={i * 0.07}>
-              <span className="trust-index mono">0{i + 1}</span>
-              <span className="trust-icon"><Icon name={t.icon} size={22} /></span>
-              <h3>{t.title}</h3>
-              <p>{t.text}</p>
-              <span className="trust-meta mono">{t.meta}</span>
+            <Reveal className="trust-row" key={t.title} delay={i * 0.05}>
+              <span className="trust-row__num mono">0{i + 1}</span>
+              <div className="trust-row__body">
+                <h3>{t.title}</h3>
+                <p>{t.text}</p>
+                <span className="trust-row__meta mono">{t.meta}</span>
+              </div>
             </Reveal>
           ))}
         </div>
         <Reveal className="audit-log" delay={0.15}>
           <div className="audit-log__head">
-            <span><i className="audit-dots"><b /><b /><b /></i><ScrollText size={16} /> аудит-лог · фрагмент</span>
-            <em><span className="audit-live"><i /> live</span><LockKeyhole size={13} /> только для owner и admin</em>
+            <span>аудит-лог · фрагмент</span>
+            <em><span className="audit-live">LIVE</span> только для owner и admin</em>
           </div>
           <div className="audit-log__table">
             <div className="audit-log__row audit-log__row--head"><span>дата</span><span>время</span><span>кто</span><span>поле</span><span>изменение</span></div>
@@ -1373,7 +1372,7 @@ function Launch() {
         <SectionHead
           center
           label="10 · запуск"
-          title={<>Четыре недели — <span className="gradient-text">и без Excel</span></>}
+          title={<>Четыре недели <span className="gradient-text">и без Excel</span></>}
           note="Не «внедрение на полгода». Первый месяц — это перенос, настройка и обучение. Дальше система работает вместе с вами."
         />
         <div className="how-carousel">
