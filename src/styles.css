@@ -4235,3 +4235,24 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (prefers-reduced-motion: reduce) {
   .stats-grid .stat-viz i, .stats-grid .stat.is-active .stat-index::after { animation: none; }
 }
+
+/* ─── Строка инцидента: без переносов и локального скролла ─ */
+
+.mini-incident {
+  flex-wrap: nowrap; align-items: center; gap: 8px;
+  min-width: 0; overflow: hidden;
+}
+.mini-incident > span:nth-child(2) { flex: 1 1 auto; min-width: 0; }
+.mini-incident b,
+.mini-incident small {
+  display: block; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mini-incident .win-sev { flex: none; margin-left: auto; }
+
+@media (max-width: 480px) {
+  .mini-incident { gap: 6px; }
+  .demo-preview .mini-incident b { font-size: 11px; }
+  .mini-incident small { font-size: 8px; }
+  .mini-incident .win-sev { font-size: 7px; }
+}
