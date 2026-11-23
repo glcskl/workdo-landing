@@ -1127,6 +1127,7 @@ function Roles() {
 function Verticals() {
   const [active, setActive] = useState('security');
   const current = VERTICALS.find((v) => v.id === active);
+  const index = VERTICALS.findIndex((v) => v.id === active);
   return (
     <section className="section section--tint verticals" id="verticals">
       <div className="container">
@@ -1140,25 +1141,35 @@ function Verticals() {
           <span className="vertical-promise__icon"><Sparkles size={18} /></span>
           <p>Неважно, какой у вас бизнес. <b>Важно, что люди, смены и деньги — под контролем.</b></p>
         </div>
-        <div className="vertical-tabs">
-          {VERTICALS.map((v) => <button key={v.id} className={active === v.id ? 'is-active' : ''} onClick={() => setActive(v.id)}>{v.tag}</button>)}
+        <div className="vertical-tabs" role="tablist" aria-label="Отрасли">
+          {VERTICALS.map((v, i) => (
+            <button
+              key={v.id}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              className={`vertical-tab ${i === index ? 'is-active' : ''}`}
+              onClick={() => setActive(v.id)}
+            >
+              <span className="vertical-tab__num mono">{String(i + 1).padStart(2, '0')}</span>
+              <span className="vertical-tab__name">{v.tag}</span>
+            </button>
+          ))}
         </div>
         <AnimatePresence mode="wait">
           <motion.div className="vertical-card" key={active} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease: EASE }}>
-            <div className="vertical-card__main">
-              <div className="vertical-card__copy">
-                <span className="vertical-tag mono">{current.tag} · модуль</span>
-                <h3>{current.name}</h3>
-                <p>{current.text}</p>
-                <a href="#demo" className="vertical-cta">открыть демо <ArrowUpRight size={16} /></a>
-              </div>
-              <div className="vertical-card__count">
+            <div className="vertical-hero">
+              <span className="vertical-tag mono">{current.tag} · модуль</span>
+              <h3>{current.name}</h3>
+              <p>{current.text}</p>
+              <a href="#demo" className="vertical-cta">открыть демо <ArrowUpRight size={16} /></a>
+              <div className="vertical-hero__stat">
                 <span className="mono">{String(current.modules.length).padStart(2, '0')}</span>
                 <small>модуля подключено</small>
               </div>
             </div>
-            <div className="vertical-card__modules">
-              <div className="vertical-card__modules-head"><span>Модули в комплекте</span><span>{current.tag}</span></div>
+            <div className="vertical-modules-panel">
+              <div className="vertical-modules-head"><span>Модули в комплекте</span><span className="mono">{current.tag}</span></div>
               <div className="vertical-modules">
                 {current.modules.map((m, i) => (
                   <div className="vertical-module" key={m}>
