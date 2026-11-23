@@ -872,7 +872,8 @@ function Modules() {
                 className={`module-tab ${i === index ? 'is-active' : ''}`}
                 onClick={() => setActive(i)}
               >
-                <span>{item.num}</span>{item.label}
+                <span className="module-tab__icon"><Icon name={item.icon} size={15} /></span>
+                <span className="module-tab__num mono">{item.num}</span>{item.label}
               </button>
             ))}
           </div>
@@ -888,15 +889,25 @@ function Modules() {
               <div className="module-slide__main">
                 <div className="module-slide__top">
                   <span className="module-icon"><Icon name={m.icon} size={24} /></span>
-                  <span className="module-kind mono">{m.kind} · {m.label}</span>
+                  <div>
+                    <span className="module-kind mono">{m.kind} · {m.label}</span>
+                    <span className="module-slide__index mono">{m.num} / {String(list.length).padStart(2, '0')}</span>
+                  </div>
                 </div>
                 <h3>{m.title}</h3>
                 <p>{m.intro}</p>
                 <ul>{m.bullets.map((b) => <li key={b}><Check size={14} /> {b}</li>)}</ul>
               </div>
               <div className="module-slide__aside">
-                <div className="module-slide__stat"><b>{m.stat}</b><span>{m.statLabel}</span></div>
-                <div className="module-slide__lines" aria-hidden="true"><i /><i /><i /></div>
+                <div className="module-preview">
+                  <div className="module-preview__bar"><i /><i /><i /><span>workdo / {m.label}</span></div>
+                  <div className="module-preview__body">
+                    <div className="module-slide__stat"><b>{m.stat}</b><span>{m.statLabel}</span></div>
+                    <div className="module-preview__rows">
+                      {m.bullets.slice(0, 3).map((b, i) => <div key={b}><span className="mono">0{i + 1}</span>{b}</div>)}
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.article>
           </AnimatePresence>

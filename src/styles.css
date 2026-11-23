@@ -2385,3 +2385,178 @@ ul { margin: 0; padding: 0; list-style: none; }
   .demo-preview .mac__base { height: 34px; }
   .demo-preview .mac__base::before { height: 14px; }
 }
+
+/* ═══════════════════════════════════════════════════
+   РАЗДЕЛЫ 03–09: ИНДИВИДУАЛЬНАЯ ВИЗУАЛЬНАЯ СИСТЕМА
+   ═══════════════════════════════════════════════════ */
+
+/* ─── 03 · МОДУЛИ: окно приложения ───────────── */
+
+.module-carousel {
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr);
+  grid-template-areas: 'bar bar' 'tabs slide' 'tabs nav';
+  max-width: 1080px; margin: 48px auto 0;
+  border: 1px solid #dedede; border-radius: 18px; background: #fff;
+  overflow: hidden; box-shadow: 0 34px 80px rgba(0, 0, 0, 0.07);
+}
+.module-carousel::before {
+  content: '●  ●  ●        workdo / модули';
+  grid-area: bar; display: block; padding: 13px 20px;
+  border-bottom: 1px solid #ededed; background: #fafafa;
+  color: #a3a3a3; font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.06em; white-space: pre;
+}
+.module-tabs {
+  grid-area: tabs; flex-direction: column; align-items: stretch;
+  gap: 3px; margin: 0; padding: 14px 10px;
+  border-right: 1px solid #ededed; background: #fcfcfc;
+  overflow: visible;
+}
+.module-tab {
+  width: 100%; justify-content: flex-start; gap: 10px;
+  padding: 10px 12px; border: 0; border-radius: 10px;
+  background: transparent; color: #5c5c5c;
+}
+.module-tab__icon {
+  width: 26px; height: 26px; flex: none; display: grid; place-items: center;
+  border-radius: 8px; background: #f0f0f0; color: #737373;
+}
+.module-tab__num { font-size: 10px; color: #b5b5b5; }
+.module-tab:hover { background: #f5f5f5; color: var(--ink); border-color: transparent; }
+.module-tab.is-active { background: #fff; color: var(--ink); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07), inset 0 0 0 1px #ececec; }
+.module-tab.is-active .module-tab__icon { background: var(--grad); color: #fff; }
+.module-tab.is-active .module-tab__num { color: #059669; }
+.module-slide {
+  grid-area: slide; max-width: none; margin: 0;
+  padding: 34px 36px 30px; gap: 28px;
+  border: 0; border-radius: 0; box-shadow: none;
+}
+.module-slide__index { display: block; margin-top: 4px; font-size: 10px; color: #a3a3a3; letter-spacing: 0.08em; }
+.module-slide__aside { padding: 0; background: transparent; }
+.module-preview { overflow: hidden; border: 1px solid #e8e8e8; border-radius: 14px; background: #fff; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.05); }
+.module-preview__bar { display: flex; align-items: center; gap: 5px; padding: 11px 13px; border-bottom: 1px solid #ededed; background: #fafafa; }
+.module-preview__bar i { width: 7px; height: 7px; border-radius: 50%; background: #d4d4d4; }
+.module-preview__bar i:nth-child(1) { background: #f87171; }
+.module-preview__bar i:nth-child(2) { background: #fbbf24; }
+.module-preview__bar i:nth-child(3) { background: #34d399; }
+.module-preview__bar span { margin-left: 9px; font: 500 10px/1 ui-monospace, Menlo, monospace; color: #a3a3a3; }
+.module-preview__body { padding: 20px; }
+.module-slide__stat b { font-size: 46px; }
+.module-preview__rows { display: flex; flex-direction: column; margin-top: 16px; }
+.module-preview__rows > div { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-top: 1px solid #f2f2f2; font-size: 11px; line-height: 1.4; color: #5c5c5c; }
+.module-preview__rows > div:first-child { border-top: 0; }
+.module-preview__rows span { flex: none; font-size: 9px; color: #10b981; }
+.module-nav { grid-area: nav; margin: 0; padding: 0 24px 22px; justify-content: flex-start; gap: 14px; }
+@media (max-width: 900px) {
+  .module-carousel { grid-template-columns: 1fr; grid-template-areas: 'bar' 'tabs' 'slide' 'nav'; }
+  .module-tabs { flex-direction: row; gap: 8px; padding: 12px; overflow-x: auto; border-right: 0; border-bottom: 1px solid #ededed; }
+  .module-tab { width: auto; flex: none; padding: 8px 12px; background: #fff; border: 1px solid var(--line); }
+  .module-tab__icon { width: 22px; height: 22px; }
+  .module-slide { padding: 26px; }
+  .module-nav { justify-content: center; padding: 0 20px 20px; }
+}
+
+/* ─── 04 · ВНЕДРЕНИЕ: таймлайн ───────────────── */
+
+.how-track { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 48px 0 30px; }
+.how-track::before { content: ''; position: absolute; left: 12%; right: 12%; top: 27px; height: 2px; background: #e6e6e6; }
+.how-track__item { position: relative; z-index: 1; align-items: center; gap: 9px; min-height: 0; padding: 0 4px; border: 0; background: transparent; text-align: center; }
+.how-track__item:hover { transform: none; border-color: transparent; }
+.how-track__num {
+  width: 54px; height: 54px; display: grid; place-items: center;
+  border: 2px solid #e5e5e5; border-radius: 50%; background: #fff;
+  font-size: 14px; font-weight: 600; color: #a3a3a3;
+  transition: all 0.35s var(--ease);
+}
+.how-track__item.is-active .how-track__num { background: var(--ink); border-color: var(--ink); color: #fff; box-shadow: 0 0 0 7px rgba(16, 185, 129, 0.12); }
+.how-track__title { font-size: 13px; line-height: 1.35; }
+.how-track__time { font-size: 10px; }
+.how-track__item.is-active { background: transparent; color: var(--ink); }
+.how-slide { max-width: 1080px; }
+.how-slide__week { position: relative; overflow: hidden; }
+.how-slide__week::after { content: ''; position: absolute; right: -30px; bottom: -40px; width: 150px; height: 150px; border: 1px solid rgba(16, 185, 129, 0.18); border-radius: 50%; }
+@media (max-width: 900px) {
+  .how-track { grid-template-columns: repeat(4, minmax(150px, 1fr)); overflow-x: auto; scrollbar-width: none; padding-bottom: 6px; margin-top: 36px; }
+  .how-track::-webkit-scrollbar { display: none; }
+}
+
+/* ─── 05 · РОЛИ: ровная сетка ────────────────── */
+
+.role-pills button { min-height: 90px; align-items: center; }
+.role-pills button > span:nth-child(2) { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+.role-pills button b { white-space: nowrap; }
+.role-pills button small { margin-top: 0; font-variant-numeric: tabular-nums; }
+.role-pills button > svg { flex: none; }
+
+/* ─── 06 · ОТРАСЛИ: витрина модуля ───────────── */
+
+.vertical-orbit { display: none; }
+.vertical-card__art { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 34px; }
+.vertical-modules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.vertical-card__art .vertical-modules span {
+  position: static; transform: none; display: flex; align-items: center; gap: 9px;
+  padding: 15px; border: 1px solid #e8e8e8; border-radius: 12px;
+  background: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.035);
+  white-space: normal; font-size: 12px; font-weight: 600;
+}
+.vertical-card__art .vertical-modules span svg { flex: none; color: #10b981; }
+.vertical-art-badge { position: static; align-self: flex-start; margin-top: 4px; padding: 7px 12px; border-radius: 999px; background: var(--grad); color: #fff; font-size: 10px; }
+
+/* ─── 07 · БЕЗОПАСНОСТЬ: чёткая иерархия ─────── */
+
+.trust-card { position: relative; padding-top: 30px; }
+.trust-card .trust-index { position: absolute; top: 22px; right: 24px; color: #5a5a5a; font-size: 11px; }
+.trust-card::before { content: ''; position: absolute; left: 0; top: 26px; bottom: 26px; width: 2px; border-radius: 999px; background: var(--grad); opacity: 0.65; }
+.audit-log__row { font-variant-numeric: tabular-nums; }
+.audit-diff b { padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.1); }
+
+/* ─── 09 · СЦЕНАРИИ: конвейер процесса ───────── */
+
+.flow-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 1080px; margin: 48px auto 24px; }
+.flow-tab { justify-content: center; padding: 14px 12px; border-radius: 12px; text-align: center; font-size: 12px; line-height: 1.4; }
+.flow-tab span { font-size: 9px; }
+.flow-slide { max-width: 1080px; }
+.flow-node { border-top: 3px solid #10b981; }
+.flow-node:nth-child(2) { border-top-color: #3b82f6; }
+.flow-node:nth-child(3) { border-top-color: #8b5cf6; }
+.flow-node b { font-size: 13px; }
+@media (max-width: 700px) {
+  .flow-tabs { grid-template-columns: 1fr; }
+  .flow-tab { text-align: left; justify-content: flex-start; }
+}
+
+/* ─── 10 · ЗАПУСК: недели-плитки ─────────────── */
+
+.launch-carousel { margin-top: 48px; }
+.launch-track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 24px; }
+.launch-track__item {
+  position: relative; min-height: 128px; align-items: flex-start; justify-content: space-between;
+  padding: 18px; border-radius: 16px; overflow: hidden;
+}
+.launch-track__item::after { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 4px; background: var(--grad); transition: width 0.4s var(--ease); }
+.launch-track__item.is-active::after { width: 100%; }
+.launch-track__item b { font-size: 14px; line-height: 1.3; }
+.launch-slide { position: relative; max-width: 1080px; overflow: hidden; padding: 34px 38px; }
+.launch-slide__num { position: absolute; right: 18px; bottom: -46px; z-index: 0; font-size: 200px; color: #f1f1f1; line-height: 0.8; }
+.launch-slide__copy { position: relative; z-index: 1; }
+.launch-slide__label { display: inline-block; padding: 6px 11px; border-radius: 999px; background: #ecfdf5; }
+@media (max-width: 900px) {
+  .launch-track { grid-template-columns: repeat(4, minmax(160px, 1fr)); overflow-x: auto; scrollbar-width: none; padding-bottom: 6px; }
+  .launch-track::-webkit-scrollbar { display: none; }
+  .launch-slide__num { font-size: 140px; bottom: -24px; }
+}
+
+/* ─── 11 · FAQ: центр помощи ─────────────────── */
+
+.faq-search { padding: 16px 20px; border-radius: 14px; }
+.faq-search input { font-size: 14px; }
+.faq-item__num {
+  width: 30px; height: 30px; flex: none; display: grid; place-items: center;
+  border-radius: 8px; background: #f5f5f5; font-size: 11px; color: #8a8a8a;
+  transition: background 0.3s, color 0.3s;
+}
+.faq-item.is-open .faq-item__num { background: var(--grad); color: #fff; }
+.faq-item__q { font-size: 14px; font-weight: 550; letter-spacing: -0.02em; }
+.faq-answer p { margin-left: 37px; padding: 0 22px 20px 18px; border-left: 2px solid #10b981; }
+@media (max-width: 560px) { .faq-answer p { margin-left: 0; padding-left: 52px; } }
