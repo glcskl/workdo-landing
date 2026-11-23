@@ -96,19 +96,52 @@
     .brand-foot a { padding-bottom: 2px; border-bottom: 1px solid #d4d4d4; color: #737373; transition: color .2s, border-color .2s; }
     .brand-foot a:hover { color: var(--ink); border-color: var(--ink); }
 
-    /* ── Форма ──────────────────────────────────── */
-    .form-side { display: flex; align-items: center; justify-content: center; padding: 48px 44px; }
-    .form-wrap { width: min(100%, 432px); animation: rise .6s var(--ease) both; }
+    /* ── Правая панель ─────────────────────────── */
+    .form-side {
+      display: flex; align-items: center; justify-content: center;
+      padding: 44px 44px;
+      background: radial-gradient(600px 420px at 100% 0%, rgba(16,185,129,.035), transparent 65%), #fff;
+    }
+    .form-wrap { width: min(100%, 452px); animation: rise .6s var(--ease) both; }
     @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-    .back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 38px; font-size: 12px; color: #8a8a8a; transition: color .2s; }
+    .back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; font-size: 12px; color: #8a8a8a; transition: color .2s; }
     .back:hover { color: var(--ink); }
-    .form-head h2 { font-size: 36px; line-height: 1.1; letter-spacing: -.06em; font-weight: 750; }
-    .form-head p { margin-top: 12px; font-size: 13.5px; line-height: 1.65; color: var(--muted); }
 
-    .tabs { display: flex; gap: 30px; margin-top: 34px; border-bottom: 1px solid var(--line); }
+    .auth-card {
+      padding: 36px 38px 34px;
+      border: 1px solid #ededed;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 60px rgba(15, 23, 42, .055);
+    }
+    .form-head h2 { font-size: 33px; line-height: 1.12; letter-spacing: -.06em; font-weight: 750; }
+    .form-head p { margin-top: 11px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+
+    /* вход через почту */
+    .social { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 26px; }
+    .social-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px;
+      min-height: 78px; padding: 14px 6px;
+      border: 1px solid #e6e6e6; border-radius: 13px;
+      background: #fff; color: #3f3f46;
+      font-size: 11.5px; font-weight: 600;
+      transition: border-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease), background .25s;
+    }
+    .social-btn svg { width: 20px; height: 20px; flex: none; }
+    .social-btn:hover { border-color: #b5b5b5; background: #fcfcfc; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15, 23, 42, .06); }
+    .social-btn:active { transform: none; }
+    .p-y {
+      width: 20px; height: 20px; flex: none; display: grid; place-items: center;
+      border-radius: 6px; background: #fc3f1d; color: #fff;
+      font-size: 12px; font-weight: 700; line-height: 1;
+    }
+    .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0 0; color: #a3a3a3; font-size: 11px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+    .tabs { display: flex; gap: 28px; margin-top: 24px; border-bottom: 1px solid var(--line); }
     .tabs button {
       position: relative;
-      padding: 0 0 13px; border: 0; background: transparent;
+      padding: 0 0 12px; border: 0; background: transparent;
       color: #a3a3a3; font-size: 13px; font-weight: 550;
       transition: color .25s var(--ease);
     }
@@ -120,12 +153,12 @@
     .tabs button.is-active { color: var(--ink); }
     .tabs button.is-active::after { transform: scaleX(1); }
 
-    form { margin-top: 28px; }
-    .error { margin: 0 0 14px; font-size: 11.5px; color: #dc2626; min-height: 14px; }
-    .field { display: block; margin-bottom: 16px; }
-    .field > span { display: block; margin-bottom: 8px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .11em; color: #9a9a9a; }
+    form { margin-top: 24px; }
+    .error { margin: 0 0 12px; font-size: 11.5px; color: #dc2626; min-height: 14px; }
+    .field { display: block; margin-bottom: 15px; }
+    .field > span { display: block; margin-bottom: 7px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .11em; color: #9a9a9a; }
     .field input, .field select {
-      width: 100%; padding: 13px 15px;
+      width: 100%; padding: 12px 14px;
       border: 1px solid #e2e2e2; border-radius: 11px;
       background: #fcfcfc; color: var(--ink); font-size: 13.5px; outline: none;
       transition: border-color .2s, background .2s, box-shadow .2s;
@@ -133,15 +166,15 @@
     .field input::placeholder { color: #b5b5b5; }
     .field input:hover, .field select:hover { border-color: #cfcfcf; }
     .field input:focus, .field select:focus { border-color: var(--ink); background: #fff; box-shadow: 0 0 0 3px rgba(10,10,10,.055); }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .check { display: flex; align-items: flex-start; gap: 10px; margin: 4px 0 24px; font-size: 11.5px; line-height: 1.55; color: #8a8a8a; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .check { display: flex; align-items: flex-start; gap: 10px; margin: 2px 0 22px; font-size: 11.5px; line-height: 1.55; color: #8a8a8a; }
     .check input { width: 15px; height: 15px; margin: 1px 0 0; accent-color: #059669; flex: none; }
     .check a { border-bottom: 1px solid #c4c4c4; transition: color .2s, border-color .2s; }
     .check a:hover { color: var(--ink); border-color: var(--ink); }
 
     .submit {
-      width: 100%; padding: 15px 20px;
-      border: 0; border-radius: 12px;
+      width: 100%; padding: 14px 20px;
+      border: 0; border-radius: 11px;
       background: var(--ink); color: #fff;
       font-size: 14px; font-weight: 600;
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -149,9 +182,9 @@
     }
     .submit:hover { transform: translateY(-2px); background: #262626; box-shadow: 0 12px 26px rgba(10,10,10,.18); }
     .submit:active { transform: none; }
-    .form-note { margin-top: 16px; text-align: center; font-size: 10.5px; color: #a3a3a3; }
+    .form-note { margin-top: 14px; text-align: center; font-size: 10.5px; color: #a3a3a3; }
 
-    .success { display: none; text-align: center; padding: 30px 0; }
+    .success { display: none; text-align: center; padding: 26px 0 10px; }
     .success.is-visible { display: block; animation: rise .45s var(--ease) both; }
     .success-icon {
       width: 54px; height: 54px; margin: 0 auto 22px;
@@ -161,27 +194,30 @@
     .success h3 { font-size: 26px; letter-spacing: -.05em; }
     .success p { margin-top: 12px; font-size: 13px; line-height: 1.7; color: var(--muted); }
     .success a {
-      display: inline-block; margin-top: 26px; padding: 12px 20px;
+      display: inline-block; margin-top: 24px; padding: 11px 18px;
       border: 1px solid var(--line); border-radius: 10px;
       font-size: 12.5px; font-weight: 550;
       transition: border-color .2s, background .2s;
     }
     .success a:hover { border-color: var(--ink); background: #fafafa; }
-    form.is-hidden { display: none; }
+    form.is-hidden, .social.is-hidden, .divider.is-hidden, .tabs.is-hidden { display: none; }
 
     @media (max-width: 980px) {
       .page { grid-template-columns: 1fr; }
       .brand { padding: 36px 32px 40px; }
       .brand h1 { margin-top: 56px; font-size: 2.7rem; }
       .brand-points, .brand-foot { display: none; }
-      .form-side { padding: 44px 28px 72px; }
-      .back { margin-bottom: 26px; }
+      .form-side { padding: 40px 24px 72px; }
+      .back { margin-bottom: 18px; }
     }
     @media (max-width: 460px) {
       .brand { padding: 28px 22px 34px; }
       .brand h1 { margin-top: 40px; font-size: 2.15rem; }
-      .form-side { padding: 36px 22px 60px; }
-      .form-head h2 { font-size: 30px; }
+      .form-side { padding: 32px 16px 60px; }
+      .auth-card { padding: 28px 20px 26px; border-radius: 16px; }
+      .form-head h2 { font-size: 29px; }
+      .social { gap: 7px; }
+      .social-btn { min-height: 72px; font-size: 10.5px; }
       .field-row { grid-template-columns: 1fr; gap: 0; }
       .tabs { gap: 24px; }
     }
@@ -208,39 +244,67 @@
     <section class="form-side">
       <div class="form-wrap">
         <a class="back" href="/workdo-landing/">← Вернуться на сайт</a>
-        <div class="form-head">
-          <h2>Создайте аккаунт</h2>
-          <p>Начните с компании и сотрудников. Остальные модули подключите, когда понадобятся.</p>
-        </div>
-        <div class="tabs" role="tablist">
-          <button class="is-active" data-mode="register" role="tab" aria-selected="true">Регистрация</button>
-          <button data-mode="login" role="tab" aria-selected="false">Вход</button>
-        </div>
-
-        <form id="auth-form" novalidate>
-          <div class="error" id="error" role="alert"></div>
-          <div class="field-row" id="name-row">
-            <label class="field"><span>Имя</span><input name="name" autocomplete="given-name" placeholder="Глеб" /></label>
-            <label class="field"><span>Фамилия</span><input name="lastname" autocomplete="family-name" placeholder="Токарь" /></label>
+        <div class="auth-card">
+          <div class="form-head">
+            <h2>Создайте аккаунт</h2>
+            <p>Начните с компании и сотрудников. Остальные модули подключите, когда понадобятся.</p>
           </div>
-          <label class="field"><span>Рабочая почта</span><input name="email" type="email" autocomplete="email" placeholder="you@company.ru" required /></label>
-          <label class="field"><span>Пароль</span><input name="password" type="password" autocomplete="new-password" placeholder="Не менее 8 символов" required minlength="8" /></label>
-          <div class="field-row" id="company-row">
-            <label class="field"><span>Компания</span><input name="company" placeholder="ЧОП «Редут»" /></label>
-            <label class="field"><span>Сотрудников</span>
-              <select name="size"><option>до 10</option><option>до 30</option><option>до 100</option><option>100+</option></select>
-            </label>
-          </div>
-          <label class="check"><input type="checkbox" id="agree" /> <span>Я принимаю <a href="/workdo-landing/#faq">условия использования</a> и <a href="/workdo-landing/#faq">политику конфиденциальности</a>.</span></label>
-          <button class="submit" type="submit"><span id="submit-label">Создать аккаунт</span> →</button>
-          <p class="form-note">Демо-страница: данные остаются в браузере и никуда не отправляются.</p>
-        </form>
 
-        <div class="success" id="success">
-          <div class="success-icon">✓</div>
-          <h3>Аккаунт подготовлен</h3>
-          <p>В рабочей версии здесь начинается настройка компании: сотрудники, роли и модули. На демонстрационном лендинге форма не отправляет данные.</p>
-          <a href="/workdo-landing/">Вернуться на главную</a>
+          <div class="social" role="group" aria-label="Вход через почту">
+            <button class="social-btn" type="button" data-provider="Google" aria-label="Продолжить с Google">
+              <svg viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+            <button class="social-btn" type="button" data-provider="Яндекс" aria-label="Продолжить с Яндекс">
+              <span class="p-y" aria-hidden="true">Я</span>
+              <span>Яндекс</span>
+            </button>
+            <button class="social-btn" type="button" data-provider="Mail.ru" aria-label="Продолжить с Mail.ru">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="5" width="20" height="14" rx="3.5" fill="#005FF9"/>
+                <path d="M3.5 7.5L12 13.5L20.5 7.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Mail.ru</span>
+            </button>
+          </div>
+
+          <div class="divider"><span>или по почте</span></div>
+
+          <div class="tabs" role="tablist">
+            <button class="is-active" data-mode="register" role="tab" aria-selected="true">Регистрация</button>
+            <button data-mode="login" role="tab" aria-selected="false">Вход</button>
+          </div>
+
+          <form id="auth-form" novalidate>
+            <div class="error" id="error" role="alert"></div>
+            <div class="field-row" id="name-row">
+              <label class="field"><span>Имя</span><input name="name" autocomplete="given-name" placeholder="Глеб" /></label>
+              <label class="field"><span>Фамилия</span><input name="lastname" autocomplete="family-name" placeholder="Токарь" /></label>
+            </div>
+            <label class="field"><span>Рабочая почта</span><input name="email" type="email" autocomplete="email" placeholder="you@company.ru" required /></label>
+            <label class="field"><span>Пароль</span><input name="password" type="password" autocomplete="new-password" placeholder="Не менее 8 символов" required minlength="8" /></label>
+            <div class="field-row" id="company-row">
+              <label class="field"><span>Компания</span><input name="company" placeholder="ЧОП «Редут»" /></label>
+              <label class="field"><span>Сотрудников</span>
+                <select name="size"><option>до 10</option><option>до 30</option><option>до 100</option><option>100+</option></select>
+              </label>
+            </div>
+            <label class="check"><input type="checkbox" id="agree" /> <span>Я принимаю <a href="/workdo-landing/#faq">условия использования</a> и <a href="/workdo-landing/#faq">политику конфиденциальности</a>.</span></label>
+            <button class="submit" type="submit"><span id="submit-label">Создать аккаунт</span> →</button>
+            <p class="form-note">Демо-страница: данные остаются в браузере и никуда не отправляются.</p>
+          </form>
+
+          <div class="success" id="success">
+            <div class="success-icon">✓</div>
+            <h3>Аккаунт подготовлен</h3>
+            <p>В рабочей версии здесь начинается настройка компании: сотрудники, роли и модули. На демонстрационном лендинге форма не отправляет данные.</p>
+            <a href="/workdo-landing/">Вернуться на главную</a>
+          </div>
         </div>
       </div>
     </section>
@@ -250,11 +314,35 @@
     const form = document.getElementById('auth-form');
     const error = document.getElementById('error');
     const success = document.getElementById('success');
+    const successTitle = success.querySelector('h3');
+    const successText = success.querySelector('p');
     const submitLabel = document.getElementById('submit-label');
     const nameRow = document.getElementById('name-row');
     const companyRow = document.getElementById('company-row');
     const agree = document.getElementById('agree');
+    const social = document.querySelector('.social');
+    const divider = document.querySelector('.divider');
+    const tabs = document.querySelector('.tabs');
+    const defaultSuccessTitle = successTitle.textContent;
+    const defaultSuccessText = successText.textContent;
     let mode = 'register';
+
+    function showSuccess(title, text) {
+      form.classList.add('is-hidden');
+      social.classList.add('is-hidden');
+      divider.classList.add('is-hidden');
+      tabs.classList.add('is-hidden');
+      successTitle.textContent = title;
+      successText.textContent = text;
+      success.classList.add('is-visible');
+    }
+
+    document.querySelectorAll('.social-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const provider = button.dataset.provider;
+        showSuccess('Вход выполнен', `Вы вошли через ${provider}. Демо-страница: данные никуда не отправляются.`);
+      });
+    });
 
     document.querySelectorAll('.tabs button').forEach((button) => {
       button.addEventListener('click', () => {
@@ -293,9 +381,7 @@
         agree.focus();
         return;
       }
-      form.classList.add('is-hidden');
-      success.classList.add('is-visible');
-      success.querySelector('h3').textContent = mode === 'register' ? 'Аккаунт подготовлен' : 'Вход выполнен';
+      showSuccess(mode === 'register' ? defaultSuccessTitle : 'Вход выполнен', defaultSuccessText);
     });
   </script>
 </body>
