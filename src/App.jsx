@@ -1526,7 +1526,7 @@ function Faq() {
           center
           label="11 · вопросы"
           title={<>Отвечаем на всё, <span className="gradient-text">что спросят</span></>}
-          note="Если чего-то не хватает — откройте демо или напишите. Отвечаем по делу, без «запросите коммерческое предложение»."
+          note="Если чего-то не хватает — откройте демо или напишите нам. Отвечаем коротко и по делу."
         />
         <div className="faq-help">
           <div className="faq-tabs" role="tablist" aria-label="Разделы вопросов">
@@ -1571,6 +1571,7 @@ function Faq() {
                 {current && (
                   <motion.div
                     key={current.i}
+                    data-num={String(current.i + 1).padStart(2, '0')}
                     className="faq-answer-panel"
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}

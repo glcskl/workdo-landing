@@ -3430,3 +3430,49 @@ ul { margin: 0; padding: 0; list-style: none; }
   .flow-step { min-height: 0; }
   .flow-step__arrow { right: 50%; top: auto; bottom: -16px; transform: translateX(50%) rotate(90deg); }
 }
+
+/* ─── 11 · ВОПРОСЫ: центр помощи ─────────────── */
+
+.faq-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 1180px; margin: var(--sp-block) auto 24px; border: 0; }
+.faq-tab { display: flex; align-items: center; gap: 10px; margin: 0; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: none; transition: all 0.3s var(--ease); }
+.faq-tab:hover { border-color: #a3a3a3; color: var(--ink); transform: translateY(-2px); }
+.faq-tab.is-active { border-color: var(--ink); background: var(--ink); color: #fff; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.13); }
+.faq-tab__num { font-size: 11px; color: #a3a3a3; }
+.faq-tab.is-active .faq-tab__num { color: rgba(255, 255, 255, 0.55); }
+.faq-tab b { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; }
+.faq-tab em { font-size: 11px; color: #a3a3a3; }
+.faq-tab.is-active em { color: rgba(255, 255, 255, 0.55); }
+.faq-panel { max-width: 1180px; margin-inline: auto; padding: 0; border: 1px solid var(--line); border-radius: 22px; background: #fff; overflow: hidden; box-shadow: 0 24px 70px rgba(15, 23, 42, 0.05); }
+.faq-panel .faq-search { display: flex; align-items: center; gap: 12px; margin: 0; padding: 18px 26px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: #fafafa; color: #a3a3a3; }
+.faq-panel .faq-search input { width: 100%; border: 0; background: transparent; font-size: 15px; color: var(--ink); outline: none; }
+.faq-panel .faq-search input::placeholder { color: #a3a3a3; }
+.faq-panel__body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 0; min-height: 0; }
+.faq-questions { padding: 22px 20px; border-right: 1px solid var(--line); border-bottom: 0; }
+.faq-questions__label { margin: 0 0 14px 14px; font-size: 10px; }
+.faq-question { display: grid; grid-template-columns: 30px minmax(0, 1fr) 18px; align-items: center; gap: 12px; padding: 14px; border: 1px solid transparent; border-bottom-color: var(--line); border-radius: 11px; background: transparent; transition: background 0.25s, border-color 0.25s; }
+.faq-question:hover { border-bottom-color: var(--line); background: #fafafa; }
+.faq-question.is-active { border-color: #d9ece7; background: #f3fbf8; }
+.faq-question__num { font-size: 11px; color: #a3a3a3; }
+.faq-question.is-active .faq-question__num { color: #059669; }
+.faq-question__text { font-size: 14px; font-weight: 500; }
+.faq-question.is-active .faq-question__text { font-weight: 650; }
+.faq-question > svg { color: #c4c4c4; }
+.faq-question.is-active > svg { color: #059669; }
+.faq-answer-panel { position: relative; overflow: hidden; min-height: 320px; padding: 40px 44px; background: #fff; }
+.faq-answer-panel::before { content: attr(data-num); position: absolute; right: 16px; top: -22px; font-size: 160px; line-height: 1; font-weight: 800; letter-spacing: -0.09em; color: rgba(10, 10, 10, 0.035); pointer-events: none; }
+.faq-answer-panel > * { position: relative; }
+.faq-answer-panel__label { display: inline-flex; padding: 7px 10px; border-radius: 8px; background: #f3fbf8; font-size: 10px; letter-spacing: 0.12em; }
+.faq-answer-panel h3 { margin: 24px 0 16px; font-size: clamp(26px, 3vw, 34px); line-height: 1.15; letter-spacing: -0.045em; }
+.faq-answer-panel p { font-size: 15.5px; line-height: 1.75; color: #525252; }
+@media (max-width: 1000px) {
+  .faq-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .faq-panel__body { grid-template-columns: 1fr; }
+  .faq-questions { border-right: 0; border-bottom: 1px solid var(--line); }
+  .faq-answer-panel { min-height: 0; padding: 32px 30px; }
+}
+@media (max-width: 560px) {
+  .faq-panel .faq-search { padding: 16px 18px; }
+  .faq-questions { padding: 18px 12px; }
+  .faq-answer-panel { padding: 28px 22px; }
+  .faq-answer-panel::before { font-size: 110px; }
+}
