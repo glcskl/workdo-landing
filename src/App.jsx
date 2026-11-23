@@ -1425,7 +1425,7 @@ function SecurityVisual({ index }) {
             <div className="sv-tables"><span>employees</span><span>shifts</span><span>payroll</span><span>incidents</span></div>
           </div>
         </div>
-        <div className="sv-hint"><ShieldCheck size={14} /> данные не смешиваются даже при технической ошибке</div>
+        <div className="sv-hint"><ShieldCheck size={14} /> даже при ошибке в коде данные не смешаются</div>
       </div>
     );
   }
@@ -1448,7 +1448,7 @@ function SecurityVisual({ index }) {
             </div>
           ))}
         </div>
-        <div className="sv-hint"><ShieldCheck size={14} /> 7 ролей · права проверяются на уровне данных</div>
+        <div className="sv-hint"><ShieldCheck size={14} /> решает база, а не только интерфейс</div>
       </div>
     );
   }
@@ -1480,7 +1480,7 @@ function SecurityVisual({ index }) {
           <div className="sv-phone__btn">Подтвердить</div>
         </div>
       </div>
-      <div className="sv-hint"><ShieldCheck size={14} /> смена пароля, восстановление, удаление аккаунта</div>
+      <div className="sv-hint"><ShieldCheck size={14} /> пароль · восстановление · удаление аккаунта</div>
     </div>
   );
 }
@@ -1494,8 +1494,8 @@ function Security() {
       <div className="container">
         <SectionHead
           dark center
-          title={<>Данные компании <span className="gradient-text">остаются компании</span></>}
-          note="Изоляция, роли и журнал действий — не настройки на витрине, а архитектура: отдельная схема базы на каждого клиента и проверка прав на уровне данных."
+          title={<>Данные остаются <span className="gradient-text">внутри компании</span></>}
+          note="Изоляция, роли и журнал действий заложены в фундамент. У каждого клиента своя схема базы, а права проверяются на уровне данных — не только в интерфейсе."
         />
         <div className="sec-carousel">
           <div className="sec-steps" role="tablist" aria-label="Механизмы безопасности">
@@ -1557,7 +1557,7 @@ function Pricing({ onDemo }) {
       <div className="container">
         <SectionHead
           center
-          title={<>Платите за команду, <span className="gradient-text">не за экраны</span></>}
+          title={<>Всё включено. <span className="gradient-text">Никаких доплат.</span></>}
           note="Цены для охранного предприятия. Для других отраслей — свои тарифы; основа и подход те же."
         >
           <div className="billing-toggle">
