@@ -150,10 +150,6 @@
     }
     .orbit__ring, .orbit__rotor { pointer-events: none; }
     .orbit__node { pointer-events: auto; }
-    .orbit-caption { max-width: 290px; min-height: 56px; text-align: center; }
-    .orbit-caption b { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 650; }
-    .orbit-caption p { margin: 0; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
-
     .brand-foot { display: flex; align-items: center; gap: 14px; font-size: 11px; color: #a3a3a3; }
     .brand-foot a { padding-bottom: 2px; border-bottom: 1px solid #d4d4d4; color: #737373; transition: color .2s, border-color .2s; }
     .brand-foot a:hover { color: var(--ink); border-color: var(--ink); }
@@ -320,7 +316,6 @@
             <div class="orbit__core"><b>WorkDo</b><span id="orbit-count">01 / 04</span></div>
             <span class="orbit__marker" aria-hidden="true"></span>
           </div>
-          <div class="orbit-caption"><b id="orbit-title">Кадры</b><p id="orbit-text">Карточки, документы и ставки. Импорт из CSV/XLSX.</p></div>
         </div>
       </div>
       <div class="brand-foot"><span>© 2026 WorkDo. Все права защищены.</span><a href="/workdo-landing/">На главную</a></div>
@@ -413,15 +408,7 @@
     let mode = 'register';
 
     /* интерактивная орбита модулей */
-    const ORBIT_ITEMS = [
-      { title: 'Кадры', text: 'Карточки, документы и ставки. Импорт из CSV/XLSX.' },
-      { title: 'Смены', text: 'График на месяц, посты и отметки прихода — без Excel-переписки.' },
-      { title: 'Зарплата', text: 'Часы, ночные и премии считаются из табеля одним расчётом.' },
-      { title: 'Финансы', text: 'Бюджет, сметы и план-факт обновляются из операций.' },
-    ];
     const orbit = document.getElementById('orbit');
-    const orbitTitle = document.getElementById('orbit-title');
-    const orbitText = document.getElementById('orbit-text');
     const orbitCount = document.getElementById('orbit-count');
     const orbitNodes = [...document.querySelectorAll('.orbit__node')];
     orbitNodes.forEach((node, i) => {
@@ -433,8 +420,6 @@
         const rot = 270 - i * 90;
         orbit.style.setProperty('--rot', `${rot}deg`);
         orbit.style.setProperty('--rot-neg', `${-rot}deg`);
-        orbitTitle.textContent = ORBIT_ITEMS[i].title;
-        orbitText.textContent = ORBIT_ITEMS[i].text;
         orbitCount.textContent = `${String(i + 1).padStart(2, '0')} / 04`;
       });
     });
