@@ -1234,6 +1234,8 @@ function Verticals() {
 }
 
 function Security() {
+  const [active, setActive] = useState(0);
+  const item = TRUST[active];
   return (
     <section className="section section--dark security" id="security">
       <div className="container">
@@ -1242,36 +1244,86 @@ function Security() {
           title={<>Данные компании <span className="gradient-text">остаются компании</span></>}
           note="Изоляция, роли и журнал действий — не настройки на витрине, а архитектура: отдельная схема базы на каждого клиента и проверка прав на уровне данных."
         />
-        <div className="trust-grid">
-          {TRUST.map((t, i) => (
-            <Reveal className="trust-row" key={t.title} delay={i * 0.05}>
-              <div className="trust-row__head">
-                <span className="trust-row__icon"><Icon name={t.icon} size={20} /></span>
-                <span className="trust-row__num mono">0{i + 1}</span>
-              </div>
-              <div className="trust-row__body">
-                <h3>{t.title}</h3>
-                <p>{t.text}</p>
-                <span className="trust-row__meta mono">{t.meta}</span>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <Reveal className="audit-log" delay={0.15}>
-          <div className="audit-log__head">
-            <span>аудит-лог · фрагмент</span>
-            <em><span className="audit-live">LIVE</span> только для owner и admin</em>
-          </div>
-          <div className="audit-log__table">
-            <div className="audit-log__row audit-log__row--head"><span>дата</span><span>время</span><span>кто</span><span>поле</span><span>изменение</span></div>
-            {AUDIT.map((a, i) => (
-              <div className="audit-log__row" key={i}>
-                <span className="mono">{a.date}</span><span className="mono">{a.time}</span><span>{a.who}</span><span>{a.field}</span>
-                <span className="audit-diff"><s>{a.before}</s><ArrowRight size={13} /><b>{a.after}</b></span>
-              </div>
+        <div className="security-explorer">
+          <div className="security-list">
+            {TRUST.map((t, i) => (
+              <button
+                type="button"
+                key={t.title}
+                className={`security-item ${i === active ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
+                aria-pressed={i === active}
+              >
+                <span className="security-item__num mono">0{i + 1}</span>
+                <span className="security-item__icon"><Icon name={t.icon} size={19} /></span>
+                <span className="security-item__body">
+                  <b>{t.title}</b>
+                  <span>{t.text}</span>
+                  <em className="mono">{t.meta}</em>
+                </span>
+              </button>
             ))}
           </div>
-        </Reveal>
+
+          <div className="security-visual">
+            <div className="security-visual__top">
+              <span className="mono">{item.meta}</span>
+              <span className="security-visual__dot" />
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.div className="security-visual__body" key={active} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3, ease: EASE }}>
+                {active === 0 && (
+                  <div className="sec-schema">
+                    <div className="sec-schema__db"><Database size={18} /> PostgreSQL <span>изоляция на уровне схемы</span></div>
+                    <div className="sec-schema__split" />
+                    <div className="sec-schema__cards">
+                      <div className="is-current"><b>company_1042</b><small>схема вашей компании</small><span>employees · shifts · payroll · incidents</span></div>
+                      <div><b>company_1043</b><small>другая компания</small><span>employees · shifts · payroll · incidents</span></div>
+                    </div>
+                    <p>Данные клиентов не смешиваются даже при технической ошибке.</p>
+                  </div>
+                )}
+                {active === 1 && (
+                  <div className="sec-rbac">
+                    <div className="sec-rbac__roles"><span className="is-active">owner</span><span>admin</span><span>manager</span><span>member</span></div>
+                    <div className="sec-rbac__table">
+                      <div><span>employees</span><b>read · write</b></div>
+                      <div><span>payroll</span><b>read · write</b></div>
+                      <div><span>audit_log</span><b>read</b></div>
+                      <div><span>company</span><b>delete</b></div>
+                    </div>
+                    <p>Ограничения живут в данных, а не только в интерфейсе.</p>
+                  </div>
+                )}
+                {active === 2 && (
+                  <div className="audit-log">
+                    <div className="audit-log__head">
+                      <span>аудит-лог · фрагмент</span>
+                      <em><span className="audit-live">LIVE</span> только для owner и admin</em>
+                    </div>
+                    <div className="audit-log__table">
+                      <div className="audit-log__row audit-log__row--head"><span>дата</span><span>время</span><span>кто</span><span>поле</span><span>изменение</span></div>
+                      {AUDIT.map((a, i) => (
+                        <div className="audit-log__row" key={i}>
+                          <span className="mono">{a.date}</span><span className="mono">{a.time}</span><span>{a.who}</span><span>{a.field}</span>
+                          <span className="audit-diff"><s>{a.before}</s><ArrowRight size={13} /><b>{a.after}</b></span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {active === 3 && (
+                  <div className="sec-code">
+                    <div className="sec-code__mail"><KeyRound size={18} /> confirmation@workdo.ru</div>
+                    <div className="sec-code__digits"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
+                    <div className="sec-code__meta"><span>TTL 10 мин</span><span>3 попытки</span></div>
+                    <p>Смена пароля, восстановление и удаление аккаунта подтверждаются шестизначным кодом.</p>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
     </section>
   );
