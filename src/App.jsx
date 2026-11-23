@@ -1117,7 +1117,7 @@ function Roles() {
         <SectionHead
           center
          
-          title={<>У каждого — <span className="gradient-text">свой экран</span></>}
+          title={<>У каждого <span className="gradient-text">свой экран</span></>}
           note="Права ограничены на уровне таблиц, а не только меню. Начальник смены не увидит финансы, охранник — чужие объекты."
         />
         <div className="access-grid">
