@@ -1141,18 +1141,29 @@ function Verticals() {
         </div>
         <AnimatePresence mode="wait">
           <motion.div className="vertical-card" key={active} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease: EASE }}>
-            <div className="vertical-card__copy">
-              <span className="vertical-tag mono">{current.tag} · модуль</span>
-              <h3>{current.name}</h3>
-              <p>{current.text}</p>
-              <a href="#demo">открыть демо <ArrowUpRight size={16} /></a>
-            </div>
-            <div className="vertical-card__art">
-              <div className="vertical-orbit" />
-              <div className="vertical-modules">
-                {current.modules.map((m, i) => <span key={m}><Check size={13} />{m}</span>)}
+            <div className="vertical-card__main">
+              <div className="vertical-card__copy">
+                <span className="vertical-tag mono">{current.tag} · модуль</span>
+                <h3>{current.name}</h3>
+                <p>{current.text}</p>
+                <a href="#demo" className="vertical-cta">открыть демо <ArrowUpRight size={16} /></a>
               </div>
-              <span className="vertical-art-badge mono">{current.modules.length} модуля подключено</span>
+              <div className="vertical-card__count">
+                <span className="mono">{String(current.modules.length).padStart(2, '0')}</span>
+                <small>модуля подключено</small>
+              </div>
+            </div>
+            <div className="vertical-card__modules">
+              <div className="vertical-card__modules-head"><span>Модули в комплекте</span><span>{current.tag}</span></div>
+              <div className="vertical-modules">
+                {current.modules.map((m, i) => (
+                  <div className="vertical-module" key={m}>
+                    <span className="vertical-module__num mono">0{i + 1}</span>
+                    <b>{m}</b>
+                    <Check size={16} />
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>
