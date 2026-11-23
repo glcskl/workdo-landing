@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Документы — WorkDo</title>
+  <link rel="icon" href="/workdo-landing/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/workdo-landing/fonts/fonts.css" />
+  <style>
+    :root { --ink:#0a0a0a; --muted:#737373; --line:#e7e7e7; --grad:linear-gradient(105deg,#3b82f6,#10b981 52%,#14b8a6); }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:flex; flex-direction:column; font-family:'Inter',sans-serif; color:var(--ink); background:#fff; -webkit-font-smoothing:antialiased; }
+    header, footer { padding:22px 0; border-bottom:1px solid var(--line); }
+    footer { border-bottom:0; border-top:1px solid var(--line); font-size:11px; color:#9a9a9a; }
+    .container { width:min(100% - 40px, 860px); margin-inline:auto; }
+    .logo { display:inline-flex; align-items:center; gap:10px; font-size:20px; font-weight:750; letter-spacing:-.065em; text-decoration:none; }
+    .logo-mark { width:30px; height:30px; border-radius:9px; background:var(--grad); display:flex; flex-direction:column; justify-content:center; gap:3px; padding:6px; }
+    .logo-mark span { display:block; height:2px; border-radius:2px; background:#fff; }
+    .logo-mark span:nth-child(2) { width:68%; opacity:.85; }
+    .grad { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    main { flex:1; padding:80px 0; }
+    h1 { font-size:clamp(2.2rem,6vw,3.6rem); line-height:1; letter-spacing:-.06em; margin:0 0 24px; }
+    .lead { font-size:15px; line-height:1.7; color:var(--muted); max-width:640px; }
+    nav { display:flex; flex-wrap:wrap; gap:10px; margin:34px 0 48px; }
+    nav a { padding:10px 16px; border:1px solid var(--line); border-radius:999px; font-size:12.5px; text-decoration:none; color:#525252; }
+    nav a.is-active, nav a:hover { background:var(--ink); border-color:var(--ink); color:#fff; }
+    article { padding:36px; border:1px solid var(--line); border-radius:20px; background:#fafafa; }
+    article h2 { font-size:22px; letter-spacing:-.04em; margin:0 0 18px; }
+    article p { font-size:13.5px; line-height:1.75; color:#595959; margin:0 0 14px; }
+    .note { padding:16px 18px; margin-top:24px; border:1px solid #d9ece7; border-radius:12px; background:#f6fbfa; font-size:12px; line-height:1.6; color:#047857; }
+  </style>
+</head>
+<body>
+  <header><div class="container"><a class="logo" href="/workdo-landing/"><span class="logo-mark" aria-hidden="true"><span></span><span></span></span>Work<span class="grad">Do</span></a></div></header>
+  <main class="container">
+    <h1>Документы WorkDo</h1>
+    <p class="lead">Политика конфиденциальности, пользовательское соглашение и публичная оферта — документы, с которыми работает клиент сервиса.</p>
+    <nav>
+      <a href="#privacy" data-doc="privacy">Политика конфиденциальности</a>
+      <a href="#terms" data-doc="terms">Пользовательское соглашение</a>
+      <a href="#offer" data-doc="offer">Публичная оферта</a>
+    </nav>
+    <article>
+      <h2 id="doc-title">Политика конфиденциальности</h2>
+      <div id="doc-body"></div>
+      <div class="note">Это демонстрационная копия лендинга. Актуальные юридические документы предоставляются по запросу: <a href="mailto:info@workdo.ru">info@workdo.ru</a>.</div>
+    </article>
+  </main>
+  <footer><div class="container">© 2026 WorkDo. Все права защищены. · <a href="mailto:info@workdo.ru">info@workdo.ru</a></div></footer>
+  <script>
+    const docs = {
+      privacy: {
+        title: 'Политика конфиденциальности',
+        body: [
+          'WorkDo обрабатывает данные, которые клиент передаёт в систему: сведения о сотрудниках, смены, табели, объекты и финансовые операции.',
+          'Данные каждой компании хранятся в отдельной схеме базы данных. Доступ к разделам ограничен ролями, а действия фиксируются в журнале аудита.',
+          'Сторонним сервисам данные не передаются, за исключением случаев, прямо предусмотренных законом или договором с клиентом.'
+        ]
+      },
+      terms: {
+        title: 'Пользовательское соглашение',
+        body: [
+          'Сервис предоставляется по подписке. Пользователь получает доступ к тем разделам и модулям, которые входят в выбранный тариф.',
+          'Клиент отвечает за достоверность данных и за действия своих сотрудников, включая настройку прав доступа.',
+          'Доступ к сервису можно прекратить в порядке, предусмотренном договором. Данные выгружаются в CSV.'
+        ]
+      },
+      offer: {
+        title: 'Публичная оферта',
+        body: [
+          'Тарифы на лендинге указаны в рублях для охранного предприятия и зависят от числа сотрудников и подключённых модулей.',
+          'Стоимость годовой подписки рассчитывается со скидкой 15% относительно помесячной оплаты.',
+          'Актуальные условия оферты, сроки и порядок расчётов предоставляются менеджером при заключении договора.'
+        ]
+      }
+    };
+    function render(key) {
+      const doc = docs[key] || docs.privacy;
+      document.getElementById('doc-title').textContent = doc.title;
+      document.getElementById('doc-body').innerHTML = doc.body.map((p) => '<p>' + p + '</p>').join('');
+      document.querySelectorAll('nav a').forEach((a) => a.classList.toggle('is-active', a.dataset.doc === key));
+    }
+    window.addEventListener('hashchange', () => render(location.hash.slice(1)));
+    render(location.hash.slice(1));
+  </script>
+</body>
+</html>
