@@ -2913,3 +2913,24 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 620px) {
   .role-pills { grid-template-columns: 1fr; grid-auto-rows: minmax(84px, auto); }
 }
+
+/* ─── 07 · БЕЗОПАСНОСТЬ: цветовые акценты ───── */
+
+.trust-card {
+  --accent: #93c5fd;
+  --accent-soft: rgba(59, 130, 246, 0.14);
+  --accent-border: rgba(147, 197, 253, 0.3);
+  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+}
+.trust-card:nth-child(1) { --accent: #93c5fd; --accent-soft: rgba(59, 130, 246, 0.14); --accent-border: rgba(147, 197, 253, 0.3); }
+.trust-card:nth-child(2) { --accent: #c4b5fd; --accent-soft: rgba(139, 92, 246, 0.14); --accent-border: rgba(196, 181, 253, 0.3); }
+.trust-card:nth-child(3) { --accent: #6ee7b7; --accent-soft: rgba(16, 185, 129, 0.14); --accent-border: rgba(110, 231, 183, 0.3); }
+.trust-card:nth-child(4) { --accent: #fcd34d; --accent-soft: rgba(245, 158, 11, 0.13); --accent-border: rgba(252, 211, 77, 0.28); }
+.trust-card:hover { border-color: var(--accent-border); background: linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)); }
+.trust-card::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.8; }
+.trust-card .trust-icon { color: var(--accent); background: var(--accent-soft); border-color: var(--accent-border); }
+.trust-card .trust-meta { color: var(--accent); background: var(--accent-soft); border-color: var(--accent-border); }
+.trust-card .trust-index { color: #6b6b6b; }
+.trust-card h3 { color: #fff; }
+.trust-card p { color: #9a9a9a; }
