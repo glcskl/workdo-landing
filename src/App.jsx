@@ -19,6 +19,18 @@ const ICONS = {
   Clock3, Sparkles, LockKeyhole, Building2, Users, Wallet,
 };
 
+const FLOW_ICONS = {
+  'Смена': CalendarRange,
+  'Табель': FileSpreadsheet,
+  'Зарплата': Wallet,
+  'Инцидент': Siren,
+  'Причина': Search,
+  'Отчёт': ScrollText,
+  'Месяц': CalendarRange,
+  'План': ChartNoAxesCombined,
+  'Факт': ChartNoAxesCombined,
+};
+
 /* Moves the gradient focus point to the cursor, exactly like workdo.ru. */
 function useCursorGradient() {
   useEffect(() => {
@@ -1274,10 +1286,18 @@ function Flows() {
           note="Не абстрактная «автоматизация», а конкретные цепочки: смена → табель → зарплата, инцидент → причина → отчёт, месяц → план → факт."
         />
         <div className="flow-carousel">
-          <div className="flow-tabs" role="tablist" aria-label="Сценарии работы">
+          <div className="flow-track" role="tablist" aria-label="Сценарии работы">
             {FLOWS.map((f, i) => (
-              <button key={f.num} type="button" role="tab" aria-selected={i === active} className={`flow-tab ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)}>
-                <span className="mono">{f.num}</span>{f.chain.join(' → ')}
+              <button
+                key={f.num}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                className={`flow-track__item ${i === active ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
+              >
+                <span className="flow-track__num mono">{f.num}</span>
+                <span className="flow-track__chain">{f.chain.join(' → ')}</span>
               </button>
             ))}
           </div>
@@ -1285,23 +1305,30 @@ function Flows() {
             <motion.div
               key={flow.num}
               className="flow-slide"
-              initial={{ opacity: 0, x: 24 }}
+              initial={{ opacity: 0, x: 28 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -24 }}
+              exit={{ opacity: 0, x: -28 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
-              <div className="flow-slide__copy">
-                <span className="flow-slide__label mono">СЦЕНАРИЙ {flow.num}</span>
+              <div className="flow-story">
+                <span className="flow-story__label mono">СЦЕНАРИЙ {flow.num}</span>
                 <h3>{flow.title}</h3>
                 <p>{flow.text}</p>
               </div>
-              <div className="flow-nodes">
-                {flow.chain.map((c, j) => (
-                  <div className="flow-node" key={c}>
-                    <span className="mono">0{j + 1}</span>
-                    <b>{c}</b>
-                  </div>
-                ))}
+              <div className="flow-chain">
+                {flow.chain.map((c, j) => {
+                  const StepIcon = FLOW_ICONS[c];
+                  return (
+                    <div className="flow-step" key={c}>
+                      <div className="flow-step__top">
+                        <span className="flow-step__num mono">0{j + 1}</span>
+                        <span className="flow-step__icon"><StepIcon size={18} /></span>
+                      </div>
+                      <b>{c}</b>
+                      {j < flow.chain.length - 1 && <span className="flow-step__arrow" aria-hidden="true"><ArrowRight size={16} /></span>}
+                    </div>
+                  );
+                })}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -1397,15 +1424,16 @@ const FAQ_GROUPS = [
 ];
 
 function Faq() {
-  const [open, setOpen] = useState(0);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState(0);
+  const [open, setOpen] = useState(FAQ_GROUPS[0].from);
   const all = FAQ.map((item, i) => ({ ...item, i }));
   const normalized = query.trim().toLowerCase();
   const group = FAQ_GROUPS[category];
   const items = normalized
     ? all.filter((item) => `${item.q} ${item.a}`.toLowerCase().includes(normalized))
     : all.slice(group.from, group.to);
+  const current = items.find((item) => item.i === open) || items[0];
   const pickCategory = (i) => {
     setCategory(i);
     setQuery('');
@@ -1421,50 +1449,60 @@ function Faq() {
           note="Если чего-то не хватает — откройте демо или напишите. Отвечаем по делу, без «запросите коммерческое предложение»."
         />
         <div className="faq-help">
-          <aside className="faq-side">
+          <div className="faq-tabs" role="tablist" aria-label="Разделы вопросов">
+            {FAQ_GROUPS.map((g, i) => (
+              <button
+                key={g.label}
+                type="button"
+                role="tab"
+                aria-selected={i === category && !normalized}
+                className={`faq-tab ${i === category && !normalized ? 'is-active' : ''}`}
+                onClick={() => pickCategory(i)}
+              >
+                <span className="faq-tab__num mono">{String(i + 1).padStart(2, '0')}</span>
+                <b>{g.label}</b>
+                <em className="mono">{String(g.to - g.from).padStart(2, '0')}</em>
+              </button>
+            ))}
+          </div>
+          <div className="faq-panel">
             <div className="faq-search">
               <Search size={17} />
               <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Найти ответ на вопрос" aria-label="Поиск по вопросам" />
             </div>
-            <span className="faq-side__label mono">РАЗДЕЛЫ</span>
-            <div className="faq-cats" role="tablist" aria-label="Разделы вопросов">
-              {FAQ_GROUPS.map((g, i) => (
-                <button
-                  key={g.label}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === category && !normalized}
-                  className={`faq-cat ${i === category && !normalized ? 'is-active' : ''}`}
-                  onClick={() => pickCategory(i)}
-                >
-                  <span>{g.label}</span><em className="mono">{String(g.to - g.from).padStart(2, '0')}</em>
-                </button>
-              ))}
-            </div>
-          </aside>
-          <div className="faq-content">
-            <div className="faq-content__top">
-              <b>{normalized ? 'Результаты поиска' : group.label}</b>
-              <span className="mono">{String(items.length).padStart(2, '0')}</span>
-            </div>
-            <div className="faq-rows">
-              {items.map((item) => (
-                <div className={`faq-row ${open === item.i ? 'is-open' : ''}`} key={item.q}>
-                  <button onClick={() => setOpen(open === item.i ? -1 : item.i)} aria-expanded={open === item.i}>
-                    <span className="faq-row__num mono">{String(item.i + 1).padStart(2, '0')}</span>
-                    <span className="faq-row__q">{item.q}</span>
-                    <span className="faq-row__icon">{open === item.i ? <Minus size={17} /> : <Plus size={17} />}</span>
+            <div className="faq-panel__body">
+              <div className="faq-questions">
+                <span className="faq-questions__label mono">{normalized ? 'РЕЗУЛЬТАТЫ ПОИСКА' : group.label.toUpperCase()}</span>
+                {items.map((item) => (
+                  <button
+                    key={item.q}
+                    type="button"
+                    className={`faq-question ${current?.i === item.i ? 'is-active' : ''}`}
+                    onClick={() => setOpen(item.i)}
+                  >
+                    <span className="faq-question__num mono">{String(item.i + 1).padStart(2, '0')}</span>
+                    <span className="faq-question__text">{item.q}</span>
+                    <ChevronRight size={16} />
                   </button>
-                  <AnimatePresence initial={false}>
-                    {open === item.i && (
-                      <motion.div className="faq-row__answer" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: EASE }}>
-                        <p>{item.a}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-              {items.length === 0 && <div className="faq-empty">Ничего не нашли. Попробуйте другой запрос или напишите нам.</div>}
+                ))}
+                {items.length === 0 && <div className="faq-empty">Ничего не нашли. Попробуйте другой запрос или напишите нам.</div>}
+              </div>
+              <AnimatePresence mode="wait">
+                {current && (
+                  <motion.div
+                    key={current.i}
+                    className="faq-answer-panel"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -14 }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                  >
+                    <span className="faq-answer-panel__label mono">ОТВЕТ · {String(current.i + 1).padStart(2, '0')}</span>
+                    <h3>{current.q}</h3>
+                    <p>{current.a}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
