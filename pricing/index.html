@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тарифы — WorkDo</title>
+  <meta name="description" content="Прозрачные цены WorkDo: весь функционал доступен на любом тарифе, разница только в количестве сотрудников." />
+  <link rel="icon" href="/workdo-landing/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/workdo-landing/fonts/fonts.css" />
+  <style>
+    :root { --ink:#0a0a0a; --muted:#737373; --dim:#a3a3a3; --line:#e5e5e5; }
+    *, *::before, *::after { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:flex; flex-direction:column; background:var(--ink); color:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+    h1, p { margin:0; }
+    .container { max-width:1400px; width:100%; margin-inline:auto; padding-inline:24px; }
+    @media (min-width:768px) { .container { padding-inline:48px; } }
+    header { position:relative; z-index:2; }
+    .header-inner { height:64px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:20px; font-weight:700; letter-spacing:-.5px; }
+    .back { font-size:14px; color:var(--dim); }
+    .back:hover { color:#fff; }
+    main { flex:1; display:flex; align-items:center; justify-content:center; text-align:center; padding:96px 0; position:relative; overflow:hidden; }
+    .glow { position:absolute; top:-240px; right:-240px; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(59,130,246,.08) 0%,transparent 70%); pointer-events:none; }
+    .inner { position:relative; z-index:1; }
+    .eyebrow { font-size:14px; font-weight:500; text-transform:uppercase; letter-spacing:.1em; color:var(--dim); }
+    h1 { margin-top:24px; font-size:clamp(2.75rem,6vw,72px); letter-spacing:-.025em; line-height:.9; font-weight:700; }
+    .cursor-gradient { display:inline-block; background-image:radial-gradient(circle at var(--gx,50%) var(--gy,50%),#3b82f6 0%,#10b981 38%,#14b8a6 72%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+    .note { max-width:576px; margin:24px auto 0; font-size:18px; line-height:1.6; color:var(--dim); }
+    .price { margin-top:64px; font-size:clamp(3rem,8vw,96px); font-weight:700; letter-spacing:-.055em; line-height:1.05; }
+    .price span { font-size:24px; font-weight:600; letter-spacing:normal; color:var(--dim); }
+    .rows { max-width:720px; margin:64px auto 0; border-top:1px solid rgba(255,255,255,.1); }
+    .row { display:flex; justify-content:space-between; gap:24px; padding:18px 0; border-bottom:1px solid rgba(255,255,255,.1); font-size:14px; text-align:left; }
+    .row span:last-child { color:var(--dim); }
+    .btn { display:inline-flex; align-items:center; gap:8px; margin-top:48px; padding:12px 24px; border-radius:9999px; background:#fff; color:var(--ink); font-size:14px; font-weight:500; transition:transform .3s cubic-bezier(.16,1,.3,1),background .25s; }
+    .btn:hover { transform:translateY(-2px); background:#f5f5f5; }
+  </style>
+</head>
+<body>
+  <header><div class="container header-inner"><a class="logo" href="/workdo-landing/">WorkDo</a><a class="back" href="/workdo-landing/">На главную</a></div></header>
+  <main>
+    <div class="glow"></div>
+    <div class="container inner">
+      <div class="eyebrow">Тарифы</div>
+      <h1><span class="cursor-gradient">Прозрачные цены.</span></h1>
+      <p class="note">Весь функционал доступен на любом тарифе. Разница только в количестве сотрудников.</p>
+      <div class="price">от 1 740 <span>₽/мес</span></div>
+      <div class="rows">
+        <div class="row"><span>Сотрудники и кадры</span><span>включено</span></div>
+        <div class="row"><span>Смены, график и инциденты</span><span>включено</span></div>
+        <div class="row"><span>Финансы, бюджет и сметы</span><span>включено</span></div>
+        <div class="row"><span>Роли, права и аудит</span><span>включено</span></div>
+        <div class="row"><span>Отраслевые модули</span><span>по потребности</span></div>
+      </div>
+      <a class="btn" href="/workdo-landing/register/">Начать бесплатно →</a>
+    </div>
+  </main>
+  <script>
+    if (window.matchMedia('(pointer: fine)').matches) {
+      let el = null, x = 0, y = 0, frame = 0;
+      const paint = () => {
+        frame = 0;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        el.style.setProperty('--gx', ((x - r.left) / r.width * 100) + '%');
+        el.style.setProperty('--gy', ((y - r.top) / r.height * 100) + '%');
+      };
+      window.addEventListener('mousemove', (e) => {
+        const t = e.target?.closest?.('.cursor-gradient');
+        if (!t) return;
+        el = t; x = e.clientX; y = e.clientY;
+        if (!frame) frame = requestAnimationFrame(paint);
+      }, { passive:true });
+    }
+  </script>
+</body>
+</html>

@@ -3,279 +3,243 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Регистрация — WorkDo</title>
+  <title>Начните бесплатно — WorkDo</title>
   <meta name="description" content="Создайте аккаунт WorkDo: сотрудники, смены, зарплата и финансы в одной системе." />
   <link rel="icon" href="/workdo-landing/favicon.svg" type="image/svg+xml" />
   <link rel="preload" href="/workdo-landing/fonts/inter-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/workdo-landing/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/workdo-landing/fonts/fonts.css" />
   <style>
-    :root {
-      --ink: #0a0a0a;
-      --muted: #737373;
-      --line: #e7e7e7;
-      --grad: linear-gradient(105deg, #3b82f6 0%, #10b981 52%, #14b8a6 100%);
-      --ease: cubic-bezier(.16,1,.3,1);
-    }
-    *, *::before, *::after { box-sizing: border-box; }
+    :root { --ink:#0a0a0a; --muted:#737373; --line:#e5e5e5; --tint:#fafafa; }
+    *, *::before, *::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--ink);
-      background: #fff;
-      -webkit-font-smoothing: antialiased;
+      margin:0; min-height:100vh; overflow:hidden;
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+      color:var(--ink); background:#fff; -webkit-font-smoothing:antialiased;
     }
-    a { color: inherit; text-decoration: none; }
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
-    h1, h2, h3, p { margin: 0; }
+    a { color:inherit; text-decoration:none; }
+    h1, p { margin:0; }
+    button, input, select { font:inherit; }
 
-    .page { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .progress { position:fixed; top:0; left:0; right:0; height:4px; background:var(--ink); transform:scaleX(0); transform-origin:left; z-index:100; }
+    header { position:fixed; top:0; left:0; right:0; height:64px; z-index:50; }
+    .header-inner { max-width:1400px; height:64px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    @media (min-width:768px) { .header-inner { padding:0 48px; } }
+    .logo { font-size:20px; font-weight:700; letter-spacing:-.5px; line-height:28px; transition:opacity .25s; }
+    .logo:hover { opacity:.7; }
+    .back { font-size:14px; color:var(--muted); transition:color .25s; }
+    .back:hover { color:var(--ink); }
 
-    .brand {
-      position: relative;
-      overflow: hidden;
-      padding: 48px 56px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #fff;
-      background: #090a0c;
-      isolation: isolate;
+    main { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:96px 24px 48px; }
+    .wrap { width:min(100%, 448px); }
+    .intro { text-align:center; margin-bottom:32px; }
+    .intro-icon {
+      width:64px; height:64px; margin:0 auto 24px;
+      display:grid; place-items:center; border-radius:24px;
+      background:linear-gradient(135deg,#262626,#0a0a0a); color:#fff; font-size:28px;
     }
-    .brand::before {
-      content: '';
-      position: absolute; inset: 0; z-index: -2;
-      background-image:
-        linear-gradient(to right, rgba(255,255,255,.045) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,.045) 1px, transparent 1px);
-      background-size: 56px 56px;
-      mask-image: radial-gradient(ellipse 80% 70% at 30% 30%, #000 10%, transparent 80%);
-    }
-    .brand::after {
-      content: '';
-      position: absolute; z-index: -1;
-      width: 680px; height: 680px; top: -220px; left: -180px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.22), rgba(16,185,129,.08) 45%, transparent 70%);
-      filter: blur(30px);
-    }
-    .logo { display: inline-flex; align-items: center; gap: 10px; width: fit-content; }
-    .logo-mark {
-      width: 32px; height: 32px; border-radius: 9px; background: var(--grad);
-      display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 6px;
-      box-shadow: 0 5px 16px rgba(59,130,246,.28);
-    }
-    .logo-mark span { display: block; height: 2px; border-radius: 2px; background: #fff; }
-    .logo-mark span:nth-child(2) { width: 68%; opacity: .85; }
-    .logo-mark span:nth-child(3) { width: 84%; opacity: .7; }
-    .logo-word { font-size: 21px; font-weight: 750; letter-spacing: -.065em; }
-    .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .intro h1 { font-size:36px; font-weight:700; letter-spacing:-.035em; line-height:1.1; margin-bottom:12px; }
+    .intro p { font-size:18px; font-weight:300; color:var(--muted); }
 
-    .brand h1 {
-      max-width: 520px;
-      font-size: clamp(2.4rem, 4.2vw, 4.1rem);
-      line-height: .98;
-      letter-spacing: -.065em;
-      font-weight: 740;
+    .panel { padding:32px; border-radius:24px; background:var(--tint); }
+    form { display:flex; flex-direction:column; gap:20px; }
+    .field { display:block; }
+    .field > span { display:block; margin-bottom:8px; font-size:14px; font-weight:500; }
+    .control {
+      width:100%; height:48px; padding:0 16px;
+      border:1px solid var(--line); border-radius:12px;
+      background:var(--tint); color:var(--ink); font-size:14px; outline:none;
+      transition:border-color .25s, box-shadow .25s, background .25s;
     }
-    .brand p { max-width: 440px; margin-top: 24px; font-size: 15px; line-height: 1.65; color: #9a9a9a; }
-    .brand-points { display: flex; flex-direction: column; gap: 14px; margin-top: 38px; }
-    .brand-points span { display: flex; align-items: center; gap: 11px; font-size: 13px; color: #c4c4c4; }
-    .brand-points i {
-      width: 22px; height: 22px; flex: none; display: grid; place-items: center;
-      border-radius: 7px; background: rgba(16,185,129,.14); color: #34d399;
-      font-style: normal; font-size: 12px;
-    }
-    .brand-foot { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #6f6f6f; }
-    .brand-foot a { border-bottom: 1px solid #444; padding-bottom: 2px; color: #a3a3a3; }
-    .brand-foot a:hover { color: #fff; border-color: #fff; }
-
-    .form-side { display: flex; align-items: center; justify-content: center; padding: 48px 40px; }
-    .form-wrap { width: min(100%, 440px); }
-    .back { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #8a8a8a; margin-bottom: 40px; }
-    .back:hover { color: var(--ink); }
-    .form-head h2 { font-size: 34px; letter-spacing: -.06em; font-weight: 740; }
-    .form-head p { margin-top: 10px; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
-
-    .tabs {
-      display: flex; gap: 4px; padding: 4px; margin-top: 30px;
-      border: 1px solid var(--line); border-radius: 999px; background: #fafafa;
-    }
-    .tabs button {
-      flex: 1; padding: 10px 12px; border: 0; border-radius: 999px;
-      background: transparent; color: #8a8a8a; font-size: 12.5px; font-weight: 550;
-      transition: background .25s var(--ease), color .25s var(--ease);
-    }
-    .tabs button.is-active { background: var(--ink); color: #fff; }
-
-    form { margin-top: 26px; }
-    .field { display: block; margin-bottom: 16px; }
-    .field > span { display: block; margin-bottom: 7px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .11em; color: #9a9a9a; }
-    .field input, .field select {
-      width: 100%; padding: 14px 15px;
-      border: 1px solid #dedede; border-radius: 12px;
-      background: #fff; color: var(--ink); font-size: 13.5px; outline: none;
-      transition: border-color .25s, box-shadow .25s;
-    }
-    .field input::placeholder { color: #b5b5b5; }
-    .field input:focus, .field select:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59,130,246,.09); }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .check { display: flex; align-items: flex-start; gap: 10px; margin: 6px 0 22px; font-size: 11.5px; line-height: 1.5; color: #8a8a8a; }
-    .check input { width: 16px; height: 16px; margin: 1px 0 0; accent-color: #10b981; flex: none; }
-    .check a { border-bottom: 1px solid #c4c4c4; }
-
+    .control::placeholder { color:#a3a3a3; }
+    .control:focus { border-color:var(--ink); box-shadow:0 0 0 4px rgba(10,10,10,.06); background:#fff; }
+    select.control { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; padding-right:42px; }
+    .agree { display:flex; align-items:flex-start; gap:12px; font-size:14px; line-height:1.5; color:#525252; cursor:pointer; }
+    .agree + .agree { margin-top: -8px; }
+    .agree input { width:16px; height:16px; margin:3px 0 0; flex:none; accent-color:var(--ink); }
+    .agree a { text-decoration:underline; text-underline-offset:2px; }
     .submit {
-      width: 100%; padding: 15px 20px;
-      border: 0; border-radius: 999px;
-      background: var(--ink); color: #fff;
-      font-size: 14px; font-weight: 600;
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .25s;
+      width:100%; height:48px; border:0; border-radius:9999px;
+      background:var(--ink); color:#fff; font-size:16px; font-weight:500;
+      transition:background .25s, transform .25s cubic-bezier(.16,1,.3,1), opacity .25s;
     }
-    .submit:hover { transform: translateY(-2px); background: #292929; box-shadow: 0 14px 30px rgba(0,0,0,.16); }
-    .form-note { margin-top: 16px; text-align: center; font-size: 10.5px; color: #a3a3a3; }
-    .error { margin: -6px 0 14px; font-size: 11px; color: #dc2626; min-height: 14px; }
+    .submit:hover:not(:disabled) { background:#292929; transform:translateY(-2px); }
+    .submit:active:not(:disabled) { transform:scale(.98); }
+    .submit:disabled { opacity:.5; cursor:not-allowed; }
+    .error { margin:-8px 0 0; min-height:18px; font-size:13px; color:#dc2626; }
+    .success { display:none; text-align:center; padding:20px 0; }
+    .success.is-visible { display:block; }
+    .success h2 { font-size:24px; letter-spacing:-.04em; margin-bottom:12px; }
+    .success p { font-size:14px; line-height:1.6; color:var(--muted); }
+    .success a { display:inline-block; margin-top:24px; font-size:14px; font-weight:500; text-decoration:underline; }
+    form.is-hidden { display:none; }
 
-    .success { display: none; text-align: center; padding: 30px 0; }
-    .success.is-visible { display: block; }
-    .success-icon {
-      width: 58px; height: 58px; margin: 0 auto 22px;
-      display: grid; place-items: center; border-radius: 50%;
-      background: rgba(16,185,129,.12); color: #059669; font-size: 24px;
+    .divider { position:relative; margin:32px 0 24px; text-align:center; }
+    .divider::before { content:''; position:absolute; top:50%; left:0; right:0; border-top:1px solid var(--line); }
+    .divider span { position:relative; padding:0 16px; background:var(--tint); font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+    .google {
+      width:100%; height:48px; display:flex; align-items:center; justify-content:center; gap:12px;
+      border:2px solid var(--line); border-radius:9999px; background:#fff; color:var(--ink);
+      font-size:16px; font-weight:500; transition:background .25s, transform .25s;
     }
-    .success h3 { font-size: 26px; letter-spacing: -.05em; }
-    .success p { margin-top: 12px; font-size: 13px; line-height: 1.65; color: var(--muted); }
-    .success a { display: inline-block; margin-top: 26px; padding: 12px 20px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; font-weight: 550; }
-    .success a:hover { border-color: var(--ink); }
-    form.is-hidden { display: none; }
-
-    @media (max-width: 900px) {
-      .page { grid-template-columns: 1fr; }
-      .brand { padding: 34px 28px 44px; min-height: auto; }
-      .brand h1 { font-size: 2.4rem; margin-top: 60px; }
-      .brand-points, .brand-foot { display: none; }
-      .form-side { padding: 44px 24px 70px; }
-      .back { margin-bottom: 26px; }
-    }
-    @media (max-width: 460px) {
-      .field-row { grid-template-columns: 1fr; }
-      .form-head h2 { font-size: 29px; }
-    }
+    .google:hover { background:#fafafa; transform:scale(.98); }
+    .google svg { width:20px; height:20px; }
+    .switch { margin-top:24px; text-align:center; font-size:14px; color:var(--muted); }
+    .switch a { color:var(--ink); font-weight:500; text-decoration:underline; text-underline-offset:2px; }
   </style>
 </head>
 <body>
-  <main class="page">
-    <section class="brand">
-      <a class="logo" href="/workdo-landing/">
-        <span class="logo-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="logo-word">Work<span class="grad">Do</span></span>
-      </a>
-      <div>
-        <h1>WorkDo: бизнес <span class="grad">под контролем</span></h1>
-        <p>От кадров до финансов: сотрудники, смены, заработная плата и финансы в одной системе.</p>
-        <div class="brand-points">
-          <span><i>✓</i> Кадры, табель и зарплата связаны между собой</span>
-          <span><i>✓</i> Смены, объекты и инциденты в одном контуре</span>
-          <span><i>✓</i> Роли и аудит действий с первого дня</span>
-        </div>
+  <div class="progress" id="progress"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="/workdo-landing/">WorkDo</a>
+      <a class="back" href="/workdo-landing/">На главную</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="intro">
+        <div class="intro-icon" aria-hidden="true">✦</div>
+        <h1 id="title">Начните бесплатно</h1>
+        <p id="subtitle">Создайте аккаунт за 2 минуты</p>
       </div>
-      <div class="brand-foot"><span>© 2026 WorkDo. Все права защищены.</span><a href="/workdo-landing/">На главную</a></div>
-    </section>
 
-    <section class="form-side">
-      <div class="form-wrap">
-        <a class="back" href="/workdo-landing/">← Вернуться на сайт</a>
-        <div class="form-head">
-          <h2>Создайте аккаунт</h2>
-          <p>Начните с компании и сотрудников. Остальные модули подключите, когда понадобятся.</p>
-        </div>
-        <div class="tabs" role="tablist">
-          <button class="is-active" data-mode="register" role="tab" aria-selected="true">Регистрация</button>
-          <button data-mode="login" role="tab" aria-selected="false">Вход</button>
-        </div>
-
-        <form id="auth-form" novalidate>
+      <div class="panel">
+        <form id="form" novalidate>
           <div class="error" id="error" role="alert"></div>
-          <div class="field-row" id="name-row">
-            <label class="field"><span>Имя</span><input name="name" autocomplete="given-name" placeholder="Глеб" /></label>
-            <label class="field"><span>Фамилия</span><input name="lastname" autocomplete="family-name" placeholder="Токарь" /></label>
-          </div>
-          <label class="field"><span>Рабочая почта</span><input name="email" type="email" autocomplete="email" placeholder="you@company.ru" required /></label>
-          <label class="field"><span>Пароль</span><input name="password" type="password" autocomplete="new-password" placeholder="Не менее 8 символов" required minlength="8" /></label>
-          <div class="field-row" id="company-row">
-            <label class="field"><span>Компания</span><input name="company" placeholder="ЧОП «Редут»" /></label>
-            <label class="field"><span>Сотрудников</span>
-              <select name="size"><option>до 10</option><option>до 30</option><option>до 100</option><option>100+</option></select>
+          <div id="extra-fields">
+            <label class="field" style="margin-bottom:20px">
+              <span>Тип бизнеса</span>
+              <select class="control" name="vertical" required>
+                <option value="">Выберите тип бизнеса</option>
+                <option>Охранное предприятие</option>
+                <option>Клининг и уборка</option>
+                <option>Бьюти-сфера</option>
+                <option>Строительство</option>
+                <option>Яхт-клуб</option>
+                <option>Другое</option>
+              </select>
             </label>
           </div>
-          <label class="check"><input type="checkbox" id="agree" /> <span>Я принимаю <a href="/workdo-landing/#faq">условия использования</a> и <a href="/workdo-landing/#faq">политику конфиденциальности</a>.</span></label>
-          <button class="submit" type="submit"><span id="submit-label">Создать аккаунт</span> →</button>
-          <p class="form-note">Демо-страница: данные остаются в браузере и никуда не отправляются.</p>
+          <label class="field">
+            <span>Email</span>
+            <input class="control" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span>Пароль</span>
+            <input class="control" name="password" type="password" placeholder="Минимум 8 символов" autocomplete="new-password" minlength="8" required />
+          </label>
+          <label class="field" id="confirm-field">
+            <span>Подтверждение пароля</span>
+            <input class="control" name="confirm" type="password" placeholder="Повторите пароль" autocomplete="new-password" minlength="8" required />
+          </label>
+          <div id="consents">
+            <label class="agree"><input type="checkbox" id="privacy" required /><span>Я даю согласие на обработку персональных данных в соответствии с <a href="/workdo-landing/docs/#privacy">Политикой конфиденциальности</a>.</span></label>
+            <label class="agree"><input type="checkbox" id="terms" required /><span>Я принимаю условия <a href="/workdo-landing/docs/#offer">Публичной оферты</a> и <a href="/workdo-landing/docs/#terms">Пользовательского соглашения</a>.</span></label>
+          </div>
+          <button class="submit" type="submit" id="submit">Получить код на почту</button>
         </form>
 
         <div class="success" id="success">
-          <div class="success-icon">✓</div>
-          <h3>Аккаунт подготовлен</h3>
-          <p>В рабочей версии здесь начинается настройка компании: сотрудники, роли и модули. На демонстрационном лендинге форма не отправляет данные.</p>
+          <h2 id="success-title">Код отправлен</h2>
+          <p id="success-text">На демонстрационном лендинге данные не отправляются. В рабочей версии здесь начинается настройка компании.</p>
           <a href="/workdo-landing/">Вернуться на главную</a>
         </div>
+
+        <div class="divider"><span id="divider-text">Или зарегистрируйтесь через</span></div>
+        <button class="google" type="button" id="google">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.97 0 12c0 2.03.45 3.84 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Продолжить с Google</span>
+        </button>
       </div>
-    </section>
+
+      <p class="switch" id="switch"><span>Уже есть аккаунт?</span> <a href="/workdo-landing/register/#login">Войти</a></p>
+    </div>
   </main>
 
   <script>
-    const form = document.getElementById('auth-form');
+    const form = document.getElementById('form');
     const error = document.getElementById('error');
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+    const submit = document.getElementById('submit');
+    const switchLine = document.getElementById('switch');
+    const extra = document.getElementById('extra-fields');
+    const confirmField = document.getElementById('confirm-field');
+    const consents = document.getElementById('consents');
+    const divider = document.getElementById('divider-text');
+    const googleText = document.querySelector('#google span');
     const success = document.getElementById('success');
-    const submitLabel = document.getElementById('submit-label');
-    const nameRow = document.getElementById('name-row');
-    const companyRow = document.getElementById('company-row');
-    const agree = document.getElementById('agree');
+    const successTitle = document.getElementById('success-title');
+    const successText = document.getElementById('success-text');
     let mode = 'register';
 
-    document.querySelectorAll('.tabs button').forEach((button) => {
-      button.addEventListener('click', () => {
-        mode = button.dataset.mode;
-        document.querySelectorAll('.tabs button').forEach((b) => {
-          const active = b === button;
-          b.classList.toggle('is-active', active);
-          b.setAttribute('aria-selected', String(active));
-        });
-        nameRow.style.display = mode === 'register' ? '' : 'none';
-        companyRow.style.display = mode === 'register' ? '' : 'none';
-        agree.parentElement.style.display = mode === 'register' ? '' : 'none';
-        submitLabel.textContent = mode === 'register' ? 'Создать аккаунт' : 'Войти';
-        error.textContent = '';
-        form.querySelector('[name=email]').focus();
-      });
-    });
+    function applyMode() {
+      mode = location.hash === '#login' ? 'login' : 'register';
+      const login = mode === 'login';
+      title.textContent = login ? 'С возвращением' : 'Начните бесплатно';
+      subtitle.textContent = login ? 'Войдите в свой аккаунт' : 'Создайте аккаунт за 2 минуты';
+      submit.textContent = login ? 'Войти' : 'Получить код на почту';
+      extra.style.display = login ? 'none' : '';
+      confirmField.style.display = login ? 'none' : '';
+      consents.style.display = login ? 'none' : '';
+      divider.textContent = login ? 'Или войдите через' : 'Или зарегистрируйтесь через';
+      googleText.textContent = login ? 'Войти с Google' : 'Продолжить с Google';
+      switchLine.innerHTML = login
+        ? '<span>Нет аккаунта?</span> <a href="/workdo-landing/register/">Зарегистрироваться</a>'
+        : '<span>Уже есть аккаунт?</span> <a href="/workdo-landing/register/#login">Войти</a>';
+      form.classList.remove('is-hidden');
+      success.classList.remove('is-visible');
+      error.textContent = '';
+      form.querySelector('[name=email]').required = true;
+      form.querySelector('[name=password]').required = true;
+      form.querySelector('[name=confirm]').required = !login;
+      form.querySelector('[name=vertical]').required = !login;
+      document.getElementById('privacy').required = !login;
+      document.getElementById('terms').required = !login;
+    }
+
+    window.addEventListener('hashchange', applyMode);
+    applyMode();
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       error.textContent = '';
       const email = form.querySelector('[name=email]');
       const password = form.querySelector('[name=password]');
-      if (!email.checkValidity() || !/^\S+@\S+\.\S+$/.test(email.value)) {
-        error.textContent = 'Укажите корректный адрес почты.';
-        email.focus();
-        return;
-      }
-      if (password.value.length < 8) {
-        error.textContent = 'Пароль должен содержать не менее 8 символов.';
-        password.focus();
-        return;
-      }
-      if (mode === 'register' && !agree.checked) {
-        error.textContent = 'Подтвердите согласие с условиями использования.';
-        agree.focus();
-        return;
+      const confirm = form.querySelector('[name=confirm]');
+      if (!/^\S+@\S+\.\S+$/.test(email.value)) { error.textContent = 'Укажите корректный адрес почты.'; email.focus(); return; }
+      if (password.value.length < 8) { error.textContent = 'Пароль должен содержать не менее 8 символов.'; password.focus(); return; }
+      if (mode === 'register') {
+        if (confirm.value !== password.value) { error.textContent = 'Пароли не совпадают.'; confirm.focus(); return; }
+        if (!document.getElementById('privacy').checked || !document.getElementById('terms').checked) {
+          error.textContent = 'Подтвердите согласие с документами.'; return;
+        }
       }
       form.classList.add('is-hidden');
+      successTitle.textContent = mode === 'login' ? 'Вход выполнен' : 'Код отправлен';
+      successText.textContent = 'Демонстрационный лендинг: данные остаются в браузере и никуда не отправляются.';
       success.classList.add('is-visible');
-      success.querySelector('h3').textContent = mode === 'register' ? 'Аккаунт подготовлен' : 'Вход выполнен';
     });
+
+    document.getElementById('google').addEventListener('click', () => {
+      form.classList.add('is-hidden');
+      successTitle.textContent = 'Вход через Google';
+      successText.textContent = 'В рабочей версии здесь открывается авторизация Google. На демо-лендинге вход не выполняется.';
+      success.classList.add('is-visible');
+    });
+
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      document.getElementById('progress').style.transform = 'scaleX(' + (h > 0 ? window.scrollY / h : 0) + ')';
+    }, { passive:true });
   </script>
 </body>
 </html>
