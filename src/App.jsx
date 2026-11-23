@@ -4,7 +4,7 @@ import {
   ArrowRight, ArrowUpRight, CalendarRange, ChartNoAxesCombined, Check, ChevronDown,
   ChevronLeft, CircleCheck, Clock3, Database, FileSpreadsheet, KeyRound, LayoutDashboard, Laptop,
   LockKeyhole, MapPinned, Menu, Plus, ReceiptText, ScrollText, ShieldCheck,
-  Siren, Sparkles, UsersRound, X, Download, Play, ChevronRight, Minus,
+  Siren, Sparkles, UsersRound, X, Download, Play, ChevronRight, Minus, Search,
 } from 'lucide-react';
 import {
   NAV, STATS, PAINS, MODULES, STEPS, WEEKS, ROLES, VERTICALS,
@@ -1066,6 +1066,10 @@ function Verticals() {
           title={<>Одна платформа, <span className="gradient-text">разные процессы</span></>}
           note="Основа общая: люди, смены, деньги. Отраслевые справочники подключаются модулями — без второй системы и второго аккаунта."
         />
+        <div className="vertical-promise">
+          <span className="vertical-promise__icon"><Sparkles size={18} /></span>
+          <p>Неважно, какой у вас бизнес. <b>Важно, что люди, смены и деньги — под контролем.</b></p>
+        </div>
         <div className="vertical-tabs">
           {VERTICALS.map((v) => <button key={v.id} className={active === v.id ? 'is-active' : ''} onClick={() => setActive(v.id)}>{v.tag}</button>)}
         </div>
@@ -1079,13 +1083,16 @@ function Verticals() {
             </div>
             <div className="vertical-card__art">
               <div className="vertical-orbit" />
-              {current.modules.map((m, i) => <span key={m} style={{ '--i': i }}>{m}</span>)}
+              <div className="vertical-modules">
+                {current.modules.map((m, i) => <span key={m}><Check size={13} />{m}</span>)}
+              </div>
+              <span className="vertical-art-badge mono">{current.modules.length} модуля подключено</span>
             </div>
           </motion.div>
         </AnimatePresence>
         <div className="vertical-grid">
           {VERTICALS.map((v, i) => (
-            <Reveal key={v.id} delay={i * 0.06} className="vertical-mini" onClick={() => setActive(v.id)}>
+            <Reveal key={v.id} delay={i * 0.06} className={`vertical-mini ${active === v.id ? 'is-active' : ''}`} onClick={() => setActive(v.id)}>
               <span className="mono">0{i + 1}</span><b>{v.name}</b><small>{v.modules.join(' · ')}</small>
             </Reveal>
           ))}
@@ -1107,6 +1114,7 @@ function Security() {
         <div className="trust-grid">
           {TRUST.map((t, i) => (
             <Reveal className="trust-card" key={t.title} delay={i * 0.07}>
+              <span className="trust-index mono">0{i + 1}</span>
               <span className="trust-icon"><Icon name={t.icon} size={22} /></span>
               <h3>{t.title}</h3>
               <p>{t.text}</p>
@@ -1115,7 +1123,10 @@ function Security() {
           ))}
         </div>
         <Reveal className="audit-log" delay={0.15}>
-          <div className="audit-log__head"><span><ScrollText size={16} /> аудит-лог · фрагмент</span><em><LockKeyhole size={13} /> только для owner и admin</em></div>
+          <div className="audit-log__head">
+            <span><i className="audit-dots"><b /><b /><b /></i><ScrollText size={16} /> аудит-лог · фрагмент</span>
+            <em><span className="audit-live"><i /> live</span><LockKeyhole size={13} /> только для owner и admin</em>
+          </div>
           <div className="audit-log__table">
             <div className="audit-log__row audit-log__row--head"><span>дата</span><span>время</span><span>кто</span><span>поле</span><span>изменение</span></div>
             {AUDIT.map((a, i) => (
@@ -1143,8 +1154,14 @@ function Pricing({ onDemo }) {
           note="Цены для охранного предприятия. Для других отраслей — свои тарифы; основа и подход те же."
         >
           <div className="billing-toggle">
-            <button className={!yearly ? 'is-active' : ''} onClick={() => setYearly(false)}>Помесячно</button>
-            <button className={yearly ? 'is-active' : ''} onClick={() => setYearly(true)}>За год <em>−15%</em></button>
+            <button className={!yearly ? 'is-active' : ''} onClick={() => setYearly(false)}>
+              {!yearly && <motion.span layoutId="billing-pill" className="billing-pill" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
+              <span>Помесячно</span>
+            </button>
+            <button className={yearly ? 'is-active' : ''} onClick={() => setYearly(true)}>
+              {yearly && <motion.span layoutId="billing-pill" className="billing-pill" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
+              <span>За год <em>−15%</em></span>
+            </button>
           </div>
         </SectionHead>
         <div className="plans-grid">
@@ -1155,7 +1172,17 @@ function Pricing({ onDemo }) {
                 {p.popular && <span className="plan-badge">чаще всего</span>}
                 <span className="plan-name mono">{p.name}</span>
                 <p className="plan-note">{p.note}</p>
-                <div className="plan-price"><b>{fmt(price)}</b><span>₽/мес</span></div>
+                <div className="plan-price">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.b key={price} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28, ease: EASE }}>
+                      {fmt(price)}
+                    </motion.b>
+                  </AnimatePresence>
+                  <span>₽/мес</span>
+                  <AnimatePresence>
+                    {yearly && <motion.em key="save" className="plan-save" initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.7 }} transition={{ duration: 0.25, ease: EASE }}>−15%</motion.em>}
+                  </AnimatePresence>
+                </div>
                 <div className="plan-limit mono">{p.limit}</div>
                 <ul>{p.features.map((f) => <li key={f}><Check size={14} /> {f}</li>)}</ul>
                 <button className={`btn ${p.popular ? 'btn--dark' : 'btn--outline'} btn--full`} onClick={onDemo}>
@@ -1172,6 +1199,9 @@ function Pricing({ onDemo }) {
 }
 
 function Flows() {
+  const [active, setActive] = useState(0);
+  const flow = FLOWS[active];
+  const go = (n) => setActive((n + FLOWS.length) % FLOWS.length);
   return (
     <section className="section flows" id="flows">
       <div className="container">
@@ -1180,19 +1210,48 @@ function Flows() {
           title={<>Три операции, которые <span className="gradient-text">меняют день</span></>}
           note="Не абстрактная «автоматизация», а конкретные цепочки: смена → табель → зарплата, инцидент → причина → отчёт, месяц → план → факт."
         />
-        <div className="flow-grid">
-          {FLOWS.map((f, i) => (
-            <Reveal className="flow-card" key={f.num} delay={i * 0.08}>
-              <span className="mono flow-num">{f.num}</span>
-              <h3>{f.title}</h3>
-              <p>{f.text}</p>
-              <div className="flow-chain">
-                {f.chain.map((c, j) => (
-                  <span key={c}><i>{j + 1}</i>{c}{j < f.chain.length - 1 && <ArrowRight size={14} />}</span>
+        <div className="flow-carousel">
+          <div className="flow-tabs" role="tablist" aria-label="Сценарии работы">
+            {FLOWS.map((f, i) => (
+              <button key={f.num} type="button" role="tab" aria-selected={i === active} className={`flow-tab ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)}>
+                <span className="mono">{f.num}</span>{f.chain.join(' → ')}
+              </button>
+            ))}
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={flow.num}
+              className="flow-slide"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <div className="flow-slide__copy">
+                <span className="flow-slide__label mono">СЦЕНАРИЙ {flow.num}</span>
+                <h3>{flow.title}</h3>
+                <p>{flow.text}</p>
+              </div>
+              <div className="flow-nodes">
+                {flow.chain.map((c, j) => (
+                  <div className="flow-node" key={c}>
+                    <span className="mono">0{j + 1}</span>
+                    <b>{c}</b>
+                  </div>
                 ))}
               </div>
-            </Reveal>
-          ))}
+            </motion.div>
+          </AnimatePresence>
+          <div className="flow-nav">
+            <button type="button" className="flow-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущий сценарий"><ChevronLeft size={18} /></button>
+            <div className="flow-dots">
+              {FLOWS.map((f, i) => (
+                <button key={f.num} type="button" className={`flow-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Сценарий ${i + 1}`} />
+              ))}
+            </div>
+            <span className="flow-count">{String(active + 1).padStart(2, '0')} / {String(FLOWS.length).padStart(2, '0')}</span>
+            <button type="button" className="flow-nav__btn" onClick={() => go(active + 1)} aria-label="Следующий сценарий"><ChevronRight size={18} /></button>
+          </div>
         </div>
       </div>
     </section>
@@ -1200,20 +1259,53 @@ function Flows() {
 }
 
 function Launch() {
+  const [active, setActive] = useState(0);
+  const week = WEEKS[active];
+  const go = (n) => setActive((n + WEEKS.length) % WEEKS.length);
   return (
     <section className="section section--tint launch" id="launch">
-      <div className="container launch-grid">
+      <div className="container">
         <SectionHead
           label="10 · запуск"
           title={<>Четыре недели — <span className="gradient-text">и без Excel</span></>}
           note="Не «внедрение на полгода». Первый месяц — это перенос, настройка и обучение. Дальше система работает вместе с вами."
         />
-        <div className="launch-list">
-          {WEEKS.map((w, i) => (
-            <Reveal className="launch-row" key={w.week} delay={i * 0.06}>
-              <span className="mono">{w.week}</span><b>{w.title}</b><p>{w.text}</p><span className="launch-index mono">0{i + 1}</span>
-            </Reveal>
-          ))}
+        <div className="launch-carousel">
+          <div className="launch-track" role="tablist" aria-label="Недели запуска">
+            {WEEKS.map((w, i) => (
+              <button key={w.week} type="button" role="tab" aria-selected={i === active} className={`launch-track__item ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)}>
+                <span className="mono">{w.week}</span>
+                <b>{w.title}</b>
+              </button>
+            ))}
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={week.week}
+              className="launch-slide"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <span className="launch-slide__num mono">{String(active + 1).padStart(2, '0')}</span>
+              <div className="launch-slide__copy">
+                <span className="launch-slide__label mono">{week.week}</span>
+                <h3>{week.title}</h3>
+                <p>{week.text}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          <div className="launch-nav">
+            <button type="button" className="launch-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущая неделя"><ChevronLeft size={18} /></button>
+            <div className="launch-dots">
+              {WEEKS.map((w, i) => (
+                <button key={w.week} type="button" className={`launch-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Неделя ${i + 1}`} />
+              ))}
+            </div>
+            <span className="launch-count">{String(active + 1).padStart(2, '0')} / {String(WEEKS.length).padStart(2, '0')}</span>
+            <button type="button" className="launch-nav__btn" onClick={() => go(active + 1)} aria-label="Следующая неделя"><ChevronRight size={18} /></button>
+          </div>
         </div>
       </div>
     </section>
@@ -1222,6 +1314,8 @@ function Launch() {
 
 function Faq() {
   const [open, setOpen] = useState(0);
+  const [query, setQuery] = useState('');
+  const items = FAQ.map((item, i) => ({ ...item, i })).filter((item) => `${item.q} ${item.a}`.toLowerCase().includes(query.trim().toLowerCase()));
   return (
     <section className="section faq" id="faq">
       <div className="container faq-grid">
@@ -1231,13 +1325,20 @@ function Faq() {
           note="Если чего-то не хватает — откройте демо или напишите. Отвечаем по делу, без «запросите коммерческое предложение»."
         />
         <div className="faq-list">
-          {FAQ.map((item, i) => (
-            <div className={`faq-item ${open === i ? 'is-open' : ''}`} key={item.q}>
-              <button onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
-                <span>{item.q}</span><span className="faq-icon">{open === i ? <Minus size={17} /> : <Plus size={17} />}</span>
+          <div className="faq-search">
+            <Search size={17} />
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Найти ответ на вопрос" aria-label="Поиск по вопросам" />
+            <span className="mono">{String(items.length).padStart(2, '0')}</span>
+          </div>
+          {items.map((item) => (
+            <div className={`faq-item ${open === item.i ? 'is-open' : ''}`} key={item.q}>
+              <button onClick={() => setOpen(open === item.i ? -1 : item.i)} aria-expanded={open === item.i}>
+                <span className="faq-item__num mono">{String(item.i + 1).padStart(2, '0')}</span>
+                <span className="faq-item__q">{item.q}</span>
+                <span className="faq-icon">{open === item.i ? <Minus size={17} /> : <Plus size={17} />}</span>
               </button>
               <AnimatePresence initial={false}>
-                {open === i && (
+                {open === item.i && (
                   <motion.div className="faq-answer" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: EASE }}>
                     <p>{item.a}</p>
                   </motion.div>
@@ -1245,6 +1346,7 @@ function Faq() {
               </AnimatePresence>
             </div>
           ))}
+          {items.length === 0 && <div className="faq-empty">Ничего не нашли. Попробуйте другой запрос или напишите нам.</div>}
         </div>
       </div>
     </section>
@@ -1311,23 +1413,22 @@ function Footer({ onDemo }) {
   return (
     <footer className="footer">
       <div className="container footer-workdo">
-        <div className="footer-workdo__head">
-          <div>
-            <Logo />
-            <p>WorkDo: бизнес под контролем</p>
-            <small>От кадров до финансов: сотрудники, смены, заработная плата и финансы в одной системе.</small>
-          </div>
-        </div>
         <div className="footer-workdo__grid">
+          <div className="footer-workdo__brand">
+            <Logo />
+            <p><span>WorkDo: бизнес под контролем</span>От кадров до финансов: сотрудники, смены, заработная плата и финансы в одной системе.</p>
+          </div>
           {groups.map((group) => (
             <div key={group.title}>
-              <h4>{group.title}</h4>
-              {group.links.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
+              <h4 className="cursor-gradient">{group.title}</h4>
+              <ul>
+                {group.links.map(([label, href]) => <li key={label}><a href={href}>{label}</a></li>)}
+              </ul>
             </div>
           ))}
         </div>
         <div className="footer-workdo__bottom">
-          <span>© 2026 WorkDo. Все права защищены.</span>
+          <p>© 2026 WorkDo. Все права защищены.</p>
           <div>
             <a href="mailto:info@workdo.ru">info@workdo.ru</a>
             <i>|</i>
