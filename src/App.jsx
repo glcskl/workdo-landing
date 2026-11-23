@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight, ArrowUpRight, CalendarRange, ChartNoAxesCombined, Check, ChevronDown,
-  CircleCheck, Clock3, Database, FileSpreadsheet, KeyRound, LayoutDashboard, Laptop,
+  ChevronLeft, CircleCheck, Clock3, Database, FileSpreadsheet, KeyRound, LayoutDashboard, Laptop,
   LockKeyhole, MapPinned, Menu, Plus, ReceiptText, ScrollText, ShieldCheck,
   Siren, Sparkles, UsersRound, X, Download, Play, ChevronRight, Minus,
 } from 'lucide-react';
@@ -18,12 +18,43 @@ const ICONS = {
   Clock3, Sparkles, LockKeyhole,
 };
 
+/* Moves the gradient focus point to the cursor, exactly like workdo.ru. */
+function useCursorGradient() {
+  useEffect(() => {
+    if (!window.matchMedia('(pointer: fine)').matches) return undefined;
+    let el = null;
+    let x = 0;
+    let y = 0;
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      el.style.setProperty('--gx', `${((x - rect.left) / rect.width) * 100}%`);
+      el.style.setProperty('--gy', `${((y - rect.top) / rect.height) * 100}%`);
+    };
+    const onMove = (event) => {
+      const target = event.target?.closest?.('.cursor-gradient');
+      if (!target) return;
+      el = target;
+      x = event.clientX;
+      y = event.clientY;
+      if (!frame) frame = requestAnimationFrame(paint);
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+}
+
 function Icon({ name, size = 20, ...rest }) {
   const C = ICONS[name] || Sparkles;
   return <C size={size} strokeWidth={1.7} {...rest} />;
 }
 
-const STAT_ICONS = ['LayoutDashboard', 'ShieldCheck', 'FileSpreadsheet', 'KeyRound'];
 const EASE = [0.16, 1, 0.3, 1];
 const REGISTER = '/workdo-landing/register/';
 const LOGIN = '/workdo-landing/register/#login';
@@ -99,7 +130,10 @@ function Header({ onDemo }) {
         <Logo />
         <div className="header-actions">
           <a className="header-login" href={LOGIN}>Войти</a>
-          <a className="btn btn--dark btn--sm" href={REGISTER}>Начать бесплатно <ArrowRight size={15} /></a>
+          <a className="btn btn--dark btn--sm" href={REGISTER}>
+            <span className="btn-full">Начать бесплатно</span>
+            <span className="btn-short">Начать</span>
+          </a>
           <button className="menu-toggle" onClick={() => setOpen(!open)} aria-label={open ? 'Закрыть меню' : 'Открыть меню'}>
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -199,6 +233,29 @@ function MiniDashboard() {
               <div className="mini-tag">БЦ «Север» · смена 08:00 <em>в работе</em></div>
             </div>
           </div>
+          <div className="window-flow">
+            <div className="window-flow__head"><span>Одна цепочка за день</span><small>смена → табель → зарплата</small></div>
+            <div className="window-flow__steps">
+              <div className="window-flow__step">
+                <small>01 · СМЕНА</small>
+                <b>Смена закрыта</b>
+                <em>Пост №2 · 08:00–20:00</em>
+                <strong>Игорь Соколов</strong>
+              </div>
+              <div className="window-flow__step">
+                <small>02 · ТАБЕЛЬ</small>
+                <b>Табель обновлён</b>
+                <em>ноябрь · 168 часов</em>
+                <strong>+ 32 ч ночных</strong>
+              </div>
+              <div className="window-flow__step">
+                <small>03 · ЗАРПЛАТА</small>
+                <b>Зарплата рассчитана</b>
+                <em>оклад + ночные + премия</em>
+                <strong>86 400 ₽</strong>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <motion.div
@@ -224,25 +281,26 @@ function Hero() {
     <section className="hero hero--workdo" id="top">
       <div className="hero-grid" aria-hidden="true" />
       <div className="container hero-inner">
-        <motion.div className="hero-badge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: EASE }}>
-          <span className="pulse-dot" /> Система управления бизнесом
+        <motion.div className="badge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: EASE }}>
+          <span className="badge-dot" />Система управления бизнесом
         </motion.div>
-        <h1 className="hero-title">
-          <motion.span initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }}>
+        <h1>
+          <motion.span className="line ink-gradient" initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }}>
             WorkDo:
           </motion.span>
-          <motion.span className="gradient-text animated-gradient" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.9, ease: EASE }}>
+          <br />
+          <motion.span className="line cursor-gradient" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.9, ease: EASE }}>
             бизнес под контролем
           </motion.span>
         </h1>
         <motion.p className="hero-sub" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.7, ease: EASE }}>
           От кадров до финансов: сотрудники, смены, заработная плата и финансы в одной системе. Отраслевые модули настраиваются под ваш бизнес.
         </motion.p>
-        <motion.div className="hero-actions" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.7, ease: EASE }}>
-          <a className="btn btn--dark btn--lg" href={REGISTER}>Начать бесплатно <ArrowRight size={17} /></a>
+        <motion.div className="hero-cta" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.7, ease: EASE }}>
+          <a className="btn btn-dark" href={REGISTER}>Начать бесплатно <ArrowRight size={14} /></a>
         </motion.div>
       </div>
-      <div className="scroll-cue" aria-hidden="true"><span /><small>листайте</small></div>
+      <div className="scroll-mouse" aria-hidden="true"><span /></div>
     </section>
   );
 }
@@ -260,8 +318,7 @@ function StatsSection() {
         <div className="stats-grid">
           {STATS.map((s, i) => (
             <Reveal key={s.label} className="stat" delay={i * 0.08}>
-              <span className="stat-icon"><Icon name={STAT_ICONS[i]} size={26} /></span>
-              <div className="stat-value gradient-text"><Counter to={s.value} /></div>
+              <div className="stat-value gradient-text"><span className="stat-num">{s.value}</span></div>
               <div className="stat-label">{s.label}</div>
               <div className="stat-note">{s.note}</div>
             </Reveal>
@@ -273,6 +330,10 @@ function StatsSection() {
 }
 
 function Problems() {
+  const [active, setActive] = useState(0);
+  const pain = PAINS[active];
+  const go = (n) => setActive((n + PAINS.length) % PAINS.length);
+
   return (
     <section className="section problems" id="problem">
       <div className="container">
@@ -282,23 +343,61 @@ function Problems() {
           title={<>Бизнес живёт в <span className="gradient-text">семи файлах</span></>}
           note="И в каждом — своя версия правды. Пока данные расходятся по таблицам и чатам, управление превращается в пересказ."
         />
-        <div className="compare-head">
-          <span>КАК ОБЫЧНО</span><span>КАК В WORKDO</span>
-        </div>
-        <div className="compare-grid">
-          {PAINS.map((p, i) => (
-            <Reveal className="compare-row" key={p.old} delay={i * 0.07}>
-              <div className="compare-card compare-card--old">
-                <span className="compare-mark"><X size={15} /></span>
-                <div><h3>{p.old}</h3><p>{p.oldText}</p></div>
+        <div className="compare-carousel">
+          <div className="compare-tabs" role="tablist" aria-label="Примеры проблем">
+            {PAINS.map((item, i) => (
+              <button
+                key={item.short}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                className={`compare-tab ${i === active ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
+              >
+                <span>{String(i + 1).padStart(2, '0')}</span>{item.short}
+              </button>
+            ))}
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              className="compare-slide"
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <div className="compare-head">
+                <span className="compare-label compare-label--old">КАК ОБЫЧНО</span>
+                <span className="compare-label compare-label--new">КАК В WORKDO</span>
               </div>
-              <div className="compare-arrow"><ArrowRight size={18} /></div>
-              <div className="compare-card compare-card--new">
-                <span className="compare-mark"><Check size={15} /></span>
-                <div><h3>{p.now}</h3><p>{p.nowText}</p></div>
+              <div className="compare-row">
+                <div className="compare-card compare-card--old">
+                  <span className="compare-mark"><X size={15} /></span>
+                  <div><h3>{pain.old}</h3><p>{pain.oldText}</p></div>
+                </div>
+                <div className="compare-arrow"><ArrowRight size={18} /></div>
+                <div className="compare-card compare-card--new">
+                  <span className="compare-mark"><Check size={15} /></span>
+                  <div><h3>{pain.now}</h3><p>{pain.nowText}</p></div>
+                </div>
               </div>
-            </Reveal>
-          ))}
+            </motion.div>
+          </AnimatePresence>
+          <div className="compare-nav">
+            <button type="button" className="compare-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущий пример">
+              <ChevronLeft size={18} />
+            </button>
+            <div className="compare-dots">
+              {PAINS.map((item, i) => (
+                <button key={item.short} type="button" className={`compare-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Пример ${i + 1}`} />
+              ))}
+            </div>
+            <span className="compare-count">{String(active + 1).padStart(2, '0')} / {String(PAINS.length).padStart(2, '0')}</span>
+            <button type="button" className="compare-nav__btn" onClick={() => go(active + 1)} aria-label="Следующий пример">
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -738,7 +837,13 @@ function DemoSection({ onDemo }) {
 
 function Modules() {
   const [filter, setFilter] = useState('Все');
+  const [active, setActive] = useState(0);
   const list = filter === 'Все' ? MODULES : MODULES.filter((m) => m.kind === filter);
+  const index = Math.min(active, list.length - 1);
+  const m = list[index];
+  const go = (n) => setActive((n + list.length) % list.length);
+  const changeFilter = (f) => { setFilter(f); setActive(0); };
+
   return (
     <section className="section modules" id="modules">
       <div className="container">
@@ -749,36 +854,60 @@ function Modules() {
         >
           <div className="filter-row">
             {['Все', 'Основа', 'Модуль'].map((f) => (
-              <button key={f} className={filter === f ? 'is-active' : ''} onClick={() => setFilter(f)}>{f === 'Все' ? 'Все разделы' : f === 'Основа' ? 'Основа' : 'Модули'}</button>
+              <button key={f} className={filter === f ? 'is-active' : ''} onClick={() => changeFilter(f)}>{f === 'Все' ? 'Все разделы' : f === 'Основа' ? 'Основа' : 'Модули'}</button>
             ))}
           </div>
         </SectionHead>
-        <motion.div className="module-grid" layout>
-          <AnimatePresence mode="popLayout">
-            {list.map((m, i) => (
-              <motion.article
-                layout
-                key={m.id}
-                className="module-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.4, delay: i * 0.035, ease: EASE }}
-                whileHover={{ y: -6 }}
+        <div className="module-carousel">
+          <div className="module-tabs" role="tablist" aria-label="Разделы системы">
+            {list.map((item, i) => (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                className={`module-tab ${i === index ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
               >
-                <div className="module-card__top">
-                  <span className="module-icon"><Icon name={m.icon} size={22} /></span>
-                  <span className="module-num mono">{m.num}</span>
+                <span>{item.num}</span>{item.label}
+              </button>
+            ))}
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.article
+              key={m.id}
+              className="module-slide"
+              initial={{ opacity: 0, x: 28 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -28 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <div className="module-slide__main">
+                <div className="module-slide__top">
+                  <span className="module-icon"><Icon name={m.icon} size={24} /></span>
+                  <span className="module-kind mono">{m.kind} · {m.label}</span>
                 </div>
-                <div className="module-kind mono">{m.kind} · {m.label}</div>
                 <h3>{m.title}</h3>
                 <p>{m.intro}</p>
-                <ul>{m.bullets.slice(0, 3).map((b) => <li key={b}><Check size={13} /> {b}</li>)}</ul>
-                <div className="module-stat"><b>{m.stat}</b><span>{m.statLabel}</span></div>
-              </motion.article>
-            ))}
+                <ul>{m.bullets.map((b) => <li key={b}><Check size={14} /> {b}</li>)}</ul>
+              </div>
+              <div className="module-slide__aside">
+                <div className="module-slide__stat"><b>{m.stat}</b><span>{m.statLabel}</span></div>
+                <div className="module-slide__lines" aria-hidden="true"><i /><i /><i /></div>
+              </div>
+            </motion.article>
           </AnimatePresence>
-        </motion.div>
+          <div className="module-nav">
+            <button type="button" className="module-nav__btn" onClick={() => go(index - 1)} aria-label="Предыдущий раздел"><ChevronLeft size={18} /></button>
+            <div className="module-dots">
+              {list.map((item, i) => (
+                <button key={item.id} type="button" className={`module-dot ${i === index ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Раздел ${i + 1}`} />
+              ))}
+            </div>
+            <span className="module-count">{String(index + 1).padStart(2, '0')} / {String(list.length).padStart(2, '0')}</span>
+            <button type="button" className="module-nav__btn" onClick={() => go(index + 1)} aria-label="Следующий раздел"><ChevronRight size={18} /></button>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -1148,6 +1277,7 @@ function Footer({ onDemo }) {
 }
 
 export default function App() {
+  useCursorGradient();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
   const [demoOpen, setDemoOpen] = useState(false);
