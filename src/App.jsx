@@ -390,7 +390,8 @@ function Problems() {
                 className={`compare-tab ${i === active ? 'is-active' : ''}`}
                 onClick={() => setActive(i)}
               >
-                <span>{String(i + 1).padStart(2, '0')}</span>{item.short}
+                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                <b>{item.short}</b>
               </button>
             ))}
           </div>
@@ -403,20 +404,22 @@ function Problems() {
               exit={{ opacity: 0, x: -24 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
-              <div className="compare-head">
-                <span className="compare-label compare-label--old">КАК ОБЫЧНО</span>
-                <span className="compare-label compare-label--new">КАК В WORKDO</span>
-              </div>
-              <div className="compare-row">
-                <div className="compare-card compare-card--old">
+              <div className="compare-side compare-side--old">
+                <div className="compare-side__head">
                   <span className="compare-mark"><X size={15} /></span>
-                  <div><h3>{pain.old}</h3><p>{pain.oldText}</p></div>
+                  <span className="compare-side__label mono">КАК ОБЫЧНО</span>
                 </div>
-                <div className="compare-arrow"><ArrowRight size={18} /></div>
-                <div className="compare-card compare-card--new">
+                <h3>{pain.old}</h3>
+                <p>{pain.oldText}</p>
+              </div>
+              <div className="compare-mid" aria-hidden="true"><ArrowRight size={20} /></div>
+              <div className="compare-side compare-side--new">
+                <div className="compare-side__head">
                   <span className="compare-mark"><Check size={15} /></span>
-                  <div><h3>{pain.now}</h3><p>{pain.nowText}</p></div>
+                  <span className="compare-side__label mono">КАК В WORKDO</span>
                 </div>
+                <h3>{pain.now}</h3>
+                <p>{pain.nowText}</p>
               </div>
             </motion.div>
           </AnimatePresence>
