@@ -221,7 +221,7 @@ function Features() {
                 <Icon name={item.icon} />
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-                <span className="card-meta">{item.meta}<span className="card-more">Подробнее <ArrowRight size={14} /></span></span>
+                <span className="card-meta">{item.meta}<span className="card-more">Подробнее<ArrowRight size={14} /></span></span>
               </a>
             </Reveal>
           ))}
@@ -250,7 +250,7 @@ function Advantages() {
                 <span className="icon-well"><Icon name={item.icon} size={20} /></span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-                <span className="card-more">Подробнее <ArrowRight size={14} /></span>
+                <span className="card-more">Подробнее<ArrowRight size={14} /></span>
               </a>
             </Reveal>
           ))}
@@ -277,7 +277,7 @@ function Trust() {
                 <Icon name={item.icon} />
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-                <span className="card-meta">{item.meta}<span className="card-more">Подробнее <ArrowRight size={14} /></span></span>
+                <span className="card-meta">{item.meta}<span className="card-more">Подробнее<ArrowRight size={14} /></span></span>
               </a>
             </Reveal>
           ))}
