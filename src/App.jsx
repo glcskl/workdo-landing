@@ -1339,6 +1339,7 @@ function Flows() {
 function Launch() {
   const [active, setActive] = useState(0);
   const week = WEEKS[active];
+  const step = STEPS[active];
   const go = (n) => setActive((n + WEEKS.length) % WEEKS.length);
   return (
     <section className="section section--tint launch" id="launch">
@@ -1349,55 +1350,53 @@ function Launch() {
           title={<>Четыре недели — <span className="gradient-text">и без Excel</span></>}
           note="Не «внедрение на полгода». Первый месяц — это перенос, настройка и обучение. Дальше система работает вместе с вами."
         />
-        <div className="launch-board">
-          <div className="launch-board__top">
-            <div className="launch-board__meta mono"><span>ПЛАН ВНЕДРЕНИЯ</span><span>4 недели</span></div>
-            <span className="launch-board__counter mono">{String(active + 1).padStart(2, '0')} / {String(WEEKS.length).padStart(2, '0')}</span>
-          </div>
-          <div className="launch-steps" role="tablist" aria-label="Недели запуска">
+        <div className="how-carousel">
+          <div className="how-track" role="tablist" aria-label="Недели запуска">
             {WEEKS.map((w, i) => (
               <button
                 key={w.week}
                 type="button"
                 role="tab"
                 aria-selected={i === active}
-                aria-label={`${w.week} · ${w.title}`}
-                className={`launch-step ${i === active ? 'is-active' : ''} ${i < active ? 'is-done' : ''}`}
+                className={`how-track__item ${i === active ? 'is-active' : ''}`}
                 onClick={() => setActive(i)}
               >
-                <span className="launch-step__node mono">{String(i + 1).padStart(2, '0')}</span>
-                <span className="launch-step__info"><small>{w.week}</small><b>{w.title}</b></span>
+                <span className="how-track__num mono">{String(i + 1).padStart(2, '0')}</span>
+                <span className="how-track__title">{w.title}</span>
+                <span className="how-track__time mono">{w.week}</span>
               </button>
             ))}
           </div>
           <AnimatePresence mode="wait">
             <motion.div
               key={week.week}
-              className="launch-detail"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              className="how-slide"
+              initial={{ opacity: 0, x: 28 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -28 }}
               transition={{ duration: 0.35, ease: EASE }}
             >
-              <span className="launch-detail__num mono">{String(active + 1).padStart(2, '0')}</span>
-              <div className="launch-detail__body">
-                <span className="launch-detail__week mono">{week.week}</span>
+              <div className="how-slide__main">
+                <div className="how-slide__meta mono"><span>{week.week.toUpperCase()}</span><span>4 недели</span></div>
+                <h3>{week.title}</h3>
                 <p>{week.text}</p>
               </div>
-              <div className="launch-detail__progress" aria-hidden="true">
-                {WEEKS.map((w, i) => <span key={w.week} className={i <= active ? 'is-on' : ''} />)}
+              <div className="how-slide__week">
+                <span className="how-slide__week-label mono">ШАГ {step.num}</span>
+                <h4>{step.title}</h4>
+                <p>{step.text}</p>
               </div>
             </motion.div>
           </AnimatePresence>
-          <div className="launch-nav">
-            <button type="button" className="launch-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущая неделя"><ChevronLeft size={18} /></button>
-            <div className="launch-dots">
+          <div className="how-nav">
+            <button type="button" className="how-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущая неделя"><ChevronLeft size={18} /></button>
+            <div className="how-dots">
               {WEEKS.map((w, i) => (
-                <button key={w.week} type="button" className={`launch-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Неделя ${i + 1}`} />
+                <button key={w.week} type="button" className={`how-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Неделя ${i + 1}`} />
               ))}
             </div>
-            <span className="launch-count">{String(active + 1).padStart(2, '0')} / {String(WEEKS.length).padStart(2, '0')}</span>
-            <button type="button" className="launch-nav__btn" onClick={() => go(active + 1)} aria-label="Следующая неделя"><ChevronRight size={18} /></button>
+            <span className="how-count">{String(active + 1).padStart(2, '0')} / {String(WEEKS.length).padStart(2, '0')}</span>
+            <button type="button" className="how-nav__btn" onClick={() => go(active + 1)} aria-label="Следующая неделя"><ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
