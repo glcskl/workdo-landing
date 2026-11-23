@@ -914,6 +914,11 @@ function Modules() {
 }
 
 function How() {
+  const [active, setActive] = useState(0);
+  const step = STEPS[active];
+  const week = WEEKS[active];
+  const go = (n) => setActive((n + STEPS.length) % STEPS.length);
+
   return (
     <section className="section section--tint how" id="how">
       <div className="container">
@@ -922,24 +927,54 @@ function How() {
           title={<>От таблиц до рабочей системы <span className="gradient-text">за месяц</span></>}
           note="Без «интеграторов на полгода». Переносим данные, включаем нужные модули, выдаём роли и остаёмся рядом."
         />
-        <div className="steps">
-          {STEPS.map((s, i) => (
-            <Reveal className="step" key={s.num} delay={i * 0.08}>
-              <div className="step-top"><span className="step-num mono">{s.num}</span><span className="step-time mono">{s.time}</span></div>
-              <div className="step-line"><span /></div>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </Reveal>
-          ))}
-        </div>
-        <div className="week-band">
-          {WEEKS.map((w, i) => (
-            <Reveal className="week" key={w.week} delay={i * 0.06}>
-              <span className="week-label mono">{w.week}</span>
-              <h4>{w.title}</h4>
-              <p>{w.text}</p>
-            </Reveal>
-          ))}
+        <div className="how-carousel">
+          <div className="how-track" role="tablist" aria-label="Этапы внедрения">
+            {STEPS.map((s, i) => (
+              <button
+                key={s.num}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                className={`how-track__item ${i === active ? 'is-active' : ''}`}
+                onClick={() => setActive(i)}
+              >
+                <span className="how-track__num mono">{s.num}</span>
+                <span className="how-track__title">{s.title}</span>
+                <span className="how-track__time mono">{s.time}</span>
+              </button>
+            ))}
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step.num}
+              className="how-slide"
+              initial={{ opacity: 0, x: 28 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -28 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <div className="how-slide__main">
+                <div className="how-slide__meta mono"><span>ШАГ {step.num}</span><span>{step.time}</span></div>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+              <div className="how-slide__week">
+                <span className="how-slide__week-label mono">{week.week}</span>
+                <h4>{week.title}</h4>
+                <p>{week.text}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          <div className="how-nav">
+            <button type="button" className="how-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущий этап"><ChevronLeft size={18} /></button>
+            <div className="how-dots">
+              {STEPS.map((s, i) => (
+                <button key={s.num} type="button" className={`how-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Этап ${i + 1}`} />
+              ))}
+            </div>
+            <span className="how-count">{String(active + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
+            <button type="button" className="how-nav__btn" onClick={() => go(active + 1)} aria-label="Следующий этап"><ChevronRight size={18} /></button>
+          </div>
         </div>
       </div>
     </section>
@@ -969,18 +1004,48 @@ function Roles() {
           </div>
           <AnimatePresence mode="wait">
             <motion.div className="role-panel" key={active} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -18 }} transition={{ duration: 0.35, ease: EASE }}>
-              <div className="role-panel__head"><span className="mono">роль · {active}</span><span className="pulse-dot" /> доступ проверяется на сервере</div>
-              <h3>{role.name}</h3>
-              <p>{role.text}</p>
-              <div className="access-meter">
-                <div className="access-meter__top"><span>разделы системы</span><b>{role.access} из 19 доступно</b></div>
-                <div className="access-bar"><span style={{ width: `${(role.access / 19) * 100}%` }} /></div>
+              <div className="role-panel__copy">
+                <div className="role-panel__head"><span className="mono">роль · {active}</span><span className="pulse-dot" /> доступ проверяется на сервере</div>
+                <h3>{role.name}</h3>
+                <p>{role.text}</p>
+                <div className="access-meter">
+                  <div className="access-meter__top"><span>разделы системы</span><b>{role.access} из 19 доступно</b></div>
+                  <div className="access-bar"><span style={{ width: `${(role.access / 19) * 100}%` }} /></div>
+                </div>
+                <div className="access-chips">
+                  {MODULES.slice(0, 6).map((m, i) => {
+                    const visible = i < Math.round((role.access / 19) * 6);
+                    return <span key={m.id} className={visible ? 'is-open' : 'is-closed'}>{visible ? <Check size={13} /> : <LockKeyhole size={13} />} {m.label}</span>;
+                  })}
+                </div>
               </div>
-              <div className="access-chips">
-                {MODULES.slice(0, 6).map((m, i) => {
-                  const visible = i < Math.round((role.access / 19) * 6);
-                  return <span key={m.id} className={visible ? 'is-open' : 'is-closed'}>{visible ? <Check size={13} /> : <LockKeyhole size={13} />} {m.label}</span>;
-                })}
+              <div className="role-phone-wrap" aria-hidden="true">
+                <div className="phone">
+                  <span className="phone__island" />
+                  <div className="phone__screen">
+                    <div className="phone__status"><span>9:41</span><span className="phone__icons">●●● ▰</span></div>
+                    <div className="phone__app-head"><b>WorkDo</b><small>{role.name}</small></div>
+                    <div className="phone__hero">
+                      <small>ДОСТУПНО СЕЙЧАС</small>
+                      <strong>{role.access} / 19</strong>
+                      <span>разделов системы</span>
+                    </div>
+                    <div className="phone__list">
+                      {MODULES.slice(0, 5).map((m, i) => {
+                        const visible = i < Math.round((role.access / 19) * 5);
+                        return (
+                          <div key={m.id} className="phone__row">
+                            <span className={`phone__row-icon ${visible ? 'is-open' : 'is-closed'}`}>{visible ? <Check size={11} /> : <LockKeyhole size={11} />}</span>
+                            <span>{m.label}</span>
+                            <i className={visible ? 'is-open' : ''} />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="phone__tabs"><i className="is-active" /><i /><i /><i /></div>
+                  </div>
+                </div>
+                <span className="role-phone-caption">iPhone 17 Pro · экран роли</span>
               </div>
             </motion.div>
           </AnimatePresence>
