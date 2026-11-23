@@ -3743,3 +3743,81 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ─── 09 · СЦЕНАРИИ: активный шаг без чёрной подложки ─ */
 .flow-step.is-active { border-color: transparent; background: transparent; color: inherit; box-shadow: none; }
 .flow-step.is-active .flow-step__icon { border-color: transparent; background: transparent; color: inherit; }
+
+/* ─── 06 · ОТРАСЛИ: круглый селектор ───────── */
+
+.vertical-selector {
+  display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 56px; align-items: center;
+  max-width: 980px; margin: var(--sp-block) auto 36px;
+}
+.vertical-selector__terms { position: relative; display: flex; flex-direction: column; gap: 8px; }
+.vertical-selector__terms::after {
+  content: ""; position: absolute; right: -56px; top: 50%; width: 56px; height: 1px;
+  background: linear-gradient(90deg, var(--line), rgba(5, 150, 105, 0.35)); pointer-events: none;
+}
+.vertical-selector__term {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; align-items: center;
+  width: 100%; padding: 15px 18px; border: 1px solid transparent; border-radius: 14px;
+  background: transparent; color: #737373; text-align: left;
+  transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.vertical-selector__term span { font-size: 11px; color: #b5b5b5; }
+.vertical-selector__term b { font-size: 15px; font-weight: 550; letter-spacing: -0.01em; }
+.vertical-selector__term:hover { border-color: var(--line); background: #fff; color: var(--ink); transform: translateX(3px); }
+.vertical-selector__term.is-active { border-color: rgba(5, 150, 105, 0.22); background: #f3fbf8; color: var(--ink); }
+.vertical-selector__term.is-active span { color: #059669; }
+
+.vertical-dial {
+  --dial-size: 220px;
+  --dial-radius: calc(var(--dial-size) / 2);
+  position: relative; width: var(--dial-size); height: var(--dial-size); justify-self: center;
+}
+.vertical-dial::before {
+  content: ""; position: absolute; inset: 24px; border: 1px solid var(--line); border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #fff 0 58%, #fafafa 100%);
+}
+.vertical-dial__ring {
+  position: absolute; inset: 0; border: 1px dashed #d4d4d4; border-radius: 50%;
+  transform: rotate(var(--dial-rotate));
+  transition: transform .65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vertical-dial__node {
+  position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px;
+  display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%;
+  background: #fff; color: #a3a3a3;
+  transform: rotate(var(--a)) translateY(calc(-1 * var(--dial-radius))) rotate(calc(-1 * var(--a)));
+  transition: background .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.vertical-dial__node span {
+  display: block; font-size: 11px;
+  transform: rotate(calc(-1 * var(--dial-rotate)));
+  transition: transform .65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vertical-dial__node.is-active {
+  border-color: var(--ink); background: var(--ink); color: #fff;
+  box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.12), 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+.vertical-dial__center {
+  position: absolute; inset: 56px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px; text-align: center;
+}
+.vertical-dial__center span { font-size: 11px; color: #059669; }
+.vertical-dial__center b { font-size: 15px; line-height: 1.3; letter-spacing: -0.02em; }
+.vertical-dial__marker {
+  position: absolute; left: 0; top: 50%; width: 10px; height: 10px;
+  transform: translate(-50%, -50%); border: 2px solid #fff; border-radius: 50%;
+  background: #059669; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.14);
+}
+@media (max-width: 900px) {
+  .vertical-selector { grid-template-columns: 1fr; gap: 30px; }
+  .vertical-selector__terms::after { display: none; }
+  .vertical-dial { --dial-size: 190px; }
+  .vertical-dial__center { inset: 48px; }
+}
+@media (max-width: 560px) {
+  .vertical-selector__term { padding: 12px 14px; }
+  .vertical-dial { --dial-size: 170px; }
+  .vertical-dial__center { inset: 42px; }
+  .vertical-dial__center b { font-size: 13px; }
+  .vertical-dial__node { width: 32px; height: 32px; margin: -16px 0 0 -16px; }
+}

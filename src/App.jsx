@@ -1204,20 +1204,40 @@ function Verticals() {
           <span className="vertical-promise__icon"><Sparkles size={18} /></span>
           <p>Неважно, какой у вас бизнес. <b>Важно, что люди, смены и деньги — под контролем.</b></p>
         </div>
-        <div className="vertical-tabs" role="tablist" aria-label="Отрасли">
-          {VERTICALS.map((v, i) => (
-            <button
-              key={v.id}
-              type="button"
-              role="tab"
-              aria-selected={i === index}
-              className={`vertical-tab ${i === index ? 'is-active' : ''}`}
-              onClick={() => chooseVertical(v, i)}
-            >
-              <span className="vertical-tab__num mono">{String(i + 1).padStart(2, '0')}</span>
-              <span className="vertical-tab__name">{v.tag}</span>
-            </button>
-          ))}
+        <div className="vertical-selector">
+          <div className="vertical-selector__terms" role="tablist" aria-label="Отрасли">
+            {VERTICALS.map((v, i) => (
+              <button
+                key={v.id}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                className={`vertical-selector__term ${i === index ? 'is-active' : ''}`}
+                onClick={() => chooseVertical(v, i)}
+              >
+                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                <b>{v.tag}</b>
+              </button>
+            ))}
+          </div>
+          <div className="vertical-dial" style={{ '--dial-rotate': `${270 - index * 90}deg` }} aria-hidden="true">
+            <div className="vertical-dial__ring">
+              {VERTICALS.map((v, i) => (
+                <span
+                  key={v.id}
+                  className={`vertical-dial__node ${i === index ? 'is-active' : ''}`}
+                  style={{ '--a': `${i * 90}deg` }}
+                >
+                  <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                </span>
+              ))}
+            </div>
+            <div className="vertical-dial__center">
+              <span className="mono">{String(index + 1).padStart(2, '0')} / 04</span>
+              <b>{current.tag}</b>
+            </div>
+            <span className="vertical-dial__marker" />
+          </div>
         </div>
         <AnimatePresence mode="wait">
           <motion.div className="vertical-card" key={active} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease: EASE }}>
