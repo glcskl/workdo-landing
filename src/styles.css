@@ -2864,3 +2864,23 @@ ul { margin: 0; padding: 0; list-style: none; }
   .vertical-card p { font-size: 15px; }
   .vertical-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── 09 · СЦЕНАРИИ: чуть крупнее и контрастнее ─ */
+
+.flow-tabs { margin-top: var(--sp-block); }
+.flow-tab { gap: 10px; font-size: 13px; line-height: 1.45; }
+.flow-tab span { font-size: 10px; }
+.flow-slide { padding: 40px 44px; }
+.flow-slide__label { font-size: 11px; }
+.flow-slide h3 { margin: 14px 0 16px; font-size: clamp(26px, 3vw, 36px); }
+.flow-slide__copy p { font-size: 15px; line-height: 1.75; color: #525252; }
+.flow-nodes { gap: 20px; }
+.flow-node { min-height: 86px; padding: 20px 14px; border-radius: 16px; }
+.flow-node span { font-size: 11px; }
+.flow-node b { margin-top: 10px; font-size: 15px; }
+.flow-node:not(:last-child)::after { right: -21px; font-size: 20px; }
+@media (max-width: 900px) { .flow-slide { padding: 30px; } }
+@media (max-width: 560px) {
+  .flow-slide { padding: 24px 20px; }
+  .flow-node { min-height: 0; padding: 16px; }
+}
