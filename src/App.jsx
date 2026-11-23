@@ -52,15 +52,15 @@ function useCursorGradient() {
   }, []);
 }
 
-function Reveal({ children, delay = 0, y = 24, className = '', as = 'div', ...rest }) {
+function Reveal({ children, delay = 0, y = 24, blur = false, className = '', as = 'div', ...rest }) {
   const Comp = motion[as] || motion.div;
   return (
     <Comp
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y, filter: blur ? 'blur(8px)' : 'blur(0px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-8% 0px -8% 0px' }}
-      transition={{ duration: 0.7, delay, ease: EASE }}
+      transition={{ duration: blur ? 0.85 : 0.7, delay, ease: EASE }}
       {...rest}
     >
       {children}
@@ -154,21 +154,20 @@ function InkText({ children }) {
 function Hero() {
   return (
     <section className="hero" id="top">
-      <div className="hero-glow hero-glow--blue" />
-      <div className="hero-glow hero-glow--green" />
+      <div className="hero-grid" aria-hidden="true" />
       <div className="container hero-inner">
-        <Reveal className="badge" y={10}>
+        <Reveal className="badge" y={10} blur>
           <span className="badge-dot" />Система управления бизнесом
         </Reveal>
         <h1>
-          <Reveal as="span" className="line"><InkText>WorkDo:</InkText></Reveal>
+          <Reveal as="span" className="line" y={30} blur><InkText>WorkDo:</InkText></Reveal>
           <br />
-          <Reveal as="span" className="line" delay={0.1}><GradientText>бизнес под контролем</GradientText></Reveal>
+          <Reveal as="span" className="line" y={30} delay={0.1} blur><GradientText>бизнес под контролем</GradientText></Reveal>
         </h1>
-        <Reveal as="p" className="hero-sub" y={24} delay={0.16}>
+        <Reveal as="p" className="hero-sub" y={24} delay={0.18} blur>
           От кадров до финансов: сотрудники, смены, заработная плата и финансы в одной системе. Отраслевые модули настраиваются под ваш бизнес.
         </Reveal>
-        <Reveal className="hero-cta" y={20} delay={0.24}>
+        <Reveal className="hero-cta" y={20} delay={0.26} blur>
           <a className="btn btn-dark" href={REGISTER}>Начать бесплатно <ArrowRight size={17} /></a>
         </Reveal>
       </div>
@@ -181,7 +180,7 @@ function Stats() {
   return (
     <section className="section section--tint" id="system">
       <div className="container">
-        <Reveal className="head-center">
+        <Reveal className="head-center" blur>
           <div className="eyebrow">Система в цифрах</div>
           <h2 className="section-title">
             <GradientText>Решение</GradientText> <InkText>более 150-ти</InkText>
@@ -207,7 +206,7 @@ function Features() {
   return (
     <section className="section section--white" id="features">
       <div className="container">
-        <Reveal className="head-center">
+        <Reveal className="head-center" blur>
           <div className="eyebrow">Возможности</div>
           <h2 className="section-title">
             <InkText>Всё для управления</InkText>
@@ -236,7 +235,7 @@ function Advantages() {
   return (
     <section className="section section--dark" id="advantages">
       <div className="container">
-        <Reveal className="head-center">
+        <Reveal className="head-center" blur>
           <div className="eyebrow eyebrow--dark">Преимущества</div>
           <h2 className="section-title section-title--light">
             <span className="white-gradient">Почему выбирают</span>
@@ -265,7 +264,7 @@ function Trust() {
   return (
     <section className="section section--tint" id="trust">
       <div className="container">
-        <Reveal className="head-center">
+        <Reveal className="head-center" blur>
           <div className="eyebrow">Безопасность данных</div>
           <h2 className="section-title">
             <GradientText>Надёжность,</GradientText> <span className="text-ink">которой можно доверять</span>
@@ -295,7 +294,7 @@ function Pricing() {
         <div className="eyebrow eyebrow--dark">Тарифы</div>
         <h2 className="section-title section-title--light price-title"><GradientText>Прозрачные цены.</GradientText></h2>
         <p className="section-note">Весь функционал доступен на любом тарифе. Разница только в количестве сотрудников.</p>
-        <Reveal className="price" y={24}>
+        <Reveal className="price" y={24} blur>
           от 1 740 <span>₽/мес</span>
         </Reveal>
         <div className="price-more">
@@ -311,7 +310,7 @@ function FinalCta() {
     <section className="section section--dark section--cta">
       <div className="cta-glow" />
       <div className="container center relative">
-        <Reveal as="h2" className="cta-title" y={20}>
+        <Reveal as="h2" className="cta-title" y={20} blur>
           <GradientText>Подключите</GradientText> <GradientText>WorkDo</GradientText>
         </Reveal>
         <p className="cta-note">WorkDo уже работает в реальном бизнесе. Покажем, как всё устроено, настроим систему под процессы вашей компании и откроем тестовый доступ. Бесплатно.</p>
