@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import {
-  ArrowRight, ArrowUpRight, CalendarRange, ChartNoAxesCombined, Check, ChevronDown,
-  ChevronLeft, CircleCheck, Clock3, Database, FileSpreadsheet, KeyRound, LayoutDashboard, Laptop,
-  LockKeyhole, MapPinned, Menu, Plus, ReceiptText, ScrollText, ShieldCheck,
-  Siren, Sparkles, UsersRound, X, Download, Play, ChevronRight, Minus, Search,
+  Anchor, ArrowRight, ArrowUpRight, CalendarRange, ChartNoAxesCombined, Check, ChevronDown,
+  ChevronLeft, CircleCheck, ClipboardList, Clock3, Database, FileSpreadsheet, KeyRound,
+  LayoutDashboard, Laptop, LockKeyhole, MapPinned, Menu, Package, Plus, ReceiptText, ScrollText,
+  ShieldCheck, Ship, Siren, Sparkles, UsersRound, X, Download, Play, ChevronRight, Minus, Search,
   Building2, Users, Wallet,
 } from 'lucide-react';
 import {
-  NAV, STATS, PAINS, MODULES, STEPS, WEEKS, ROLES, VERTICALS,
+  NAV, STATS, PAINS, MODULES, STEPS, WEEKS, ROLES, VERTICALS, MODULE_DETAILS, STEP_DETAILS,
   TRUST, AUDIT, PLANS, FLOWS, FAQ, DEMO_NAV, DEMO_SHIFTS, DEMO_INCIDENTS,
   DEMO_MONTHS, DEMO_OBJECTS,
 } from './data.js';
@@ -29,6 +29,24 @@ const FLOW_ICONS = {
   'Месяц': CalendarRange,
   'План': ChartNoAxesCombined,
   'Факт': ChartNoAxesCombined,
+};
+
+const VERTICAL_ICONS = {
+  'Объекты': MapPinned,
+  'Посты': ShieldCheck,
+  'Патрули': Siren,
+  'Табель': Clock3,
+  'Графики': CalendarRange,
+  'Услуги': Sparkles,
+  'Клиенты': Users,
+  'Зарплата': Wallet,
+  'Экипажи': Users,
+  'Суда': Ship,
+  'Стоянки': Anchor,
+  'Заявки': ClipboardList,
+  'Сотрудники': Users,
+  'Смены': CalendarRange,
+  'Склад': Package,
 };
 
 /* Moves the gradient focus point to the cursor, exactly like workdo.ru. */
@@ -1129,8 +1147,12 @@ function Roles() {
 
 function Verticals() {
   const [active, setActive] = useState('security');
+  const [moduleIndex, setModuleIndex] = useState(0);
   const current = VERTICALS.find((v) => v.id === active);
   const index = VERTICALS.findIndex((v) => v.id === active);
+  const selected = current.modules[moduleIndex] || current.modules[0];
+  const SelectedIcon = VERTICAL_ICONS[selected] || Check;
+  const chooseVertical = (v, i) => { setActive(v.id); setModuleIndex(0); };
   return (
     <section className="section section--tint verticals" id="verticals">
       <div className="container">
@@ -1152,7 +1174,7 @@ function Verticals() {
               role="tab"
               aria-selected={i === index}
               className={`vertical-tab ${i === index ? 'is-active' : ''}`}
-              onClick={() => setActive(v.id)}
+              onClick={() => chooseVertical(v, i)}
             >
               <span className="vertical-tab__num mono">{String(i + 1).padStart(2, '0')}</span>
               <span className="vertical-tab__name">{v.tag}</span>
@@ -1161,7 +1183,7 @@ function Verticals() {
         </div>
         <AnimatePresence mode="wait">
           <motion.div className="vertical-card" key={active} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease: EASE }}>
-            <div className="vertical-hero">
+            <div className="vertical-hero" data-count={String(current.modules.length).padStart(2, '0')}>
               <div className="vertical-hero__top">
                 <span className="vertical-tag mono">{current.tag} · модуль</span>
                 <span className="vertical-hero__count mono">{String(current.modules.length).padStart(2, '0')} <small>модуля подключено</small></span>
@@ -1173,13 +1195,36 @@ function Verticals() {
             <div className="vertical-modules-panel">
               <div className="vertical-modules-head"><span>Модули в комплекте</span><span className="mono">{current.tag}</span></div>
               <div className="vertical-modules">
-                {current.modules.map((m, i) => (
-                  <div className="vertical-module" key={m}>
-                    <span className="vertical-module__num mono">0{i + 1}</span>
-                    <b>{m}</b>
-                  </div>
-                ))}
+                {current.modules.map((m, i) => {
+                  const MIcon = VERTICAL_ICONS[m] || Check;
+                  return (
+                    <button
+                      type="button"
+                      key={m}
+                      className={`vertical-module ${i === moduleIndex ? 'is-active' : ''}`}
+                      onClick={() => setModuleIndex(i)}
+                      aria-pressed={i === moduleIndex}
+                    >
+                      <span className="vertical-module__icon"><MIcon size={18} /></span>
+                      <span className="vertical-module__body">
+                        <span className="vertical-module__num mono">0{i + 1}</span>
+                        <b>{m}</b>
+                      </span>
+                      <ArrowUpRight size={15} className="vertical-module__arrow" />
+                    </button>
+                  );
+                })}
               </div>
+              <AnimatePresence mode="wait">
+                <motion.div className="vertical-module-detail" key={`${active}-${selected}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22, ease: EASE }}>
+                  <div className="vertical-module-detail__top">
+                    <span className="vertical-module-detail__icon"><SelectedIcon size={17} /></span>
+                    <span className="mono">0{moduleIndex + 1} / 0{current.modules.length} · модуль</span>
+                  </div>
+                  <h4>{selected}</h4>
+                  <p>{MODULE_DETAILS[selected] || 'Модуль входит в комплект и работает вместе с кадрами, табелем и финансами.'}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -1200,7 +1245,10 @@ function Security() {
         <div className="trust-grid">
           {TRUST.map((t, i) => (
             <Reveal className="trust-row" key={t.title} delay={i * 0.05}>
-              <span className="trust-row__num mono">0{i + 1}</span>
+              <div className="trust-row__head">
+                <span className="trust-row__icon"><Icon name={t.icon} size={20} /></span>
+                <span className="trust-row__num mono">0{i + 1}</span>
+              </div>
               <div className="trust-row__body">
                 <h3>{t.title}</h3>
                 <p>{t.text}</p>
@@ -1287,8 +1335,12 @@ function Pricing({ onDemo }) {
 
 function Flows() {
   const [active, setActive] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0);
   const flow = FLOWS[active];
-  const go = (n) => setActive((n + FLOWS.length) % FLOWS.length);
+  const step = flow.chain[stepIndex] || flow.chain[0];
+  const StepDetailIcon = FLOW_ICONS[step];
+  const choose = (i) => { setActive(i); setStepIndex(0); };
+  const go = (n) => choose((n + FLOWS.length) % FLOWS.length);
   return (
     <section className="section flows" id="flows">
       <div className="container">
@@ -1307,7 +1359,7 @@ function Flows() {
                 role="tab"
                 aria-selected={i === active}
                 className={`flow-track__item ${i === active ? 'is-active' : ''}`}
-                onClick={() => setActive(i)}
+                onClick={() => choose(i)}
               >
                 <span className="flow-track__num mono">{f.num}</span>
                 <span className="flow-track__chain">{f.chain.join(' → ')}</span>
@@ -1332,16 +1384,31 @@ function Flows() {
                 {flow.chain.map((c, j) => {
                   const StepIcon = FLOW_ICONS[c];
                   return (
-                    <div className="flow-step" key={c}>
+                    <button
+                      type="button"
+                      key={c}
+                      className={`flow-step ${j === stepIndex ? 'is-active' : ''}`}
+                      onClick={() => setStepIndex(j)}
+                      aria-pressed={j === stepIndex}
+                    >
                       <div className="flow-step__top">
                         <span className="flow-step__num mono">0{j + 1}</span>
                         <span className="flow-step__icon"><StepIcon size={18} /></span>
                       </div>
                       <b>{c}</b>
                       {j < flow.chain.length - 1 && <span className="flow-step__arrow" aria-hidden="true"><ArrowRight size={16} /></span>}
-                    </div>
+                    </button>
                   );
                 })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          <AnimatePresence mode="wait">
+            <motion.div className="flow-detail" key={`${flow.num}-${step}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22, ease: EASE }}>
+              <span className="flow-detail__icon"><StepDetailIcon size={18} /></span>
+              <div>
+                <span className="flow-detail__label mono">ШАГ 0{stepIndex + 1} · {step.toUpperCase()}</span>
+                <p>{STEP_DETAILS[step]}</p>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -1349,7 +1416,7 @@ function Flows() {
             <button type="button" className="flow-nav__btn" onClick={() => go(active - 1)} aria-label="Предыдущий сценарий"><ChevronLeft size={18} /></button>
             <div className="flow-dots">
               {FLOWS.map((f, i) => (
-                <button key={f.num} type="button" className={`flow-dot ${i === active ? 'is-active' : ''}`} onClick={() => setActive(i)} aria-label={`Сценарий ${i + 1}`} />
+                <button key={f.num} type="button" className={`flow-dot ${i === active ? 'is-active' : ''}`} onClick={() => choose(i)} aria-label={`Сценарий ${i + 1}`} />
               ))}
             </div>
             <span className="flow-count">{String(active + 1).padStart(2, '0')} / {String(FLOWS.length).padStart(2, '0')}</span>
