@@ -86,6 +86,24 @@ function Icon({ name, size = 20, ...rest }) {
   return <C size={size} strokeWidth={1.7} {...rest} />;
 }
 
+const AVATAR_GROUPS = [
+  ['СГ', 'МК', 'АП'],
+  ['ДЛ', 'ИВ', 'НС'],
+  ['ЕР', 'ТК', 'ВП'],
+  ['ОМ', 'РШ', 'КД'],
+];
+
+function AvatarStack({ i = 0 }) {
+  const group = AVATAR_GROUPS[i % AVATAR_GROUPS.length];
+  return (
+    <span className="avatar-stack" aria-hidden="true">
+      {group.map((initials, n) => (
+        <span className="avatar-stack__dot" key={initials} data-n={n}>{initials}</span>
+      ))}
+    </span>
+  );
+}
+
 const EASE = [0.16, 1, 0.3, 1];
 const REGISTER = '/workdo-landing/register/';
 const LOGIN = '/workdo-landing/register/#login';
@@ -398,20 +416,40 @@ function Problems() {
           note="И в каждом — своя версия правды. Пока данные расходятся по таблицам и чатам, управление превращается в пересказ."
         />
         <div className="compare-carousel">
-          <div className="compare-tabs" role="tablist" aria-label="Примеры проблем">
-            {PAINS.map((item, i) => (
-              <button
-                key={item.short}
-                type="button"
-                role="tab"
-                aria-selected={i === active}
-                className={`compare-tab ${i === active ? 'is-active' : ''}`}
-                onClick={() => setActive(i)}
-              >
-                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-                <b>{item.short}</b>
-              </button>
-            ))}
+          <div className="compare-selector">
+            <div className="compare-selector__terms" role="tablist" aria-label="Примеры проблем">
+              {PAINS.map((item, i) => (
+                <button
+                  key={item.short}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  className={`compare-selector__term ${i === active ? 'is-active' : ''}`}
+                  onClick={() => setActive(i)}
+                >
+                  <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                  <b>{item.short}</b>
+                </button>
+              ))}
+            </div>
+            <div className="compare-dial" style={{ '--dial-rotate': `${270 - active * 90}deg` }} aria-hidden="true">
+              <div className="compare-dial__ring">
+                {PAINS.map((item, i) => (
+                  <span
+                    key={item.short}
+                    className={`compare-dial__node ${i === active ? 'is-active' : ''}`}
+                    style={{ '--a': `${i * 90}deg` }}
+                  >
+                    <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                  </span>
+                ))}
+              </div>
+              <div className="compare-dial__center">
+                <span className="mono">{String(active + 1).padStart(2, '0')} / 04</span>
+                <b>{pain.short}</b>
+              </div>
+              <span className="compare-dial__marker" />
+            </div>
           </div>
           <AnimatePresence mode="wait">
             <motion.div
@@ -1195,25 +1233,22 @@ function Verticals() {
             <div className="vertical-modules-panel">
               <div className="vertical-modules-head"><span>Модули в комплекте</span><span className="mono">{current.tag}</span></div>
               <div className="vertical-modules">
-                {current.modules.map((m, i) => {
-                  const MIcon = VERTICAL_ICONS[m] || Check;
-                  return (
-                    <button
-                      type="button"
-                      key={m}
-                      className={`vertical-module ${i === moduleIndex ? 'is-active' : ''}`}
-                      onClick={() => setModuleIndex(i)}
-                      aria-pressed={i === moduleIndex}
-                    >
-                      <span className="vertical-module__icon"><MIcon size={18} /></span>
-                      <span className="vertical-module__body">
-                        <span className="vertical-module__num mono">0{i + 1}</span>
-                        <b>{m}</b>
-                      </span>
-                      <ArrowUpRight size={15} className="vertical-module__arrow" />
-                    </button>
-                  );
-                })}
+                {current.modules.map((m, i) => (
+                  <button
+                    type="button"
+                    key={m}
+                    className={`vertical-module ${i === moduleIndex ? 'is-active' : ''}`}
+                    onClick={() => setModuleIndex(i)}
+                    aria-pressed={i === moduleIndex}
+                  >
+                    <span className="vertical-module__icon"><AvatarStack i={i} /></span>
+                    <span className="vertical-module__body">
+                      <span className="vertical-module__num mono">0{i + 1}</span>
+                      <b>{m}</b>
+                    </span>
+                    <ArrowUpRight size={15} className="vertical-module__arrow" />
+                  </button>
+                ))}
               </div>
               <AnimatePresence mode="wait">
                 <motion.div className="vertical-module-detail" key={`${active}-${selected}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22, ease: EASE }}>
@@ -1234,8 +1269,6 @@ function Verticals() {
 }
 
 function Security() {
-  const [active, setActive] = useState(0);
-  const item = TRUST[active];
   return (
     <section className="section section--dark security" id="security">
       <div className="container">
@@ -1244,84 +1277,96 @@ function Security() {
           title={<>Данные компании <span className="gradient-text">остаются компании</span></>}
           note="Изоляция, роли и журнал действий — не настройки на витрине, а архитектура: отдельная схема базы на каждого клиента и проверка прав на уровне данных."
         />
-        <div className="security-explorer">
-          <div className="security-list">
-            {TRUST.map((t, i) => (
-              <button
-                type="button"
-                key={t.title}
-                className={`security-item ${i === active ? 'is-active' : ''}`}
-                onClick={() => setActive(i)}
-                aria-pressed={i === active}
-              >
-                <span className="security-item__num mono">0{i + 1}</span>
-                <span className="security-item__icon"><Icon name={t.icon} size={19} /></span>
-                <span className="security-item__body">
-                  <b>{t.title}</b>
-                  <span>{t.text}</span>
-                  <em className="mono">{t.meta}</em>
-                </span>
-              </button>
-            ))}
+        <div className="security-board">
+          <div className="security-board__bar">
+            <span className="mono">АРХИТЕКТУРА / КОНТУР БЕЗОПАСНОСТИ</span>
+            <span className="security-board__legend mono"><i /> 4 механизма · всегда включены</span>
           </div>
+          <div className="security-bento">
+            <Reveal as="article" className="security-card security-card--schema" delay={0.02}>
+              <div className="security-card__head">
+                <span className="security-card__num mono">01</span>
+                <span className="security-card__icon"><Icon name={TRUST[0].icon} size={18} /></span>
+                <div className="security-card__title">
+                  <h3>{TRUST[0].title}</h3>
+                  <span className="mono">{TRUST[0].meta}</span>
+                </div>
+              </div>
+              <p>{TRUST[0].text}</p>
+              <div className="sec-schema">
+                <div className="sec-schema__db"><Database size={16} /> PostgreSQL <span>изоляция на уровне схемы</span></div>
+                <div className="sec-schema__split" aria-hidden="true" />
+                <div className="sec-schema__cards">
+                  <div className="is-current"><b>company_1042</b><small>схема вашей компании</small><span>employees · shifts · payroll · incidents</span></div>
+                  <div><b>company_1043</b><small>другая компания</small><span>employees · shifts · payroll · incidents</span></div>
+                </div>
+              </div>
+            </Reveal>
 
-          <div className="security-visual">
-            <div className="security-visual__top">
-              <span className="mono">{item.meta}</span>
-              <span className="security-visual__dot" />
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div className="security-visual__body" key={active} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3, ease: EASE }}>
-                {active === 0 && (
-                  <div className="sec-schema">
-                    <div className="sec-schema__db"><Database size={18} /> PostgreSQL <span>изоляция на уровне схемы</span></div>
-                    <div className="sec-schema__split" />
-                    <div className="sec-schema__cards">
-                      <div className="is-current"><b>company_1042</b><small>схема вашей компании</small><span>employees · shifts · payroll · incidents</span></div>
-                      <div><b>company_1043</b><small>другая компания</small><span>employees · shifts · payroll · incidents</span></div>
+            <Reveal as="article" className="security-card security-card--rbac" delay={0.08}>
+              <div className="security-card__head">
+                <span className="security-card__num mono">02</span>
+                <span className="security-card__icon"><Icon name={TRUST[1].icon} size={18} /></span>
+                <div className="security-card__title">
+                  <h3>{TRUST[1].title}</h3>
+                  <span className="mono">{TRUST[1].meta}</span>
+                </div>
+              </div>
+              <p>{TRUST[1].text}</p>
+              <div className="sec-rbac">
+                <div className="sec-rbac__roles"><span className="is-active">owner</span><span>admin</span><span>manager</span><span>member</span></div>
+                <div className="sec-rbac__table">
+                  <div><span>employees</span><b>read · write</b></div>
+                  <div><span>payroll</span><b>read · write</b></div>
+                  <div><span>audit_log</span><b>read</b></div>
+                  <div><span>company</span><b>delete</b></div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal as="article" className="security-card security-card--code" delay={0.14}>
+              <div className="security-card__head">
+                <span className="security-card__num mono">04</span>
+                <span className="security-card__icon"><Icon name={TRUST[3].icon} size={18} /></span>
+                <div className="security-card__title">
+                  <h3>{TRUST[3].title}</h3>
+                  <span className="mono">{TRUST[3].meta}</span>
+                </div>
+              </div>
+              <p>{TRUST[3].text}</p>
+              <div className="sec-code">
+                <div className="sec-code__mail"><KeyRound size={16} /> confirmation@workdo.ru</div>
+                <div className="sec-code__digits"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
+                <div className="sec-code__meta"><span>TTL 10 мин</span><span>3 попытки</span></div>
+              </div>
+            </Reveal>
+
+            <Reveal as="article" className="security-card security-card--audit" delay={0.2}>
+              <div className="security-card__head">
+                <span className="security-card__num mono">03</span>
+                <span className="security-card__icon"><Icon name={TRUST[2].icon} size={18} /></span>
+                <div className="security-card__title">
+                  <h3>{TRUST[2].title}</h3>
+                  <span className="mono">{TRUST[2].meta}</span>
+                </div>
+              </div>
+              <p>{TRUST[2].text}</p>
+              <div className="audit-log">
+                <div className="audit-log__head">
+                  <span>аудит-лог · фрагмент</span>
+                  <em><span className="audit-live">LIVE</span> только для owner и admin</em>
+                </div>
+                <div className="audit-log__table">
+                  <div className="audit-log__row audit-log__row--head"><span>дата</span><span>время</span><span>кто</span><span>поле</span><span>изменение</span></div>
+                  {AUDIT.map((a, i) => (
+                    <div className="audit-log__row" key={i}>
+                      <span className="mono">{a.date}</span><span className="mono">{a.time}</span><span>{a.who}</span><span>{a.field}</span>
+                      <span className="audit-diff"><s>{a.before}</s><ArrowRight size={13} /><b>{a.after}</b></span>
                     </div>
-                    <p>Данные клиентов не смешиваются даже при технической ошибке.</p>
-                  </div>
-                )}
-                {active === 1 && (
-                  <div className="sec-rbac">
-                    <div className="sec-rbac__roles"><span className="is-active">owner</span><span>admin</span><span>manager</span><span>member</span></div>
-                    <div className="sec-rbac__table">
-                      <div><span>employees</span><b>read · write</b></div>
-                      <div><span>payroll</span><b>read · write</b></div>
-                      <div><span>audit_log</span><b>read</b></div>
-                      <div><span>company</span><b>delete</b></div>
-                    </div>
-                    <p>Ограничения живут в данных, а не только в интерфейсе.</p>
-                  </div>
-                )}
-                {active === 2 && (
-                  <div className="audit-log">
-                    <div className="audit-log__head">
-                      <span>аудит-лог · фрагмент</span>
-                      <em><span className="audit-live">LIVE</span> только для owner и admin</em>
-                    </div>
-                    <div className="audit-log__table">
-                      <div className="audit-log__row audit-log__row--head"><span>дата</span><span>время</span><span>кто</span><span>поле</span><span>изменение</span></div>
-                      {AUDIT.map((a, i) => (
-                        <div className="audit-log__row" key={i}>
-                          <span className="mono">{a.date}</span><span className="mono">{a.time}</span><span>{a.who}</span><span>{a.field}</span>
-                          <span className="audit-diff"><s>{a.before}</s><ArrowRight size={13} /><b>{a.after}</b></span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {active === 3 && (
-                  <div className="sec-code">
-                    <div className="sec-code__mail"><KeyRound size={18} /> confirmation@workdo.ru</div>
-                    <div className="sec-code__digits"><span>4</span><span>8</span><span>2</span><span>9</span><span>1</span><span>7</span></div>
-                    <div className="sec-code__meta"><span>TTL 10 мин</span><span>3 попытки</span></div>
-                    <p>Смена пароля, восстановление и удаление аккаунта подтверждаются шестизначным кодом.</p>
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
