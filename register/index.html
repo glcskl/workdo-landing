@@ -37,63 +37,31 @@
     .page { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
 
     .brand {
-      position: relative;
-      overflow: hidden;
       padding: 48px 56px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      color: #fff;
-      background: #090a0c;
-      isolation: isolate;
+      color: var(--ink);
+      background: #fafafa;
+      border-right: 1px solid var(--line);
     }
-    .brand::before {
-      content: '';
-      position: absolute; inset: 0; z-index: -2;
-      background-image:
-        linear-gradient(to right, rgba(255,255,255,.045) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,.045) 1px, transparent 1px);
-      background-size: 56px 56px;
-      mask-image: radial-gradient(ellipse 80% 70% at 30% 30%, #000 10%, transparent 80%);
-    }
-    .brand::after {
-      content: '';
-      position: absolute; z-index: -1;
-      width: 680px; height: 680px; top: -220px; left: -180px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.22), rgba(16,185,129,.08) 45%, transparent 70%);
-      filter: blur(30px);
-    }
-    .logo { display: inline-flex; align-items: center; gap: 10px; width: fit-content; }
-    .logo-mark {
-      width: 32px; height: 32px; border-radius: 9px; background: var(--grad);
-      display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 6px;
-      box-shadow: 0 5px 16px rgba(59,130,246,.28);
-    }
-    .logo-mark span { display: block; height: 2px; border-radius: 2px; background: #fff; }
-    .logo-mark span:nth-child(2) { width: 68%; opacity: .85; }
-    .logo-mark span:nth-child(3) { width: 84%; opacity: .7; }
+    .logo { display: inline-flex; align-items: center; width: fit-content; }
     .logo-word { font-size: 21px; font-weight: 750; letter-spacing: -.065em; }
-    .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
     .brand h1 {
       max-width: 520px;
       font-size: clamp(2.4rem, 4.2vw, 4.1rem);
-      line-height: .98;
+      line-height: 1.02;
       letter-spacing: -.065em;
       font-weight: 740;
     }
-    .brand p { max-width: 440px; margin-top: 24px; font-size: 15px; line-height: 1.65; color: #9a9a9a; }
-    .brand-points { display: flex; flex-direction: column; gap: 14px; margin-top: 38px; }
-    .brand-points span { display: flex; align-items: center; gap: 11px; font-size: 13px; color: #c4c4c4; }
-    .brand-points i {
-      width: 22px; height: 22px; flex: none; display: grid; place-items: center;
-      border-radius: 7px; background: rgba(16,185,129,.14); color: #34d399;
-      font-style: normal; font-size: 12px;
-    }
-    .brand-foot { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #6f6f6f; }
-    .brand-foot a { border-bottom: 1px solid #444; padding-bottom: 2px; color: #a3a3a3; }
-    .brand-foot a:hover { color: #fff; border-color: #fff; }
+    .brand p { max-width: 440px; margin-top: 24px; font-size: 15px; line-height: 1.65; color: var(--muted); }
+    .brand-points { display: flex; flex-direction: column; gap: 12px; margin-top: 38px; }
+    .brand-points span { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #525252; }
+    .brand-points i { font-style: normal; font-size: 12px; color: #059669; }
+    .brand-foot { display: flex; align-items: center; gap: 12px; font-size: 11px; color: #a3a3a3; }
+    .brand-foot a { border-bottom: 1px solid #d4d4d4; padding-bottom: 2px; color: #737373; }
+    .brand-foot a:hover { color: var(--ink); border-color: var(--ink); }
 
     .form-side { display: flex; align-items: center; justify-content: center; padding: 48px 40px; }
     .form-wrap { width: min(100%, 440px); }
@@ -103,55 +71,55 @@
     .form-head p { margin-top: 10px; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
 
     .tabs {
-      display: flex; gap: 4px; padding: 4px; margin-top: 30px;
-      border: 1px solid var(--line); border-radius: 999px; background: #fafafa;
+      display: flex; gap: 28px; margin-top: 32px;
+      border-bottom: 1px solid var(--line);
     }
     .tabs button {
-      flex: 1; padding: 10px 12px; border: 0; border-radius: 999px;
-      background: transparent; color: #8a8a8a; font-size: 12.5px; font-weight: 550;
-      transition: background .25s var(--ease), color .25s var(--ease);
+      padding: 0 0 12px; border: 0; border-bottom: 2px solid transparent;
+      background: transparent; color: #a3a3a3; font-size: 13px; font-weight: 550;
+      transition: color .25s var(--ease), border-color .25s var(--ease);
     }
-    .tabs button.is-active { background: var(--ink); color: #fff; }
+    .tabs button.is-active { border-color: var(--ink); color: var(--ink); }
 
     form { margin-top: 26px; }
-    .field { display: block; margin-bottom: 16px; }
+    .field { display: block; margin-bottom: 18px; }
     .field > span { display: block; margin-bottom: 7px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .11em; color: #9a9a9a; }
     .field input, .field select {
-      width: 100%; padding: 14px 15px;
-      border: 1px solid #dedede; border-radius: 12px;
-      background: #fff; color: var(--ink); font-size: 13.5px; outline: none;
-      transition: border-color .25s, box-shadow .25s;
+      width: 100%; padding: 12px 0;
+      border: 0; border-bottom: 1px solid #d4d4d4; border-radius: 0;
+      background: transparent; color: var(--ink); font-size: 14px; outline: none;
+      transition: border-color .25s;
     }
     .field input::placeholder { color: #b5b5b5; }
-    .field input:focus, .field select:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59,130,246,.09); }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .check { display: flex; align-items: flex-start; gap: 10px; margin: 6px 0 22px; font-size: 11.5px; line-height: 1.5; color: #8a8a8a; }
-    .check input { width: 16px; height: 16px; margin: 1px 0 0; accent-color: #10b981; flex: none; }
+    .field input:focus, .field select:focus { border-color: var(--ink); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .check { display: flex; align-items: flex-start; gap: 10px; margin: 4px 0 24px; font-size: 11.5px; line-height: 1.5; color: #8a8a8a; }
+    .check input { width: 15px; height: 15px; margin: 1px 0 0; accent-color: var(--ink); flex: none; }
     .check a { border-bottom: 1px solid #c4c4c4; }
 
     .submit {
       width: 100%; padding: 15px 20px;
-      border: 0; border-radius: 999px;
+      border: 0; border-radius: 10px;
       background: var(--ink); color: #fff;
       font-size: 14px; font-weight: 600;
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .25s;
+      transition: background .25s;
     }
-    .submit:hover { transform: translateY(-2px); background: #292929; box-shadow: 0 14px 30px rgba(0,0,0,.16); }
+    .submit:hover { background: #292929; }
     .form-note { margin-top: 16px; text-align: center; font-size: 10.5px; color: #a3a3a3; }
     .error { margin: -6px 0 14px; font-size: 11px; color: #dc2626; min-height: 14px; }
 
     .success { display: none; text-align: center; padding: 30px 0; }
     .success.is-visible { display: block; }
     .success-icon {
-      width: 58px; height: 58px; margin: 0 auto 22px;
-      display: grid; place-items: center; border-radius: 50%;
-      background: rgba(16,185,129,.12); color: #059669; font-size: 24px;
+      margin: 0 auto 22px;
+      display: grid; place-items: center;
+      color: #059669; font-size: 28px;
     }
     .success h3 { font-size: 26px; letter-spacing: -.05em; }
     .success p { margin-top: 12px; font-size: 13px; line-height: 1.65; color: var(--muted); }
-    .success a { display: inline-block; margin-top: 26px; padding: 12px 20px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; font-weight: 550; }
-    .success a:hover { border-color: var(--ink); }
+    .success a { display: inline-block; margin-top: 26px; padding: 0 0 3px; border-bottom: 1px solid var(--ink); font-size: 12.5px; font-weight: 550; }
+    .success a:hover { color: var(--muted); border-color: var(--muted); }
     form.is-hidden { display: none; }
 
     @media (max-width: 900px) {
@@ -172,11 +140,10 @@
   <main class="page">
     <section class="brand">
       <a class="logo" href="/workdo-landing/">
-        <span class="logo-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="logo-word">Work<span class="grad">Do</span></span>
+        <span class="logo-word">WorkDo</span>
       </a>
       <div>
-        <h1>WorkDo: бизнес <span class="grad">под контролем</span></h1>
+        <h1>WorkDo: бизнес под контролем</h1>
         <p>От кадров до финансов: сотрудники, смены, заработная плата и финансы в одной системе.</p>
         <div class="brand-points">
           <span><i>✓</i> Кадры, табель и зарплата связаны между собой</span>
