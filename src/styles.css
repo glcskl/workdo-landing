@@ -3476,3 +3476,36 @@ ul { margin: 0; padding: 0; list-style: none; }
   .faq-answer-panel { padding: 28px 22px; }
   .faq-answer-panel::before { font-size: 110px; }
 }
+
+/* ─── 09 · СЦЕНАРИИ: stepper с прогрессом ───── */
+
+.flow-slide { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 52px; align-items: center; padding: 44px 48px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 24px 70px rgba(15, 23, 42, 0.05); }
+.flow-story { position: relative; }
+.flow-story__ghost { position: absolute; top: -48px; right: 0; font-size: 140px; line-height: 1; font-weight: 800; letter-spacing: -0.09em; color: rgba(10, 10, 10, 0.035); pointer-events: none; }
+.flow-story > *:not(.flow-story__ghost) { position: relative; }
+.flow-story h3 { margin: 20px 0 14px; font-size: clamp(28px, 3.2vw, 38px); line-height: 1.15; letter-spacing: -0.045em; }
+.flow-story p { font-size: 15px; line-height: 1.7; color: #737373; }
+
+.flow-stepper { position: relative; display: flex; flex-direction: column; }
+.flow-stepper__rail { position: absolute; left: 17px; top: 30px; bottom: 30px; width: 2px; background: var(--line); }
+.flow-stepper__rail span { display: block; width: 100%; background: #059669; transition: height 0.4s var(--ease); }
+.flow-step { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 16px; align-items: start; width: 100%; min-height: 0; padding: 14px 0; border: 0; border-radius: 0; background: transparent; text-align: left; box-shadow: none; }
+.flow-step:hover { border-color: transparent; background: transparent; transform: none; box-shadow: none; }
+.flow-step__dot { position: relative; z-index: 1; width: 36px; height: 36px; display: grid; place-items: center; border: 2px solid var(--line); border-radius: 50%; background: #fff; color: #a3a3a3; font-size: 11px; transition: all 0.3s var(--ease); }
+.flow-step.is-active .flow-step__dot { border-color: var(--ink); background: var(--ink); color: #fff; box-shadow: 0 0 0 5px #f3fbf8; }
+.flow-step.is-done .flow-step__dot { border-color: #059669; background: #059669; color: #fff; }
+.flow-step__body { display: block; padding-top: 6px; }
+.flow-step__title { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.flow-step b { display: inline; margin-top: 0; font-size: 18px; font-weight: 600; color: #a3a3a3; transition: color 0.25s; }
+.flow-step.is-active b, .flow-step.is-done b { color: var(--ink); }
+.flow-step__title svg { flex: none; color: #c4c4c4; }
+.flow-step.is-active .flow-step__title svg { color: #059669; }
+.flow-step__desc { display: block; margin-top: 8px; max-width: 520px; font-size: 14px; line-height: 1.65; color: #737373; }
+.flow-step__arrow { display: none; }
+@media (max-width: 1000px) {
+  .flow-slide { grid-template-columns: 1fr; gap: 28px; padding: 32px 30px; }
+  .flow-story__ghost { top: -30px; font-size: 110px; }
+}
+@media (max-width: 700px) {
+  .flow-step__desc { font-size: 13.5px; }
+}

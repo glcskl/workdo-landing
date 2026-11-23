@@ -1337,8 +1337,6 @@ function Flows() {
   const [active, setActive] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
   const flow = FLOWS[active];
-  const step = flow.chain[stepIndex] || flow.chain[0];
-  const StepDetailIcon = FLOW_ICONS[step];
   const choose = (i) => { setActive(i); setStepIndex(0); };
   const go = (n) => choose((n + FLOWS.length) % FLOWS.length);
   return (
@@ -1376,39 +1374,35 @@ function Flows() {
               transition={{ duration: 0.35, ease: EASE }}
             >
               <div className="flow-story">
+                <span className="flow-story__ghost mono" aria-hidden="true">{flow.num}</span>
                 <span className="flow-story__label mono">СЦЕНАРИЙ {flow.num}</span>
                 <h3>{flow.title}</h3>
                 <p>{flow.text}</p>
               </div>
-              <div className="flow-chain">
+              <div className="flow-stepper">
+                <div className="flow-stepper__rail"><span style={{ height: `${((stepIndex + 1) / flow.chain.length) * 100}%` }} /></div>
                 {flow.chain.map((c, j) => {
                   const StepIcon = FLOW_ICONS[c];
                   return (
                     <button
                       type="button"
                       key={c}
-                      className={`flow-step ${j === stepIndex ? 'is-active' : ''}`}
+                      className={`flow-step ${j === stepIndex ? 'is-active' : ''} ${j < stepIndex ? 'is-done' : ''}`}
                       onClick={() => setStepIndex(j)}
                       aria-pressed={j === stepIndex}
                     >
-                      <div className="flow-step__top">
-                        <span className="flow-step__num mono">0{j + 1}</span>
-                        <span className="flow-step__icon"><StepIcon size={18} /></span>
-                      </div>
-                      <b>{c}</b>
-                      {j < flow.chain.length - 1 && <span className="flow-step__arrow" aria-hidden="true"><ArrowRight size={16} /></span>}
+                      <span className="flow-step__dot">{j < stepIndex ? <Check size={14} /> : <span className="mono">0{j + 1}</span>}</span>
+                      <span className="flow-step__body">
+                        <span className="flow-step__title"><b>{c}</b><StepIcon size={16} /></span>
+                        {j === stepIndex && (
+                          <motion.span className="flow-step__desc" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: EASE }}>
+                            {STEP_DETAILS[c]}
+                          </motion.span>
+                        )}
+                      </span>
                     </button>
                   );
                 })}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          <AnimatePresence mode="wait">
-            <motion.div className="flow-detail" key={`${flow.num}-${step}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22, ease: EASE }}>
-              <span className="flow-detail__icon"><StepDetailIcon size={18} /></span>
-              <div>
-                <span className="flow-detail__label mono">ШАГ 0{stepIndex + 1} · {step.toUpperCase()}</span>
-                <p>{STEP_DETAILS[step]}</p>
               </div>
             </motion.div>
           </AnimatePresence>
